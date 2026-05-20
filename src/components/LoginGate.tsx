@@ -28,7 +28,7 @@ export default function LoginGate({ onLoginSuccess, users = [] }: LoginGateProps
       return;
     }
 
-    // Direct authentic matching
+    // Direct authentic matching with secure individual passwords and matricule defaults
     const trimmedEmail = email.trim().toLowerCase();
     const activeUsersList = users.length > 0 ? users : MOCK_USERS;
     const matchedUser = activeUsersList.find(
@@ -36,19 +36,26 @@ export default function LoginGate({ onLoginSuccess, users = [] }: LoginGateProps
     );
 
     if (matchedUser) {
-      // In a mock/live environment we accept simple login passwords matching user/admin prefixes
+      const userCustomPassword = matchedUser.password;
+      const userMatriculePassword = matchedUser.matricule.trim();
+      const enteredPassword = password.trim();
+
+      // Check if credentials match:
+      // 1. Matches user-defined password (if exists)
+      // 2. Matches their unique agent Matricule as a default password initialiser
+      // 3. Or a demonstration password 'user123' / 'admin123'
       if (
-        (matchedUser.role === 'admin' && password === 'admin123') ||
-        (matchedUser.role === 'user' && password === 'user123') ||
-        // Support general password entry for other users too
-        password === '123' || password === 'user123' || password === 'admin123'
+        (userCustomPassword && enteredPassword === userCustomPassword) ||
+        (enteredPassword.toUpperCase() === userMatriculePassword.toUpperCase()) ||
+        (matchedUser.role === 'admin' && enteredPassword === 'admin123') ||
+        (matchedUser.role === 'user' && enteredPassword === 'user123')
       ) {
         onLoginSuccess(matchedUser);
         return;
       }
     }
 
-    setError('Identifiants incorrects. Veuillez utiliser un des comptes de test ci-dessous.');
+    setError('Identifiants incorrects. Veuillez saisir votre adresse email professionnelle et votre mot de passe (p. ex. votre matricule agent par défaut).');
   };
 
   const prefillAccount = (testEmail: string, testPass: string) => {

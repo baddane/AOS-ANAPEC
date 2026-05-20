@@ -34,7 +34,8 @@ CREATE TABLE IF NOT EXISTS aos_users (
   "membershipDate" TEXT NOT NULL,
   "cotisationStatus" TEXT NOT NULL,
   "avatarUrl" TEXT,
-  grade TEXT
+  grade TEXT,
+  password TEXT
 );
 
 -- Table des Conventions & Remises Négociées
@@ -113,12 +114,12 @@ CREATE POLICY "Allow public update of news" ON aos_news FOR UPDATE USING (true);
 -- Étape 2 : Peuplement des données initiales (Optionnel)
 -- ========================================================
 
-INSERT INTO aos_users (id, email, name, prenom, matricule, telephone, delegation, role, "membershipDate", "cotisationStatus", "avatarUrl", grade) VALUES
-('user_1', 'collaborateur@aosanapec.ma', 'Mansouri', 'Nadia', 'EMP-203', '+212 661 234567', 'Casablanca-Anfa', 'user', '2021-04-12', 'active', 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=120', 'Cadre Supérieur'),
-('user_admin', 'admin@aosanapec.ma', 'Benchakroun', 'Karim', 'ADM-904', '+212 661 987654', 'Direction Générale (Rabat)', 'admin', '2018-01-15', 'active', 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=120', 'Chef de Service Social'),
-('user_2', 'yassine.idrissi@aosanapec.ma', 'El Idrissi', 'Yassine', 'EMP-110', '+212 662 445566', 'Marrakech-Gueliz', 'user', '2023-09-01', 'active', 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=120', 'Conseiller en Emploi'),
-('user_3', 'fatima.alaoui@aosanapec.ma', 'Alaoui', 'Fatima-Zahra', 'EMP-445', '+212 663 778899', 'Fès-Ville', 'user', '2020-02-10', 'inactive', 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=120', 'Gestionnaire de Compte'),
-('user_4', 'amine.chraibi@aosanapec.ma', 'Chraibi', 'Amine', 'EMP-302', '+212 665 112233', 'Agadir-Ida-Outanane', 'user', '2019-11-20', 'active', 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=120', 'Chef d''Agence Régionale')
+INSERT INTO aos_users (id, email, name, prenom, matricule, telephone, delegation, role, "membershipDate", "cotisationStatus", "avatarUrl", grade, password) VALUES
+('user_1', 'collaborateur@aosanapec.ma', 'Mansouri', 'Nadia', 'EMP-203', '+212 661 234567', 'Casablanca-Anfa', 'user', '2021-04-12', 'active', 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=120', 'Cadre Supérieur', 'user123'),
+('user_admin', 'admin@aosanapec.ma', 'Benchakroun', 'Karim', 'ADM-904', '+212 661 987654', 'Direction Générale (Rabat)', 'admin', '2018-01-15', 'active', 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=120', 'Chef de Service Social', 'admin123'),
+('user_2', 'yassine.idrissi@aosanapec.ma', 'El Idrissi', 'Yassine', 'EMP-110', '+212 662 445566', 'Marrakech-Gueliz', 'user', '2023-09-01', 'active', 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=120', 'Conseiller en Emploi', 'user123'),
+('user_3', 'fatima.alaoui@aosanapec.ma', 'Alaoui', 'Fatima-Zahra', 'EMP-445', '+212 663 778899', 'Fès-Ville', 'user', '2020-02-10', 'inactive', 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=120', 'Gestionnaire de Compte', 'user123'),
+('user_4', 'amine.chraibi@aosanapec.ma', 'Chraibi', 'Amine', 'EMP-302', '+212 665 112233', 'Agadir-Ida-Outanane', 'user', '2019-11-20', 'active', 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=120', 'Chef d''Agence Régionale', 'user123')
 ON CONFLICT (id) DO NOTHING;
 
 INSERT INTO aos_conventions (id, title, "partnerName", category, description, "discountValue", "validityDate", "contactPhone", "contactEmail", address, city, highlighted) VALUES
@@ -174,7 +175,8 @@ export async function updateUserProfile(user: UserProfile): Promise<void> {
       telephone: user.telephone,
       delegation: user.delegation,
       grade: user.grade,
-      cotisationStatus: user.cotisationStatus
+      cotisationStatus: user.cotisationStatus,
+      password: user.password
     })
     .eq('id', user.id);
   if (error) throw error;
