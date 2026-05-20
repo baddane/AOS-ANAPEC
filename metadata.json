@@ -1,0 +1,6 @@
+{
+  "name": "Intranet AOS ANAPEC",
+  "description": "Portail intranet de l'Association des Œuvres Sociales de l'ANAPEC. Gestion des authentifications, des demandes de prestations, suivi des conventions et panneau administratif.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

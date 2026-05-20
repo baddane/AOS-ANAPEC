@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Google AI Studio App</title>
+    <script>
+      // Safe monkeypatch for window.fetch in restricted iframe sandboxes
+      // where some third-party libraries attempt to assign/override window.fetch and trigger type errors.
+      try {
+        let currentFetch = window.fetch;
+        Object.defineProperty(window, 'fetch', {
+          get() {
+            return currentFetch;
+          },
+          set(value) {
+            currentFetch = value;
+          },
+          configurable: true,
+          enumerable: true
+        });
+      } catch (e) {
+        console.warn("Could not configure fallback setter for window.fetch in index.html:", e);
+      }
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+
