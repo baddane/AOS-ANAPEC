@@ -15,6 +15,7 @@ import AdminPanel from './components/AdminPanel';
 import AnapecLogo from './components/AnapecLogo';
 import AosChatbot from './components/AosChatbot';
 import OfficialPublicationsKiosk from './components/OfficialPublicationsKiosk';
+import SocialGovernanceDashboard from './components/SocialGovernanceDashboard';
 import { 
   Newspaper, HelpCircle, Handshake, HeartHandshake, User, ShieldCheck, 
   LogOut, PlusCircle, LayoutDashboard, Facebook, FileText, ChevronRight, CheckCircle2, AlertCircle, Database, Copy, Check, BookOpen
@@ -59,7 +60,7 @@ export default function App() {
   const [copiedSql, setCopiedSql] = useState(false);
 
   // Navigation states
-  const [userTab, setUserTab] = useState<'NEWS' | 'CONVENTIONS' | 'MY_PRESTATIONS' | 'PROFILE' | 'KIOSK'>('NEWS');
+  const [userTab, setUserTab] = useState<'NEWS' | 'CONVENTIONS' | 'MY_PRESTATIONS' | 'PROFILE' | 'KIOSK' | 'GOVERNANCE'>('NEWS');
   const [isAdminMode, setIsAdminMode] = useState(false);
   const [selectedNews, setSelectedNews] = useState<NewsArticle | null>(null);
 
@@ -472,6 +473,16 @@ export default function App() {
               </button>
 
               <button
+                onClick={() => setUserTab('GOVERNANCE')}
+                className={`flex items-center gap-1.5 text-xs font-semibold px-3 py-2 rounded-xl transition-all cursor-pointer ${
+                  userTab === 'GOVERNANCE' ? 'bg-brand-blue text-white shadow-sm' : 'text-slate-600 hover:bg-brand-blue-light hover:text-brand-blue'
+                }`}
+              >
+                <ShieldCheck className="w-4 h-4" />
+                Simulateur & Transparence
+              </button>
+
+              <button
                 onClick={() => setUserTab('CONVENTIONS')}
                 className={`flex items-center gap-1.5 text-xs font-semibold px-3 py-2 rounded-xl transition-all cursor-pointer ${
                   userTab === 'CONVENTIONS' ? 'bg-brand-blue text-white shadow-sm' : 'text-slate-600 hover:bg-brand-blue-light hover:text-brand-blue'
@@ -628,6 +639,11 @@ export default function App() {
               <OfficialPublicationsKiosk 
                 isAdmin={currentUser?.role === 'admin'} 
               />
+            )}
+
+            {/* Tab: GOVERNANCE SIMULATOR & TRANSPARENCY */}
+            {userTab === 'GOVERNANCE' && (
+              <SocialGovernanceDashboard currentUser={currentUser} />
             )}
 
             {/* Tab: PARTNERS DIRECTORY */}
