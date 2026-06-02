@@ -26,7 +26,6 @@ import {
   updateUserProfile,
   updateRequestStatus,
   signOutUser,
-  getAuthSession,
   subscribeToAuthChanges,
   upsertUserFromMicrosoftAuth,
 } from './supabaseClient';
@@ -50,36 +49,25 @@ export default function App() {
   useEffect(() => {
     let isMounted = true;
 
-    const resolveSession = async () => {
-      const session = await getAuthSession();
-      if (session?.user && isMounted) {
-        try {
-          const profile = await upsertUserFromMicrosoftAuth(session.user);
-          setCurrentUser(profile);
-          setIsAdminMode(profile.role === 'admin');
-        } catch (e) {
-          console.error('Erreur de résolution du profil:', e);
-        }
-      }
-      if (isMounted) setAuthLoading(false);
-    };
-
-    resolveSession();
-
     const unsubscribe = subscribeToAuthChanges(async (session) => {
       if (!isMounted) return;
       if (session?.user) {
         try {
           const profile = await upsertUserFromMicrosoftAuth(session.user);
-          setCurrentUser(profile);
-          setIsAdminMode(profile.role === 'admin');
+          if (isMounted) {
+            setCurrentUser(profile);
+            setIsAdminMode(profile.role === 'admin');
+          }
         } catch (e) {
           console.error('Erreur auth state change:', e);
         }
       } else {
-        setCurrentUser(null);
-        setIsAdminMode(false);
+        if (isMounted) {
+          setCurrentUser(null);
+          setIsAdminMode(false);
+        }
       }
+      if (isMounted) setAuthLoading(false);
     });
 
     return () => {
