@@ -13,7 +13,6 @@ import PrestationRequestList from './components/PrestationRequestList';
 import UserProfileCard from './components/UserProfileCard';
 import AdminPanel from './components/AdminPanel';
 import AnapecLogo from './components/AnapecLogo';
-import AosChatbot from './components/AosChatbot';
 import OfficialPublicationsKiosk from './components/OfficialPublicationsKiosk';
 import SocialGovernanceDashboard from './components/SocialGovernanceDashboard';
 import { 
@@ -850,15 +849,6 @@ export default function App() {
 
           </div>
         </div>
-      )}
-
-      {/* Corporate Social Advisor Chatbot (Only for Espace Adhérent / Non-Admin views) */}
-      {currentUser && !isAdminMode && (
-        <AosChatbot 
-          currentUser={currentUser} 
-          conventions={conventions} 
-          requests={requests.filter(r => r.userId === currentUser.id)} 
-        />
       )}
 
       {/* Dynamic Print specific wrapper (hides irrelevant blocks when print trigger is requested) */}
