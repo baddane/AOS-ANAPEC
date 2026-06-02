@@ -208,7 +208,21 @@ export async function insertConvention(conv: Convention): Promise<void> {
 
 export async function fetchAllRequests(): Promise<PrestationRequest[]> {
   if (!supabase) throw new Error('Supabase client is not configured.');
-  const { data, error } = await supabase.from('aos_requests').select('*');
+  const { data, error } = await supabase
+    .from('aos_requests')
+    .select('*')
+    .order('submissionDate', { ascending: false });
+  if (error) throw error;
+  return data as PrestationRequest[];
+}
+
+export async function fetchRequestsByUser(userId: string): Promise<PrestationRequest[]> {
+  if (!supabase) throw new Error('Supabase client is not configured.');
+  const { data, error } = await supabase
+    .from('aos_requests')
+    .select('*')
+    .eq('userId', userId)
+    .order('submissionDate', { ascending: false });
   if (error) throw error;
   return data as PrestationRequest[];
 }

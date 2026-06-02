@@ -19,6 +19,7 @@ import {
   fetchAllUsers,
   fetchAllConventions,
   fetchAllRequests,
+  fetchRequestsByUser,
   fetchAllNews,
   insertRequest,
   insertNews,
@@ -100,26 +101,41 @@ export default function App() {
   }, [currentUser?.id]);
 
   const loadAppData = async () => {
-    if (isSupabaseConfigured) {
-      try {
-        const [dbUsers, dbConventions, dbRequests, dbNews] = await Promise.all([
+    if (!isSupabaseConfigured || !currentUser) {
+      setConventions(MOCK_CONVENTIONS);
+      setRequests(MOCK_REQUESTS);
+      setNews(MOCK_NEWS);
+      return;
+    }
+
+    try {
+      const isAdmin = currentUser.role === 'admin';
+
+      // Données partagées (légères) — chargées pour tout le monde
+      const [dbConventions, dbNews] = await Promise.all([
+        fetchAllConventions(),
+        fetchAllNews(),
+      ]);
+      setConventions(dbConventions);
+      setNews(dbNews);
+
+      if (isAdmin) {
+        // L'admin a besoin de la vue globale : tous les utilisateurs + toutes les demandes
+        const [dbUsers, dbRequests] = await Promise.all([
           fetchAllUsers(),
-          fetchAllConventions(),
           fetchAllRequests(),
-          fetchAllNews(),
         ]);
         setUsers(dbUsers);
-        setConventions(dbConventions);
         setRequests(dbRequests);
-        setNews(dbNews);
-        setDbConnected(true);
-      } catch (err) {
-        console.error('Erreur chargement données:', err);
-        setConventions(MOCK_CONVENTIONS);
-        setRequests(MOCK_REQUESTS);
-        setNews(MOCK_NEWS);
+      } else {
+        // Un adhérent ne charge QUE ses propres demandes — pas la table users entière
+        const ownRequests = await fetchRequestsByUser(currentUser.id);
+        setRequests(ownRequests);
       }
-    } else {
+
+      setDbConnected(true);
+    } catch (err) {
+      console.error('Erreur chargement données:', err);
       setConventions(MOCK_CONVENTIONS);
       setRequests(MOCK_REQUESTS);
       setNews(MOCK_NEWS);
