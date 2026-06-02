@@ -187,6 +187,7 @@ export async function updateUserProfile(user: UserProfile): Promise<void> {
       delegation: user.delegation,
       grade: user.grade,
       cotisationStatus: user.cotisationStatus,
+      avatarUrl: user.avatarUrl,
     })
     .eq('id', user.id);
   if (error) throw error;

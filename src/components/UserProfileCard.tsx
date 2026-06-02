@@ -6,7 +6,7 @@
 import React, { useState } from 'react';
 import { UserProfile } from '../types';
 import { DELEGATIONS_LIST } from '../mockData';
-import { User, Mail, Phone, MapPin, BadgeCheck, ShieldAlert, Award, FileText, Download, Edit2, CheckCircle2, Lock } from 'lucide-react';
+import { User, Mail, Phone, MapPin, Award, Download, Edit2, CheckCircle2, Lock, ShieldCheck } from 'lucide-react';
 
 interface UserProfileCardProps {
   currentUser: UserProfile;
@@ -22,55 +22,6 @@ export default function UserProfileCard({ currentUser, onUpdateProfile }: UserPr
   const [grade, setGrade] = useState(currentUser.grade || 'Collaborateur ADHA');
   const [avatar, setAvatar] = useState(currentUser.avatarUrl || '');
   const [success, setSuccess] = useState(false);
-
-  // Security password change states
-  const [currentPassword, setCurrentPassword] = useState('');
-  const [newPassword, setNewPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [passwordError, setPasswordError] = useState('');
-  const [passwordSuccess, setPasswordSuccess] = useState(false);
-
-  const handlePasswordChangeSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setPasswordError('');
-    setPasswordSuccess(false);
-
-    if (!currentPassword || !newPassword || !confirmPassword) {
-      setPasswordError('Veuillez remplir tous les champs de mot de passe.');
-      return;
-    }
-
-    if (newPassword !== confirmPassword) {
-      setPasswordError('Le nouveau mot de passe et sa confirmation ne correspondent pas.');
-      return;
-    }
-
-    if (newPassword.length < 5) {
-      setPasswordError('Le nouveau mot de passe doit comporter au moins 5 caractères.');
-      return;
-    }
-
-    // Identify current user's expected password correct value
-    const expectedPassword = currentUser.password || currentUser.matricule.trim();
-
-    if (currentPassword !== expectedPassword && currentPassword !== 'admin123' && currentPassword !== 'user123') {
-      setPasswordError('Le mot de passe actuel saisi est incorrect.');
-      return;
-    }
-
-    // Call update handler
-    const updatedUser: UserProfile = {
-      ...currentUser,
-      password: newPassword
-    };
-
-    onUpdateProfile(updatedUser);
-    setPasswordSuccess(true);
-    setCurrentPassword('');
-    setNewPassword('');
-    setConfirmPassword('');
-    setTimeout(() => setPasswordSuccess(false), 5000);
-  };
 
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
@@ -369,84 +320,28 @@ export default function UserProfileCard({ currentUser, onUpdateProfile }: UserPr
 
           </div>
 
-          {/* Section : Sécurité & Changement de Mot de Passe */}
-          <div className="bg-white rounded-3xl border border-slate-100 p-6 md:p-8 shadow-sm text-left relative overflow-hidden" id="security-password-section">
+          {/* Section : Sécurité — Microsoft SSO */}
+          <div className="bg-white rounded-3xl border border-slate-100 p-6 md:p-8 shadow-sm text-left relative overflow-hidden">
             <div className="absolute top-0 right-0 w-24 h-24 bg-[radial-gradient(#e2e8f0_1px,transparent_1px)] [background-size:12px_12px] opacity-30 pointer-events-none" />
-            
-            <div className="flex justify-between items-center pb-4 border-b border-slate-100 mb-6">
-              <div>
-                <h4 className="font-display font-bold text-slate-900 text-base flex items-center gap-2">
-                  <Lock className="w-4.5 h-4.5 text-brand-blue" />
-                  <span>Sécurité & Accès Intranet</span>
-                </h4>
-                <p className="text-xs text-slate-400 mt-0.5">Mettez à jour votre mot de passe d'accès personnel pour sécuriser votre compte d'adhérent</p>
-              </div>
+
+            <div className="flex items-center gap-2 pb-4 border-b border-slate-100 mb-6">
+              <Lock className="w-4 h-4 text-brand-blue" />
+              <h4 className="font-display font-bold text-slate-900 text-base">Sécurité & Accès Intranet</h4>
             </div>
 
-            {passwordSuccess && (
-              <div className="p-3.5 mb-5 rounded-xl bg-emerald-50 border border-emerald-100/85 text-emerald-800 text-xs font-semibold flex gap-2.5 items-center">
-                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                <span>Votre mot de passe a été modifié avec succès dans la base de données de l'AOS.</span>
+            <div className="flex items-start gap-4 p-4 bg-brand-blue-light rounded-2xl border border-brand-blue/15">
+              <ShieldCheck className="w-8 h-8 text-brand-blue shrink-0 mt-0.5" />
+              <div className="space-y-1">
+                <p className="text-sm font-bold text-brand-blue-dark">Authentification Microsoft Azure AD</p>
+                <p className="text-xs text-slate-500 leading-relaxed">
+                  Votre accès est sécurisé via votre compte professionnel Microsoft ANAPEC (<span className="font-mono">{currentUser.email}</span>).
+                  La gestion du mot de passe s'effectue directement depuis votre portail Microsoft 365.
+                </p>
+                <p className="text-[11px] text-slate-400 mt-1">
+                  Pour changer votre mot de passe, rendez-vous sur <span className="font-mono text-brand-blue">account.microsoft.com</span>
+                </p>
               </div>
-            )}
-
-            {passwordError && (
-              <div className="p-3.5 mb-5 rounded-xl bg-rose-50 border border-rose-100/85 text-rose-700 text-xs flex gap-2.5 items-start">
-                <ShieldAlert className="w-4 h-4 shrink-0 mt-0.5" />
-                <span>{passwordError}</span>
-              </div>
-            )}
-
-            <form onSubmit={handlePasswordChangeSubmit} className="space-y-5">
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                
-                <div className="space-y-1.5 col-span-1">
-                  <label className="text-xs font-bold uppercase tracking-wider text-slate-500">Mot de passe actuel</label>
-                  <input
-                    type="password"
-                    required
-                    placeholder="Ancien mot de passe / Matricule"
-                    value={currentPassword}
-                    onChange={(e) => setCurrentPassword(e.target.value)}
-                    className="block w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-950 text-sm focus:outline-hidden focus:ring-2 focus:ring-brand-blue focus:bg-white transition-all"
-                  />
-                </div>
-
-                <div className="space-y-1.5 col-span-1">
-                  <label className="text-xs font-bold uppercase tracking-wider text-slate-500">Nouveau mot de passe</label>
-                  <input
-                    type="password"
-                    required
-                    placeholder="Minimum 5 caractères"
-                    value={newPassword}
-                    onChange={(e) => setNewPassword(e.target.value)}
-                    className="block w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-950 text-sm focus:outline-hidden focus:ring-2 focus:ring-brand-blue focus:bg-white transition-all"
-                  />
-                </div>
-
-                <div className="space-y-1.5 col-span-1">
-                  <label className="text-xs font-bold uppercase tracking-wider text-slate-500">Confirmer le nouveau</label>
-                  <input
-                    type="password"
-                    required
-                    placeholder="Vérification de sécurité"
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    className="block w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-950 text-sm focus:outline-hidden focus:ring-2 focus:ring-brand-blue focus:bg-white transition-all"
-                  />
-                </div>
-
-              </div>
-
-              <div className="pt-3 border-t border-slate-100 flex justify-end">
-                <button
-                  type="submit"
-                  className="px-5 py-2.5 bg-brand-blue hover:bg-brand-blue-dark text-white text-xs font-bold rounded-xl transition-all shadow-md shadow-brand-blue/15 cursor-pointer"
-                >
-                  Valider mon nouveau mot de passe
-                </button>
-              </div>
-            </form>
+            </div>
           </div>
 
         </div>

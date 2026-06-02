@@ -430,7 +430,7 @@ export default function App() {
 
             {userTab === 'KIOSK' && <OfficialPublicationsKiosk isAdmin={currentUser.role === 'admin'} />}
             {userTab === 'GOVERNANCE' && <SocialGovernanceDashboard currentUser={currentUser} />}
-            {userTab === 'CONVENTIONS' && <ConventionsDirectory currentUser={currentUser} />}
+            {userTab === 'CONVENTIONS' && <ConventionsDirectory currentUser={currentUser} conventions={conventions} />}
 
             {userTab === 'MY_PRESTATIONS' && (
               <div className="space-y-6">

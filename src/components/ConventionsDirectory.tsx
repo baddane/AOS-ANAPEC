@@ -5,11 +5,11 @@
 
 import React, { useState } from 'react';
 import { Convention, ConventionCategory, UserProfile } from '../types';
-import { MOCK_CONVENTIONS } from '../mockData';
-import { Search, MapPin, Phone, Mail, CheckCircle2, Award, Calendar, Share2, Ticket, Printer, X } from 'lucide-react';
+import { Search, MapPin, Phone, CheckCircle2, Award, Calendar, Ticket, Printer, X } from 'lucide-react';
 
 interface ConventionsDirectoryProps {
   currentUser: UserProfile;
+  conventions: Convention[];
 }
 
 const CATEGORY_META: Record<ConventionCategory, { label: string; bg: string; text: string; icon: string }> = {
@@ -21,12 +21,7 @@ const CATEGORY_META: Record<ConventionCategory, { label: string; bg: string; tex
   SOURIRE: { label: 'Loisirs & Bien-être', bg: 'bg-brand-gold-light', text: 'text-brand-gold-dark font-semibold', icon: '💪' }
 };
 
-export default function ConventionsDirectory({ currentUser }: ConventionsDirectoryProps) {
-  const [conventions, setConventions] = useState<Convention[]>(() => {
-    const saved = localStorage.getItem('aos_conventions');
-    return saved ? JSON.parse(saved) : MOCK_CONVENTIONS;
-  });
-
+export default function ConventionsDirectory({ currentUser, conventions }: ConventionsDirectoryProps) {
   const [search, setSearch] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<ConventionCategory | 'ALL'>('ALL');
   const [selectedConvention, setSelectedConvention] = useState<Convention | null>(null);
