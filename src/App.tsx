@@ -372,7 +372,7 @@ export default function App() {
                     </p>
                   </div>
                   <a
-                    href="https://www.facebook.com/search/top/?q=AOS"
+                    href="https://web.facebook.com/aos.anapec.5"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="shrink-0 inline-flex items-center gap-1.5 px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-xl transition-all shadow-sm cursor-pointer"
