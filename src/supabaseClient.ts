@@ -1,8 +1,10 @@
 import { createClient } from '@supabase/supabase-js';
 import { UserProfile, Convention, PrestationRequest, NewsArticle } from './types';
 
-const supabaseUrl = (import.meta as any).env.VITE_SUPABASE_URL || '';
-const supabaseAnonKey = (import.meta as any).env.VITE_SUPABASE_ANON_KEY || '';
+// Supabase project: AOS-ANAPEC-Intranet (eu-west-3)
+// The anon key is a publishable client key — safe for public frontends protected by RLS.
+const supabaseUrl = (import.meta as any).env.VITE_SUPABASE_URL || 'https://zkdqywiumoklgthcasnu.supabase.co';
+const supabaseAnonKey = (import.meta as any).env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InprZHF5d2l1bW9rbGd0aGNhc251Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAzNDg3NTksImV4cCI6MjA5NTkyNDc1OX0.jeYeJh4D5FoNbXiC6YcQiGRahWYjkzZ60bjln0gHevQ';
 
 // Clean validation of credentials presence
 export const isSupabaseConfigured = !!(supabaseUrl && supabaseAnonKey && supabaseUrl !== 'YOUR_SUPABASE_URL' && supabaseAnonKey !== 'YOUR_SUPABASE_ANON_KEY');
