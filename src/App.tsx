@@ -26,6 +26,7 @@ import {
   updateUserProfile,
   updateRequestStatus,
   signOutUser,
+  getAuthSession,
   subscribeToAuthChanges,
   upsertUserFromMicrosoftAuth,
 } from './supabaseClient';
@@ -48,8 +49,16 @@ export default function App() {
   // ─── Auth state listener ────────────────────────────────────────────────
   useEffect(() => {
     let isMounted = true;
+    let loadingDone = false;
 
-    const unsubscribe = subscribeToAuthChanges(async (session) => {
+    const markLoaded = () => {
+      if (!loadingDone && isMounted) {
+        loadingDone = true;
+        setAuthLoading(false);
+      }
+    };
+
+    const processSession = async (session: import('@supabase/supabase-js').Session | null) => {
       if (!isMounted) return;
       if (session?.user) {
         try {
@@ -59,19 +68,27 @@ export default function App() {
             setIsAdminMode(profile.role === 'admin');
           }
         } catch (e) {
-          console.error('Erreur auth state change:', e);
+          console.error('Erreur profil:', e);
+          if (isMounted) { setCurrentUser(null); setIsAdminMode(false); }
         }
       } else {
-        if (isMounted) {
-          setCurrentUser(null);
-          setIsAdminMode(false);
-        }
+        if (isMounted) { setCurrentUser(null); setIsAdminMode(false); }
       }
-      if (isMounted) setAuthLoading(false);
-    });
+      markLoaded();
+    };
+
+    // Timeout de secours : jamais bloqué plus de 6 secondes
+    const timeout = setTimeout(markLoaded, 6000);
+
+    // Chemin rapide : session existante depuis le stockage local
+    getAuthSession().then(processSession);
+
+    // Chemin OAuth : token dans le hash URL après redirect Microsoft
+    const unsubscribe = subscribeToAuthChanges(processSession);
 
     return () => {
       isMounted = false;
+      clearTimeout(timeout);
       unsubscribe();
     };
   }, []);
