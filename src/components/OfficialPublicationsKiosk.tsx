@@ -324,7 +324,7 @@ export default function OfficialPublicationsKiosk({
               <label className="block text-slate-600 font-bold">{t('kiosk.form.labelTitleFr')}</label>
               <input 
                 type="text" required value={newTitle} onChange={e => setNewTitle(e.target.value)}
-                placeholder="Ex. 4ème Édition du Prix Féminin de l'AOS"
+                placeholder={t('kiosk.form.phTitleFr')}
                 className="w-full bg-slate-50 border border-slate-200 p-2.5 rounded-xl focus:outline-hidden focus:ring-1 focus:ring-brand-blue"
               />
             </div>
@@ -367,7 +367,7 @@ export default function OfficialPublicationsKiosk({
               <label className="block text-slate-600 font-bold">{t('kiosk.form.labelSummaryFr')}</label>
               <textarea 
                 required value={newSummary} onChange={e => setNewSummary(e.target.value)} rows={2}
-                placeholder="Bref résumé de l'affiche..."
+                placeholder={t('kiosk.form.phSummaryFr')}
                 className="w-full bg-slate-50 border border-slate-200 p-2.5 rounded-xl focus:outline-hidden"
               />
             </div>
@@ -384,7 +384,7 @@ export default function OfficialPublicationsKiosk({
               <label className="block text-slate-600 font-bold">{t('kiosk.form.labelContentFr')}</label>
               <textarea 
                 value={newContentFr} onChange={e => setNewContentFr(e.target.value)} rows={4}
-                placeholder="Un grand texte d'explication détaillé..."
+                placeholder={t('kiosk.form.phContentFr')}
                 className="w-full bg-slate-50 border border-slate-200 p-2.5 rounded-xl focus:outline-hidden"
               />
             </div>

@@ -453,6 +453,9 @@ const fragment: TranslationFragment = {
     'adm.defaultApproveComment': 'File approved by the AOS social inspector.',
     'adm.defaultRejectComment': 'The file does not meet the administrative requirements or supporting documents are missing.',
 
+    // Misc
+    'adm.refPrefix': 'Ref',
+
     // Board role placeholder
     'adm.rolePlaceholder': 'President, Treasurer...',
 

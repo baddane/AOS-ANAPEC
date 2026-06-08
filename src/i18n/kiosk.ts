@@ -29,6 +29,9 @@ const fragment: TranslationFragment = {
     'kiosk.form.labelContentFr': 'Contenu détaillé (Français)',
     'kiosk.form.labelContentAr': 'النص الكامل بالتفصيل بالعربية (مستحسن للتهنيئات)',
     'kiosk.form.save': 'Enregistrer la Publication',
+    'kiosk.form.phTitleFr': "Ex. 4ème Édition du Prix Féminin de l'AOS",
+    'kiosk.form.phSummaryFr': "Bref résumé de l'affiche...",
+    'kiosk.form.phContentFr': "Un grand texte d'explication détaillé...",
 
     // Category select options (in add form)
     'kiosk.form.opt.tehnia': 'تهنئة - Félicitations & Vœux',
@@ -146,6 +149,9 @@ const fragment: TranslationFragment = {
     'kiosk.form.labelContentFr': 'المحتوى التفصيلي بالفرنسية',
     'kiosk.form.labelContentAr': 'النص الكامل بالتفصيل بالعربية (مستحسن للتهنئات)',
     'kiosk.form.save': 'حفظ المنشور',
+    'kiosk.form.phTitleFr': 'مثال: الدورة الرابعة لجائزة التميز النسوي',
+    'kiosk.form.phSummaryFr': 'ملخص موجز عن الإعلان...',
+    'kiosk.form.phContentFr': 'نص تفصيلي موسّع...',
 
     // Category select options
     'kiosk.form.opt.tehnia': 'تهنئة - Félicitations & Vœux',
@@ -263,6 +269,9 @@ const fragment: TranslationFragment = {
     'kiosk.form.labelContentFr': 'Detailed Content (French)',
     'kiosk.form.labelContentAr': 'Full Content in Arabic (recommended for congratulations)',
     'kiosk.form.save': 'Save Publication',
+    'kiosk.form.phTitleFr': "e.g. 4th Edition of the AOS Women's Prize",
+    'kiosk.form.phSummaryFr': 'Brief summary of the notice...',
+    'kiosk.form.phContentFr': 'Detailed explanatory text...',
 
     // Category select options
     'kiosk.form.opt.tehnia': 'تهنئة - Félicitations & Vœux',
