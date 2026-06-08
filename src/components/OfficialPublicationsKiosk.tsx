@@ -552,7 +552,7 @@ export default function OfficialPublicationsKiosk({
                     </div>
                     <div className="flex justify-between text-[9px] text-slate-500">
                       <span>{t('kiosk.contest.deadline')}</span>
-                      <span className="font-mono font-bold text-purple-700">Vendredi 20 Février 2026</span>
+                      <span className="font-mono font-bold text-purple-700">{pub.contestRequirements.deadline}</span>
                     </div>
                   </div>
                 )}
