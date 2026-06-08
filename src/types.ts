@@ -18,7 +18,6 @@ export interface UserProfile {
   cotisationStatus: 'active' | 'inactive';
   avatarUrl?: string;
   grade?: string;
-  password?: string;
 }
 
 export type PrestationCategory = 

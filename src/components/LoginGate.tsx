@@ -14,7 +14,7 @@ export default function LoginGate() {
       await signInWithMicrosoft();
       // La page sera redirigée vers Microsoft — pas d'action supplémentaire.
     } catch (err: any) {
-      setError(err.message || 'Échec de la connexion. Réessayez.');
+      setError('Échec de la connexion. Veuillez réessayer ou contacter le support.');
       setLoading(false);
     }
   };

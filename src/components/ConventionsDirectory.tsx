@@ -54,7 +54,8 @@ export default function ConventionsDirectory({ currentUser, conventions }: Conve
       alert("Votre compte d'adhérent est actuellement inactif ou non cotisant. Veuillez régulariser votre cotisation auprès de l'AOS pour bénéficier des réductions.");
       return;
     }
-    const code = `AOS-ANAPEC-${conv.id.toUpperCase().split('_')[1] || 'CONV'}-${Math.floor(100000 + Math.random() * 900000)}`;
+    const rnd = crypto.getRandomValues(new Uint32Array(1))[0] % 900000 + 100000;
+    const code = `AOS-ANAPEC-${conv.id.toUpperCase().split('_')[1] || 'CONV'}-${rnd}`;
     setVoucherCode(code);
     setSelectedConvention(conv);
     setShowVoucher(true);

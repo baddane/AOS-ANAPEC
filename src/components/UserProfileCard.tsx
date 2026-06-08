@@ -228,12 +228,16 @@ export default function UserProfileCard({ currentUser, onUpdateProfile }: UserPr
                   <div className="space-y-1.5">
                     <label className="text-xs font-bold uppercase tracking-wider text-slate-500">URL de l'Avatar (Photo de profil)</label>
                     <input
-                      type="text"
+                      type="url"
                       placeholder="https://..."
                       value={avatar}
-                      onChange={(e) => setAvatar(e.target.value)}
+                      onChange={(e) => {
+                        const val = e.target.value;
+                        if (!val || val.startsWith('https://')) setAvatar(val);
+                      }}
                       className="block w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-mono"
                     />
+                    <p className="text-[10px] text-slate-400 mt-0.5">Seules les URLs HTTPS sont acceptées</p>
                   </div>
                 </div>
 

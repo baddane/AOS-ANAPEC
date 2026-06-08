@@ -25,6 +25,7 @@ import {
   insertNews,
   insertConvention,
   updateUserProfile,
+  updateUserStatusAdmin,
   updateRequestStatus,
   signOutUser,
   getAuthSession,
@@ -207,26 +208,34 @@ export default function App() {
   const handleToggleUserStatus = async (id: string) => {
     const target = users.find(u => u.id === id);
     if (!target) return;
-    const updated = { ...target, cotisationStatus: (target.cotisationStatus === 'active' ? 'inactive' : 'active') as 'active' | 'inactive' };
+    const newStatus = target.cotisationStatus === 'active' ? 'inactive' : 'active';
+    const updated = { ...target, cotisationStatus: newStatus as 'active' | 'inactive' };
     if (isSupabaseConfigured && dbConnected) {
-      await updateUserProfile(updated).catch(console.error);
+      await updateUserStatusAdmin(id, newStatus as 'active' | 'inactive').catch(() => {});
     }
     setUsers(prev => prev.map(u => u.id === id ? updated : u));
     if (currentUser?.id === id) setCurrentUser(updated);
   };
 
   const handleUpdateProfile = async (updatedUser: UserProfile) => {
+    // Sanitize: prevent client-side role/status escalation
+    const sanitized: UserProfile = {
+      ...updatedUser,
+      role: currentUser!.role,
+      cotisationStatus: currentUser!.cotisationStatus,
+      avatarUrl: updatedUser.avatarUrl?.startsWith('https://') ? updatedUser.avatarUrl : '',
+    };
     if (isSupabaseConfigured && dbConnected) {
-      await updateUserProfile(updatedUser).catch(console.error);
+      await updateUserProfile(sanitized).catch(() => {});
     }
-    setCurrentUser(updatedUser);
-    setUsers(prev => prev.map(u => u.id === updatedUser.id ? updatedUser : u));
+    setCurrentUser(sanitized);
+    setUsers(prev => prev.map(u => u.id === sanitized.id ? sanitized : u));
   };
 
   const handleNewBenefitRequest = async (data: any) => {
     if (!currentUser) return;
     const newReq: PrestationRequest = {
-      id: `req_${Date.now()}`,
+      id: crypto.randomUUID(),
       userId: currentUser.id,
       userName: `${currentUser.prenom} ${currentUser.name}`,
       userMatricule: currentUser.matricule,
