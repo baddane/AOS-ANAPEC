@@ -66,6 +66,19 @@ export type ConventionCategory =
   | 'EDUCATION'      // Écoles privées, cours de langues, crèches
   | 'SOURIRE';       // Loisirs, abonnements sportifs, bien-être
 
+export interface ConventionArticle {
+  number: number;
+  title: string;
+  content: string;
+  icon?: string;
+}
+
+export interface ConventionEstablishment {
+  name: string;
+  code: string;
+  city?: string;
+}
+
 export interface Convention {
   id: string;
   title: string;
@@ -79,6 +92,17 @@ export interface Convention {
   address: string;
   city: string;
   highlighted?: boolean;
+  signatureDate?: string;
+  duration?: string;
+  partnerLogo?: string;
+  beneficiaries?: string[];
+  establishments?: ConventionEstablishment[];
+  articles?: ConventionArticle[];
+  coveredServices?: string[];
+  requiredDocuments?: string[];
+  partnerAddress?: string;
+  partnerPhone?: string;
+  partnerEmail?: string;
 }
 
 export interface NewsArticle {
