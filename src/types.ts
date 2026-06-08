@@ -116,6 +116,21 @@ export interface NewsArticle {
   readCount: number;
 }
 
+export type BoardMemberCategory = 'BUREAU_EXECUTIF' | 'CONSEIL_NATIONAL';
+
+export interface BoardMember {
+  id: string;
+  fullName: string;
+  role: string;       // Fonction : Président, Trésorier, Membre...
+  category: BoardMemberCategory;
+  photoUrl?: string;
+  delegation?: string;
+  email?: string;
+  phone?: string;
+  bio?: string;
+  orderIndex?: number;
+}
+
 export type PublicationCategory = 'TEHNIA' | 'SOLIDARITE_RAPPORT' | 'CONCOURS' | 'BROCHURE';
 
 export interface OfficialPublication {

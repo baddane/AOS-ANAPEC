@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import AnapecLogo from './AnapecLogo';
 import { signInWithMicrosoft } from '../supabaseClient';
+import { useLang } from '../i18n';
+import LanguageSwitcher from './LanguageSwitcher';
 import { Loader2, AlertCircle, ShieldCheck } from 'lucide-react';
 
 export default function LoginGate() {
+  const { t } = useLang();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -14,7 +17,7 @@ export default function LoginGate() {
       await signInWithMicrosoft();
       // La page sera redirigée vers Microsoft — pas d'action supplémentaire.
     } catch (err: any) {
-      setError('Échec de la connexion. Veuillez réessayer ou contacter le support.');
+      setError(t('login.error'));
       setLoading(false);
     }
   };
@@ -24,6 +27,13 @@ export default function LoginGate() {
 
       {/* Bandeau couleur AOS */}
       <div className="h-1.5 w-full bg-gradient-to-r from-brand-blue via-brand-gold to-brand-blue-dark" />
+
+      {/* Sélecteur de langue */}
+      <div className="absolute top-4 end-4 z-10">
+        <div className="bg-brand-blue rounded-xl">
+          <LanguageSwitcher />
+        </div>
+      </div>
 
       <div className="flex-1 flex flex-col justify-center items-center px-4 py-10">
 
@@ -41,10 +51,10 @@ export default function LoginGate() {
               AOS ANAPEC
             </h1>
             <p className="mt-1 text-sm font-bold text-brand-blue">
-              Association des Œuvres Sociales
+              {t('login.assoc')}
             </p>
             <p className="mt-2 text-xs text-slate-400 leading-relaxed">
-              Portail Intranet Sécurisé des Collaborateurs ANAPEC
+              {t('login.portal')}
             </p>
           </div>
 
@@ -73,20 +83,20 @@ export default function LoginGate() {
               </svg>
             )}
             <span>
-              {loading ? 'Redirection vers Microsoft...' : 'Se connecter avec Microsoft'}
+              {loading ? t('login.redirecting') : t('login.signin')}
             </span>
           </button>
 
           {/* Instruction compte */}
           <p className="mt-5 text-xs text-slate-400 leading-relaxed">
-            Connectez-vous avec votre compte professionnel ANAPEC<br />
+            {t('login.instruction')}<br />
             <span className="font-mono text-slate-500">prenom.nom@anapec.ma</span>
           </p>
 
           {/* Badge sécurité */}
           <div className="mt-6 pt-5 border-t border-slate-100 flex items-center justify-center gap-2 text-[11px] text-slate-400">
             <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />
-            <span>Authentification sécurisée via Microsoft Azure AD</span>
+            <span>{t('login.secure')}</span>
           </div>
 
         </div>

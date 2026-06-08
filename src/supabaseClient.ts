@@ -1,5 +1,5 @@
 import { createClient, Session, User } from '@supabase/supabase-js';
-import { UserProfile, Convention, PrestationRequest, NewsArticle } from './types';
+import { UserProfile, Convention, PrestationRequest, NewsArticle, BoardMember } from './types';
 
 const supabaseUrl = (import.meta as any).env.VITE_SUPABASE_URL || '';
 const supabaseAnonKey = (import.meta as any).env.VITE_SUPABASE_ANON_KEY || '';
@@ -228,5 +228,40 @@ export async function fetchAllNews(): Promise<NewsArticle[]> {
 export async function insertNews(article: NewsArticle): Promise<void> {
   if (!supabase) throw new Error('Supabase client is not configured.');
   const { error } = await supabase.from('aos_news').insert(article);
+  if (error) throw error;
+}
+
+// ─── BOARD MEMBERS (Bureau exécutif & Conseil national) ────────────────────
+
+export async function fetchAllBoardMembers(): Promise<BoardMember[]> {
+  if (!supabase) throw new Error('Supabase client is not configured.');
+  const { data, error } = await supabase
+    .from('aos_board_members')
+    .select('*')
+    .order('orderIndex', { ascending: true });
+  if (error) throw error;
+  return data as BoardMember[];
+}
+
+export async function insertBoardMember(member: BoardMember): Promise<void> {
+  if (!supabase) throw new Error('Supabase client is not configured.');
+  const { error } = await supabase.from('aos_board_members').insert({
+    id: member.id,
+    fullName: member.fullName,
+    role: member.role,
+    category: member.category,
+    photoUrl: member.photoUrl,
+    delegation: member.delegation,
+    email: member.email,
+    phone: member.phone,
+    bio: member.bio,
+    orderIndex: member.orderIndex ?? 0,
+  });
+  if (error) throw error;
+}
+
+export async function deleteBoardMember(id: string): Promise<void> {
+  if (!supabase) throw new Error('Supabase client is not configured.');
+  const { error } = await supabase.from('aos_board_members').delete().eq('id', id);
   if (error) throw error;
 }

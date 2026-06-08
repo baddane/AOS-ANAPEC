@@ -4,14 +4,15 @@
  */
 
 import React, { useState } from 'react';
-import { PrestationRequest, UserProfile, Convention, NewsArticle, PrestationCategory, RequestStatus } from '../types';
-import { 
-  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, 
-  PieChart, Pie, Cell, Legend 
+import { PrestationRequest, UserProfile, Convention, NewsArticle, PrestationCategory, RequestStatus, BoardMember, BoardMemberCategory } from '../types';
+import { useLang } from '../i18n';
+import {
+  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
+  PieChart, Pie, Cell, Legend
 } from 'recharts';
-import { 
-  ShieldAlert, Check, X, FileText, UserCheck, ShieldCheck, 
-  Plus, Calendar, Mail, Phone, Award, Building, Landmark, Settings2, Trash2, Edit
+import {
+  ShieldAlert, Check, X, FileText, UserCheck, ShieldCheck,
+  Plus, Calendar, Mail, Phone, Award, Building, Landmark, Settings2, Trash2, Edit, Users
 } from 'lucide-react';
 
 interface AdminPanelProps {
@@ -19,11 +20,14 @@ interface AdminPanelProps {
   users: UserProfile[];
   conventions: Convention[];
   news: NewsArticle[];
+  boardMembers: BoardMember[];
   onApproveRequest: (id: string, amountApproved: number, comment: string) => void;
   onRejectRequest: (id: string, comment: string) => void;
   onToggleUserStatus: (id: string) => void;
   onPostConvention: (newConv: Convention) => void;
   onPostNews: (newArticle: NewsArticle) => void;
+  onAddBoardMember: (member: BoardMember) => void;
+  onDeleteBoardMember: (id: string) => void;
 }
 
 const COLORS = ['#4A69B1', '#DFB035', '#be123c', '#4f46e5', '#8b5cf6', '#06b6d4', '#ec4899'];
@@ -43,13 +47,52 @@ export default function AdminPanel({
   users,
   conventions,
   news,
+  boardMembers,
   onApproveRequest,
   onRejectRequest,
   onToggleUserStatus,
   onPostConvention,
-  onPostNews
+  onPostNews,
+  onAddBoardMember,
+  onDeleteBoardMember
 }: AdminPanelProps) {
-  const [activeTab, setActiveTab] = useState<'STATISTICS' | 'REQUESTS' | 'USERS' | 'CONVENTIONS' | 'NEWS'>('STATISTICS');
+  const { t } = useLang();
+  const [activeTab, setActiveTab] = useState<'STATISTICS' | 'REQUESTS' | 'USERS' | 'CONVENTIONS' | 'NEWS' | 'BOARD'>('STATISTICS');
+
+  // Board member form states
+  const [bmName, setBmName] = useState('');
+  const [bmRole, setBmRole] = useState('');
+  const [bmCategory, setBmCategory] = useState<BoardMemberCategory>('BUREAU_EXECUTIF');
+  const [bmPhoto, setBmPhoto] = useState('');
+  const [bmDelegation, setBmDelegation] = useState('');
+  const [bmEmail, setBmEmail] = useState('');
+  const [bmPhone, setBmPhone] = useState('');
+  const [bmBio, setBmBio] = useState('');
+  const [bmOrder, setBmOrder] = useState(0);
+
+  const handleAddBoardMember = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!bmName.trim() || !bmRole.trim()) {
+      alert(t('admin.fillRequired'));
+      return;
+    }
+    const newMember: BoardMember = {
+      id: crypto.randomUUID(),
+      fullName: bmName.trim(),
+      role: bmRole.trim(),
+      category: bmCategory,
+      photoUrl: bmPhoto.startsWith('https://') ? bmPhoto.trim() : undefined,
+      delegation: bmDelegation.trim() || undefined,
+      email: bmEmail.trim() || undefined,
+      phone: bmPhone.trim() || undefined,
+      bio: bmBio.trim() || undefined,
+      orderIndex: Number(bmOrder) || 0,
+    };
+    onAddBoardMember(newMember);
+    setBmName(''); setBmRole(''); setBmPhoto(''); setBmDelegation('');
+    setBmEmail(''); setBmPhone(''); setBmBio(''); setBmOrder(0);
+    alert(t('admin.memberAdded'));
+  };
   
   // Back office form states
   const [newsTitle, setNewsTitle] = useState('');
@@ -234,6 +277,14 @@ export default function AdminPanel({
               }`}
             >
               + Communiqué
+            </button>
+            <button
+              onClick={() => setActiveTab('BOARD')}
+              className={`px-3 py-1.5 text-xs font-semibold rounded-xl transition-all cursor-pointer ${
+                activeTab === 'BOARD' ? 'bg-brand-blue text-white' : 'text-slate-300 hover:text-white'
+              }`}
+            >
+              {t('admin.board')}
             </button>
           </div>
         </div>
@@ -784,6 +835,146 @@ export default function AdminPanel({
         </div>
       )}
 
+
+      {/* 6. BOARD MEMBERS MANAGEMENT */}
+      {activeTab === 'BOARD' && (
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
+
+          {/* Add member form */}
+          <div className="lg:col-span-2 bg-white rounded-3xl border border-slate-100 p-6 text-left shadow-xs h-fit">
+            <div className="pb-4 border-b border-slate-100 mb-5">
+              <h4 className="font-display font-bold text-slate-900 text-base flex items-center gap-2">
+                <Users className="w-4 h-4 text-brand-blue" />
+                {t('admin.boardTitle')}
+              </h4>
+              <p className="text-xs text-slate-400 mt-0.5">{t('admin.boardDesc')}</p>
+            </div>
+
+            <form onSubmit={handleAddBoardMember} className="space-y-4">
+              <div className="space-y-1">
+                <label className="text-xs font-bold uppercase tracking-wider text-slate-500">{t('admin.category')}</label>
+                <select
+                  value={bmCategory}
+                  onChange={(e) => setBmCategory(e.target.value as BoardMemberCategory)}
+                  className="block w-full px-3 py-2 border border-slate-200 rounded-lg text-sm bg-white"
+                >
+                  <option value="BUREAU_EXECUTIF">{t('board.bureau')}</option>
+                  <option value="CONSEIL_NATIONAL">{t('board.council')}</option>
+                </select>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="space-y-1">
+                  <label className="text-xs font-bold uppercase tracking-wider text-slate-500">{t('admin.fullName')} *</label>
+                  <input type="text" required value={bmName} onChange={(e) => setBmName(e.target.value)} maxLength={120}
+                    className="block w-full px-3 py-2 border border-slate-200 rounded-lg text-sm" />
+                </div>
+                <div className="space-y-1">
+                  <label className="text-xs font-bold uppercase tracking-wider text-slate-500">{t('admin.role')} *</label>
+                  <input type="text" required value={bmRole} onChange={(e) => setBmRole(e.target.value)} maxLength={80}
+                    placeholder="Président, Trésorier..."
+                    className="block w-full px-3 py-2 border border-slate-200 rounded-lg text-sm" />
+                </div>
+              </div>
+
+              <div className="space-y-1">
+                <label className="text-xs font-bold uppercase tracking-wider text-slate-500">{t('admin.photo')}</label>
+                <input type="url" value={bmPhoto} onChange={(e) => setBmPhoto(e.target.value)} placeholder="https://..."
+                  className="block w-full px-3 py-2 border border-slate-200 rounded-lg text-xs font-mono" />
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="space-y-1">
+                  <label className="text-xs font-bold uppercase tracking-wider text-slate-500">{t('admin.delegation')}</label>
+                  <input type="text" value={bmDelegation} onChange={(e) => setBmDelegation(e.target.value)} maxLength={80}
+                    className="block w-full px-3 py-2 border border-slate-200 rounded-lg text-sm" />
+                </div>
+                <div className="space-y-1">
+                  <label className="text-xs font-bold uppercase tracking-wider text-slate-500">{t('admin.order')}</label>
+                  <input type="number" value={bmOrder} onChange={(e) => setBmOrder(Number(e.target.value))}
+                    className="block w-full px-3 py-2 border border-slate-200 rounded-lg text-sm" />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="space-y-1">
+                  <label className="text-xs font-bold uppercase tracking-wider text-slate-500">{t('admin.email')}</label>
+                  <input type="email" value={bmEmail} onChange={(e) => setBmEmail(e.target.value)} maxLength={120}
+                    className="block w-full px-3 py-2 border border-slate-200 rounded-lg text-xs font-mono" />
+                </div>
+                <div className="space-y-1">
+                  <label className="text-xs font-bold uppercase tracking-wider text-slate-500">{t('admin.phone')}</label>
+                  <input type="text" value={bmPhone} onChange={(e) => setBmPhone(e.target.value)} maxLength={40}
+                    className="block w-full px-3 py-2 border border-slate-200 rounded-lg text-xs font-mono" />
+                </div>
+              </div>
+
+              <div className="space-y-1">
+                <label className="text-xs font-bold uppercase tracking-wider text-slate-500">{t('admin.bio')}</label>
+                <textarea rows={3} value={bmBio} onChange={(e) => setBmBio(e.target.value)} maxLength={500}
+                  className="block w-full px-3 py-2 border border-slate-200 rounded-lg text-sm" />
+              </div>
+
+              <div className="pt-2 text-right">
+                <button type="submit"
+                  className="inline-flex items-center gap-1.5 px-6 py-2 bg-brand-blue hover:bg-brand-blue-dark text-white text-xs font-semibold rounded-lg transition-colors cursor-pointer">
+                  <Plus className="w-4 h-4" />
+                  {t('admin.save')}
+                </button>
+              </div>
+            </form>
+          </div>
+
+          {/* Current members list */}
+          <div className="lg:col-span-3 space-y-5">
+            {(['BUREAU_EXECUTIF', 'CONSEIL_NATIONAL'] as BoardMemberCategory[]).map((cat) => {
+              const list = boardMembers
+                .filter(m => m.category === cat)
+                .sort((a, b) => (a.orderIndex ?? 0) - (b.orderIndex ?? 0));
+              return (
+                <div key={cat} className="bg-white rounded-3xl border border-slate-100 p-5 text-left shadow-xs">
+                  <h5 className="font-display font-bold text-slate-900 text-sm mb-3 flex items-center gap-2">
+                    {cat === 'BUREAU_EXECUTIF' ? <Building className="w-4 h-4 text-brand-blue" /> : <Landmark className="w-4 h-4 text-brand-blue" />}
+                    {cat === 'BUREAU_EXECUTIF' ? t('board.bureau') : t('board.council')}
+                    <span className="text-xs font-semibold text-slate-400">({list.length})</span>
+                  </h5>
+                  {list.length === 0 ? (
+                    <p className="text-xs text-slate-400 py-3">{t('board.empty')}</p>
+                  ) : (
+                    <div className="divide-y divide-slate-100">
+                      {list.map((m) => (
+                        <div key={m.id} className="flex items-center gap-3 py-2.5">
+                          {m.photoUrl ? (
+                            <img src={m.photoUrl} alt={m.fullName} referrerPolicy="no-referrer"
+                              className="w-9 h-9 rounded-lg object-cover border border-slate-200 shrink-0" />
+                          ) : (
+                            <div className="w-9 h-9 rounded-lg bg-brand-blue-light flex items-center justify-center shrink-0">
+                              <span className="text-[10px] font-bold text-brand-blue-dark">
+                                {m.fullName.split(' ').map(p => p.charAt(0)).slice(0, 2).join('').toUpperCase()}
+                              </span>
+                            </div>
+                          )}
+                          <div className="flex-1 min-w-0">
+                            <p className="font-bold text-slate-900 text-sm truncate">{m.fullName}</p>
+                            <p className="text-[10px] text-slate-400">{m.role}{m.delegation ? ` • ${m.delegation}` : ''}</p>
+                          </div>
+                          <button
+                            onClick={() => { if (confirm(t('admin.confirmDelete'))) onDeleteBoardMember(m.id); }}
+                            className="p-1.5 text-rose-500 hover:bg-rose-50 rounded-lg transition-colors cursor-pointer shrink-0"
+                            title={t('admin.delete')}
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
 
       {/* Arbitrage Modal detailing request evaluation */}
       {selectedReq && (

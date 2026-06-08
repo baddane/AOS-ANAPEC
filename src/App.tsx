@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { UserProfile, PrestationRequest, Convention, NewsArticle } from './types';
+import { UserProfile, PrestationRequest, Convention, NewsArticle, BoardMember } from './types';
 import { MOCK_REQUESTS, MOCK_CONVENTIONS, MOCK_NEWS } from './mockData';
 import LoginGate from './components/LoginGate';
 import ConventionsDirectory from './components/ConventionsDirectory';
@@ -8,11 +8,14 @@ import PrestationRequestList from './components/PrestationRequestList';
 import UserProfileCard from './components/UserProfileCard';
 import AdminPanel from './components/AdminPanel';
 import AnapecLogo from './components/AnapecLogo';
+import BoardDirectory from './components/BoardDirectory';
 import OfficialPublicationsKiosk from './components/OfficialPublicationsKiosk';
 import SocialGovernanceDashboard from './components/SocialGovernanceDashboard';
+import LanguageSwitcher from './components/LanguageSwitcher';
+import { useLang } from './i18n';
 import {
   Newspaper, Handshake, User, ShieldCheck, LogOut,
-  PlusCircle, Facebook, FileText, ChevronRight, BookOpen, Loader2
+  PlusCircle, Facebook, FileText, ChevronRight, BookOpen, Loader2, Users
 } from 'lucide-react';
 import {
   isSupabaseConfigured,
@@ -21,6 +24,9 @@ import {
   fetchAllRequests,
   fetchRequestsByUser,
   fetchAllNews,
+  fetchAllBoardMembers,
+  insertBoardMember,
+  deleteBoardMember,
   insertRequest,
   insertNews,
   insertConvention,
@@ -34,6 +40,7 @@ import {
 } from './supabaseClient';
 
 export default function App() {
+  const { t, dir } = useLang();
   const [currentUser, setCurrentUser] = useState<UserProfile | null>(null);
   const [authLoading, setAuthLoading] = useState(true);
 
@@ -41,10 +48,11 @@ export default function App() {
   const [requests, setRequests] = useState<PrestationRequest[]>([]);
   const [conventions, setConventions] = useState<Convention[]>([]);
   const [news, setNews] = useState<NewsArticle[]>([]);
+  const [boardMembers, setBoardMembers] = useState<BoardMember[]>([]);
 
   const [dbConnected, setDbConnected] = useState(false);
 
-  const [userTab, setUserTab] = useState<'NEWS' | 'CONVENTIONS' | 'MY_PRESTATIONS' | 'PROFILE' | 'KIOSK' | 'GOVERNANCE'>('NEWS');
+  const [userTab, setUserTab] = useState<'NEWS' | 'CONVENTIONS' | 'MY_PRESTATIONS' | 'PROFILE' | 'KIOSK' | 'GOVERNANCE' | 'BOARD'>('NEWS');
   const [isAdminMode, setIsAdminMode] = useState(false);
   const [selectedNews, setSelectedNews] = useState<NewsArticle | null>(null);
 
@@ -125,15 +133,17 @@ export default function App() {
       const isAdmin = currentUser.role === 'admin';
 
       // Données partagées (légères) — chargées pour tout le monde
-      const [dbConventions, dbNews] = await Promise.all([
+      const [dbConventions, dbNews, dbBoard] = await Promise.all([
         fetchAllConventions(),
         fetchAllNews(),
+        fetchAllBoardMembers().catch(() => []),
       ]);
       // Merge: DB conventions + mock-only conventions (e.g. Akdital with rich data)
       const dbIds = new Set(dbConventions.map(c => c.id));
       const mockOnly = MOCK_CONVENTIONS.filter(c => !dbIds.has(c.id));
       setConventions([...dbConventions, ...mockOnly]);
       setNews(dbNews.length > 0 ? dbNews : MOCK_NEWS);
+      setBoardMembers(dbBoard);
 
       if (isAdmin) {
         // L'admin a besoin de la vue globale : tous les utilisateurs + toutes les demandes
@@ -205,6 +215,20 @@ export default function App() {
     setNews(prev => [newArticle, ...prev]);
   };
 
+  const handleAddBoardMember = async (member: BoardMember) => {
+    if (isSupabaseConfigured && dbConnected) {
+      await insertBoardMember(member).catch(console.error);
+    }
+    setBoardMembers(prev => [...prev, member].sort((a, b) => (a.orderIndex ?? 0) - (b.orderIndex ?? 0)));
+  };
+
+  const handleDeleteBoardMember = async (id: string) => {
+    if (isSupabaseConfigured && dbConnected) {
+      await deleteBoardMember(id).catch(console.error);
+    }
+    setBoardMembers(prev => prev.filter(m => m.id !== id));
+  };
+
   const handleToggleUserStatus = async (id: string) => {
     const target = users.find(u => u.id === id);
     if (!target) return;
@@ -263,7 +287,7 @@ export default function App() {
         <div className="flex flex-col items-center gap-4 text-slate-500">
           <AnapecLogo className="w-16 h-16 opacity-80" />
           <Loader2 className="w-6 h-6 animate-spin text-brand-blue" />
-          <p className="text-xs font-medium">Vérification de la session...</p>
+          <p className="text-xs font-medium">{t('app.checkingSession')}</p>
         </div>
       </div>
     );
@@ -292,10 +316,10 @@ export default function App() {
                 <h1 className="font-display font-extrabold tracking-wide text-sm sm:text-base leading-none text-white flex items-center gap-1.5">
                   AOS ANAPEC
                   <span className="text-[10px] uppercase font-bold text-brand-gold font-mono tracking-wider border border-brand-gold/30 px-1.5 py-0.5 rounded-sm bg-brand-gold/10">
-                    INTRANET
+                    {t('app.badge')}
                   </span>
                 </h1>
-                <p className="text-[10px] text-brand-gold-accent font-semibold font-sans mt-0.5">Œuvres Sociales de l'ANAPEC</p>
+                <p className="text-[10px] text-brand-gold-accent font-semibold font-sans mt-0.5">{t('app.subtitle')}</p>
               </div>
             </div>
 
@@ -306,16 +330,18 @@ export default function App() {
                     onClick={() => setIsAdminMode(true)}
                     className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer ${isAdminMode ? 'bg-brand-blue text-white shadow-xs' : 'text-slate-300 hover:text-white'}`}
                   >
-                    💼 Admin Backoffice
+                    {t('header.adminBackoffice')}
                   </button>
                   <button
                     onClick={() => { setIsAdminMode(false); setUserTab('NEWS'); }}
                     className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer ${!isAdminMode ? 'bg-brand-blue text-white shadow-xs' : 'text-slate-300 hover:text-white'}`}
                   >
-                    👤 Mode Adhérent
+                    {t('header.memberMode')}
                   </button>
                 </div>
               )}
+
+              <LanguageSwitcher />
 
               <div className="flex items-center gap-2.5 px-3 py-1.5 bg-brand-blue-deep/40 border border-brand-blue-dark/50 rounded-xl">
                 {currentUser.avatarUrl ? (
@@ -340,8 +366,8 @@ export default function App() {
                 </div>
                 <button
                   onClick={handleLogout}
-                  title="Déconnexion"
-                  className="ml-1 p-1 hover:text-brand-gold transition-colors cursor-pointer"
+                  title={t('header.logout')}
+                  className="ms-1 p-1 hover:text-brand-gold transition-colors cursor-pointer"
                   id="navbar-logout-btn"
                 >
                   <LogOut className="w-4 h-4" />
@@ -360,12 +386,13 @@ export default function App() {
             <div className="flex gap-4 sm:gap-6 overflow-x-auto py-3 scrollbar-none justify-start md:justify-center">
 
               {[
-                { id: 'NEWS', icon: <Newspaper className="w-4 h-4" />, label: 'Actualités & Flux Facebook' },
-                { id: 'KIOSK', icon: <BookOpen className="w-4 h-4" />, label: 'Kiosque & Rapports' },
-                { id: 'GOVERNANCE', icon: <ShieldCheck className="w-4 h-4" />, label: 'Simulateur & Transparence' },
-                { id: 'CONVENTIONS', icon: <Handshake className="w-4 h-4" />, label: 'Partenariats & Conventions' },
-                { id: 'MY_PRESTATIONS', icon: <FileText className="w-4 h-4" />, label: `Mes Demandes (${userSpecificRequests.length})` },
-                { id: 'PROFILE', icon: <User className="w-4 h-4" />, label: "Ma Carte d'Adhérent" },
+                { id: 'NEWS', icon: <Newspaper className="w-4 h-4" />, label: t('nav.news') },
+                { id: 'KIOSK', icon: <BookOpen className="w-4 h-4" />, label: t('nav.kiosk') },
+                { id: 'GOVERNANCE', icon: <ShieldCheck className="w-4 h-4" />, label: t('nav.governance') },
+                { id: 'CONVENTIONS', icon: <Handshake className="w-4 h-4" />, label: t('nav.conventions') },
+                { id: 'BOARD', icon: <Users className="w-4 h-4" />, label: t('nav.board') },
+                { id: 'MY_PRESTATIONS', icon: <FileText className="w-4 h-4" />, label: `${t('nav.myRequests')} (${userSpecificRequests.length})` },
+                { id: 'PROFILE', icon: <User className="w-4 h-4" />, label: t('nav.profile') },
               ].map(tab => (
                 <button
                   key={tab.id}
@@ -390,12 +417,12 @@ export default function App() {
         {isAdminMode ? (
           <div className="space-y-6">
             <div className="md:hidden p-3 bg-amber-500/15 border border-amber-500/20 text-amber-800 text-xs rounded-xl flex justify-between items-center text-left">
-              <span>Vous êtes sur le <strong>Panneau Backoffice Admin</strong></span>
+              <span>{t('header.onAdminPanel')}</span>
               <button
                 onClick={() => { setIsAdminMode(false); setUserTab('NEWS'); }}
                 className="px-2.5 py-1 bg-amber-600 hover:bg-amber-700 text-white rounded-lg text-[10px] font-bold cursor-pointer"
               >
-                Vue Utilisateur
+                {t('header.userView')}
               </button>
             </div>
             <AdminPanel
@@ -403,11 +430,14 @@ export default function App() {
               users={users}
               conventions={conventions}
               news={news}
+              boardMembers={boardMembers}
               onApproveRequest={handleApproveRequest}
               onRejectRequest={handleRejectRequest}
               onToggleUserStatus={handleToggleUserStatus}
               onPostConvention={handlePostConvention}
               onPostNews={handlePostNews}
+              onAddBoardMember={handleAddBoardMember}
+              onDeleteBoardMember={handleDeleteBoardMember}
             />
           </div>
         ) : (
@@ -419,13 +449,13 @@ export default function App() {
                   <div className="space-y-1">
                     <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-lg text-[10px] font-bold bg-blue-100 text-blue-700">
                       <Facebook className="w-3 h-3" />
-                      Communauté Facebook AOS
+                      {t('news.fbBadge')}
                     </span>
                     <h3 className="font-display font-extrabold text-slate-900 text-sm">
-                      Flux Officiel & Activités Récentes de l'Association
+                      {t('news.fbTitle')}
                     </h3>
                     <p className="text-xs text-slate-500 leading-relaxed">
-                      Rejoignez plus de 2,000 collaborateurs de l'ANAPEC. Suivez les événements sportifs, les résidences d'été et les communiqués en direct de l'AOS.
+                      {t('news.fbDesc')}
                     </p>
                   </div>
                   <a
@@ -434,14 +464,14 @@ export default function App() {
                     rel="noopener noreferrer"
                     className="shrink-0 inline-flex items-center gap-1.5 px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-xl transition-all shadow-sm cursor-pointer"
                   >
-                    <span>Consulter la Page Facebook AOS</span>
+                    <span>{t('news.fbButton')}</span>
                     <ChevronRight className="w-4 h-4" />
                   </a>
                 </div>
 
                 <div className="text-left">
                   <h3 className="font-display font-bold text-slate-900 text-base mb-4">
-                    Notes Administratives & Notes de Service
+                    {t('news.adminNotes')}
                   </h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {news.map(item => (
@@ -461,9 +491,9 @@ export default function App() {
                           <p className="text-xs text-slate-500 line-clamp-3 leading-relaxed">{item.summary}</p>
                         </div>
                         <div className="pt-3 border-t border-slate-100 flex justify-between items-center">
-                          <span className="text-[10px] text-slate-400 font-semibold">{item.readCount} vues • AOS Staff</span>
+                          <span className="text-[10px] text-slate-400 font-semibold">{item.readCount} {t('news.views')} • AOS Staff</span>
                           <button onClick={() => setSelectedNews(item)} className="text-xs font-bold text-brand-blue hover:underline cursor-pointer">
-                            Lire l'annonce
+                            {t('news.read')}
                           </button>
                         </div>
                       </div>
@@ -476,20 +506,21 @@ export default function App() {
             {userTab === 'KIOSK' && <OfficialPublicationsKiosk isAdmin={currentUser.role === 'admin'} />}
             {userTab === 'GOVERNANCE' && <SocialGovernanceDashboard currentUser={currentUser} />}
             {userTab === 'CONVENTIONS' && <ConventionsDirectory currentUser={currentUser} conventions={conventions} />}
+            {userTab === 'BOARD' && <BoardDirectory members={boardMembers} />}
 
             {userTab === 'MY_PRESTATIONS' && (
               <div className="space-y-6">
                 <div className="flex justify-between items-center text-left">
                   <div>
-                    <h3 className="font-display font-bold text-slate-950 text-base">Mes Prestations d'Aides</h3>
-                    <p className="text-xs text-slate-400">Demandez vos subventions de l'Aïd Al-Adha, de l'Estivage ou remboursements de soins médicaux</p>
+                    <h3 className="font-display font-bold text-slate-950 text-base">{t('prest.title')}</h3>
+                    <p className="text-xs text-slate-400">{t('prest.desc')}</p>
                   </div>
                   <button
                     onClick={() => setUserTab('NEW_PRESTATION' as any)}
                     className="inline-flex items-center gap-1.5 px-4 py-2.5 bg-brand-blue hover:bg-brand-blue-dark text-white text-xs font-bold rounded-xl transition-all shadow-md cursor-pointer"
                   >
                     <PlusCircle className="w-4 h-4" />
-                    <span>Créer un dossier d'aide</span>
+                    <span>{t('prest.create')}</span>
                   </button>
                 </div>
                 <PrestationRequestList requests={userSpecificRequests} />
@@ -515,17 +546,17 @@ export default function App() {
         <div className="fixed inset-0 z-50 overflow-y-auto flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
           <div className="bg-white rounded-3xl max-w-lg w-full overflow-hidden shadow-2xl border border-slate-100 flex flex-col text-left">
             <div className="p-4 bg-slate-50 border-b border-slate-100 flex justify-between items-center">
-              <span className="text-xs font-extrabold text-brand-blue-dark uppercase tracking-widest">COMMUNIQUÉ AOS ANAPEC</span>
+              <span className="text-xs font-extrabold text-brand-blue-dark uppercase tracking-widest">{t('news.communique')}</span>
               <button onClick={() => setSelectedNews(null)} className="p-1 rounded-lg hover:bg-slate-200 text-slate-400 font-extrabold cursor-pointer">✕</button>
             </div>
             <div className="p-6 md:p-8 space-y-4">
               <div className="flex justify-between text-xs font-mono text-slate-400 pb-2 border-b border-slate-100">
                 <span className="font-bold text-amber-600">{selectedNews.category}</span>
-                <span>Publié le : {selectedNews.publishDate}</span>
+                <span>{t('news.publishedOn')} {selectedNews.publishDate}</span>
               </div>
               {selectedNews.importance === 'high' && (
                 <div className="p-3 bg-amber-50 text-amber-800 border-l-4 border-amber-500 rounded-r-lg text-xs font-semibold">
-                  🚨 Informations Prioritaires : Action requise ou date limite approchant.
+                  {t('news.priority')}
                 </div>
               )}
               <h2 className="font-display font-extrabold text-slate-950 text-base sm:text-lg leading-tight">{selectedNews.title}</h2>
@@ -538,7 +569,7 @@ export default function App() {
             </div>
             <div className="p-4 bg-slate-50 border-t border-slate-100 flex justify-end">
               <button onClick={() => setSelectedNews(null)} className="px-5 py-2 bg-brand-blue hover:bg-brand-blue-dark text-white text-xs font-semibold rounded-lg cursor-pointer">
-                Fermer
+                {t('common.close')}
               </button>
             </div>
           </div>
