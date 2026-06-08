@@ -7,6 +7,7 @@ import React, { useState } from 'react';
 import { PrestationRequest, PrestationCategory, UserProfile } from '../types';
 import { DELEGATIONS_LIST } from '../mockData';
 import { HeartHandshake, FileText, Upload, AlertCircle, CheckCircle2, DollarSign, Send, Landmark } from 'lucide-react';
+import { useLang } from '../i18n';
 
 interface NewPrestationFormProps {
   currentUser: UserProfile;
@@ -20,17 +21,18 @@ interface NewPrestationFormProps {
   onCancel: () => void;
 }
 
-const BENEFIT_CATEGORIES: { value: PrestationCategory; label: string; description: string; limit?: string }[] = [
-  { value: 'EID_AL_ADHA', label: 'Aide Exceptionnelle de l\'Aïd Al-Adha', description: 'Assistance financière réglementaire forfaitaire annuelle pour l\'achat du mouton.', limit: 'Montant forfaitaire: 2 000 DH' },
-  { value: 'ESTIVAGE', label: 'Estivage & Vacances Familiales', description: 'Prise en charge partielle des frais d\'hébergement ou de camps d\'été organisés par l\'AOS.', limit: 'Subvention jusqu\'à: 4 000 DH' },
-  { value: 'RENTREE_SCOLAIRE', label: 'Subvention de la Rentrée Scolaire', description: 'Assistance pour frais scolaires et fournitures pour vos enfants scolarisés.', limit: 'Montant par enfant: 500 DH' },
-  { value: 'DOSSIER_MEDICAL', label: 'Remboursement Mutuelle Complémentaire', description: 'Soutien aux soins dentaires, optiques, maternité ou opérations chirurgicales complexes.', limit: 'Selon barème de mutuelle' },
-  { value: 'PRET_SOCIAL', label: 'Prêt Social Sans Intérêt (0%)', description: 'Formulation de prêt d\'honneur de trésorerie pour urgences ou événements de vie majeurs.', limit: 'Maximum: 20 000 DH' },
-  { value: 'PELLERINAGE', label: 'Subvention Hajj / Omra (Pèlerinage)', description: 'Soutien de l\'AOS réservé aux agents tirés au sort pour le pèlerinage aux lieux sacrés.', limit: 'Subvention forfaitaire: 10 000 DH' },
-  { value: 'SPORT_CULTURE', label: 'Activités Sportives & Culturelles', description: 'Remboursement d\'abonnements annuels à des clubs sportifs ou événements agréés.', limit: 'Subvention jusqu\'à: 1 500 DH' }
+const BENEFIT_CATEGORY_VALUES: { value: PrestationCategory }[] = [
+  { value: 'EID_AL_ADHA' },
+  { value: 'ESTIVAGE' },
+  { value: 'RENTREE_SCOLAIRE' },
+  { value: 'DOSSIER_MEDICAL' },
+  { value: 'PRET_SOCIAL' },
+  { value: 'PELLERINAGE' },
+  { value: 'SPORT_CULTURE' },
 ];
 
 export default function NewPrestationForm({ currentUser, onSubmitRequest, onCancel }: NewPrestationFormProps) {
+  const { t } = useLang();
   const [category, setCategory] = useState<PrestationCategory>('EID_AL_ADHA');
   const [title, setTitle] = useState('');
   const [amountRequested, setAmountRequested] = useState<number>(2000);
@@ -85,17 +87,17 @@ export default function NewPrestationForm({ currentUser, onSubmitRequest, onCanc
     setErrorMsg('');
 
     if (!isProfileActive) {
-      setErrorMsg("Votre profil d'adhérent n'est pas actif. Seuls les adhérents à jour de leurs cotisations de l'AOS sont autorisés à émettre des demandes.");
+      setErrorMsg(t('pf.errNotActive'));
       return;
     }
 
     if (!title.trim() || !description.trim()) {
-      setErrorMsg("Veuillez remplir le titre et la description détaillée de votre demande.");
+      setErrorMsg(t('pf.errTitleDesc'));
       return;
     }
 
     if (!attachedFile) {
-      setErrorMsg("Veuillez joindre les pièces justificatives requises (RIB, factures, certificats médicaux, fiches de paie, etc.) pour appuyer votre demande.");
+      setErrorMsg(t('pf.errNoFile'));
       return;
     }
 
@@ -111,24 +113,22 @@ export default function NewPrestationForm({ currentUser, onSubmitRequest, onCanc
     setSuccess(true);
   };
 
-  const activeCategoryMeta = BENEFIT_CATEGORIES.find(c => c.value === category);
-
   if (success) {
     return (
       <div className="bg-white rounded-2xl border border-slate-100 p-8 text-center space-y-5 max-w-md mx-auto my-8 shadow-xs" id="success-prestation-request-container">
         <div className="mx-auto w-12 h-12 rounded-full bg-brand-blue-light text-brand-blue-dark flex items-center justify-center text-xl">
           ✓
         </div>
-        <h3 className="font-display font-bold text-slate-900 text-lg">Demande soumise avec succès !</h3>
+        <h3 className="font-display font-bold text-slate-900 text-lg">{t('pf.successTitle')}</h3>
         <p className="text-xs text-slate-500 leading-relaxed">
-          Votre requête de prestation sociale a été enregistrée dans notre intranet de l'AOS. L'équipe du Secrétariat Social va étudier vos pièces justificatives sous un délai de 5 à 7 jours ouvrables.
+          {t('pf.successBody')}
         </p>
         <div className="pt-2">
           <button
             onClick={onCancel}
             className="px-5 py-2.5 bg-brand-blue text-white text-xs font-semibold rounded-lg hover:bg-brand-blue-dark transition-colors cursor-pointer"
           >
-            Retour au Tableau de Bord
+            {t('pf.successBack')}
           </button>
         </div>
       </div>
@@ -137,32 +137,32 @@ export default function NewPrestationForm({ currentUser, onSubmitRequest, onCanc
 
   return (
     <div className="bg-white rounded-3xl border border-slate-100 shadow-xs overflow-hidden" id="new-prestation-form">
-      
+
       {/* Visual Header */}
       <div className="p-6 bg-slate-50 border-b border-slate-100 flex justify-between items-center">
         <div>
           <h3 className="font-display font-bold text-slate-900 text-base">
-            Déposer une nouvelle demande de Prestation
+            {t('pf.headerTitle')}
           </h3>
           <p className="text-xs text-slate-400 mt-0.5">
-            Soumettre un dossier social, d'aide financière ou de mutuelle
+            {t('pf.headerDesc')}
           </p>
         </div>
         <span className="text-[10px] font-mono bg-amber-50 text-amber-800 px-2 py-1 rounded-md font-bold uppercase">
-          Espace Adhérent
+          {t('pf.espaceBadge')}
         </span>
       </div>
 
       <div className="p-6 md:p-8">
-        
+
         {/* Warning Badge for inactive sub */}
         {!isProfileActive && (
           <div className="mb-6 p-4 rounded-xl bg-amber-50 border border-amber-200 text-amber-800 text-xs flex gap-3 items-start">
             <AlertCircle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
             <div className="space-y-1">
-              <p className="font-bold">Abonnement / Cotisation suspendu</p>
+              <p className="font-bold">{t('pf.inactiveTitle')}</p>
               <p className="leading-relaxed text-[11px] text-amber-700">
-                Vos cotisations mensuelles ne semblent pas être à jour (Status d'adhésion : inactive). Vous ne pouvez pas finaliser votre demande. Veuillez contacter l'administration de l'AOS au chef-lieu de votre délégation régionale pour régulariser votre dossier.
+                {t('pf.inactiveBody')}
               </p>
             </div>
           </div>
@@ -177,13 +177,13 @@ export default function NewPrestationForm({ currentUser, onSubmitRequest, onCanc
 
         {/* Form Body */}
         <form onSubmit={handleSubmit} className="space-y-6">
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            
+
             {/* Category selection */}
             <div className="space-y-2">
               <label className="block text-xs font-bold uppercase tracking-wider text-slate-500">
-                Nature de la Prestation Sociale
+                {t('pf.labelCategory')}
               </label>
               <select
                 id="benefit-category-select"
@@ -203,34 +203,30 @@ export default function NewPrestationForm({ currentUser, onSubmitRequest, onCanc
                 disabled={!isProfileActive}
                 className="block w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-brand-blue rounded-xl text-slate-950 text-sm transition-all"
               >
-                {BENEFIT_CATEGORIES.map((cat) => (
+                {BENEFIT_CATEGORY_VALUES.map((cat) => (
                   <option key={cat.value} value={cat.value}>
-                    {cat.label}
+                    {t(`pf.cat.${cat.value}`)}
                   </option>
                 ))}
               </select>
 
               {/* Informative limit box */}
-              {activeCategoryMeta && (
-                <div className="p-3 bg-brand-blue-light rounded-xl border border-brand-blue/20 text-[11px] text-brand-blue-dark space-y-0.5 animate-fade-in">
-                  <p className="font-semibold">{activeCategoryMeta.description}</p>
-                  {activeCategoryMeta.limit && (
-                    <p className="font-bold text-brand-blue">{activeCategoryMeta.limit}</p>
-                  )}
-                </div>
-              )}
+              <div className="p-3 bg-brand-blue-light rounded-xl border border-brand-blue/20 text-[11px] text-brand-blue-dark space-y-0.5 animate-fade-in">
+                <p className="font-semibold">{t(`pf.catDesc.${category}`)}</p>
+                <p className="font-bold text-brand-blue">{t(`pf.catLimit.${category}`)}</p>
+              </div>
             </div>
 
             {/* Amount & Title */}
             <div className="space-y-4">
               <div className="space-y-2">
                 <label className="block text-xs font-bold uppercase tracking-wider text-slate-500">
-                  Intitulé de l'objet
+                  {t('pf.labelTitle')}
                 </label>
                 <input
                   type="text"
                   required
-                  placeholder="Ex: Demande de remboursement monture optique ou prime de rentrée scolaire"
+                  placeholder={t('pf.placeholderTitle')}
                   value={title}
                   disabled={!isProfileActive}
                   onChange={(e) => setTitle(e.target.value)}
@@ -240,7 +236,7 @@ export default function NewPrestationForm({ currentUser, onSubmitRequest, onCanc
 
               <div className="space-y-2">
                 <label className="block text-xs font-bold uppercase tracking-wider text-slate-500">
-                  Montant estimé ou demandé (DH)
+                  {t('pf.labelAmount')}
                 </label>
                 <div className="relative rounded-xl shadow-xs">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400 text-xs font-bold">
@@ -264,7 +260,7 @@ export default function NewPrestationForm({ currentUser, onSubmitRequest, onCanc
           {/* Description */}
           <div className="space-y-2">
             <label className="block text-xs font-bold uppercase tracking-wider text-slate-500">
-              Description Détaillée & Justifications d'éligibilité
+              {t('pf.labelDescription')}
             </label>
             <textarea
               rows={4}
@@ -272,7 +268,7 @@ export default function NewPrestationForm({ currentUser, onSubmitRequest, onCanc
               disabled={!isProfileActive}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="Veuillez spécifier toutes les informations requises (nombres d'enfants scolarisés, dates précises du voyage d'estivage, factures de dépenses médicales, coordonnées bancaires...). Votre descriptif sera lu attentivement par la commission sociale de l'association."
+              placeholder={t('pf.placeholderDescription')}
               className="block w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-brand-blue rounded-xl text-slate-900 text-sm transition-all"
             />
           </div>
@@ -280,7 +276,7 @@ export default function NewPrestationForm({ currentUser, onSubmitRequest, onCanc
           {/* Attachement simulation drag-and-drop */}
           <div className="space-y-2">
             <label className="block text-xs font-bold uppercase tracking-wider text-slate-500">
-              Pièces Justificatives Obligatoires (Dossier Compressé / Fichiers PDF, Images)
+              {t('pf.labelFiles')}
             </label>
 
             <div
@@ -300,18 +296,18 @@ export default function NewPrestationForm({ currentUser, onSubmitRequest, onCanc
                 onChange={handleFileInput}
                 disabled={!isProfileActive}
               />
-              
+
               <div className="space-y-3 flex flex-col items-center">
                 <div className="w-10 h-10 rounded-xl bg-brand-blue-light text-brand-blue flex items-center justify-center">
                   <Upload className="w-5 h-5" />
                 </div>
-                
+
                 {attachedFile ? (
                   <div className="bg-white px-4 py-2 rounded-xl border border-slate-200 text-slate-800 text-xs flex gap-2 items-center shadow-xs">
                     <FileText className="w-4 h-4 text-brand-blue" />
                     <div>
                       <p className="font-bold truncate max-w-[200px]">{attachedFile.name}</p>
-                      <p className="text-[10px] text-slate-400">{attachedFile.size} • PDF / Justificatif</p>
+                      <p className="text-[10px] text-slate-400">{attachedFile.size} • {t('pf.fileTypeBadge')}</p>
                     </div>
                     <button
                       type="button"
@@ -324,13 +320,13 @@ export default function NewPrestationForm({ currentUser, onSubmitRequest, onCanc
                 ) : (
                   <div className="text-xs space-y-1 text-slate-500">
                     <p className="font-bold text-slate-800">
-                      Glissez-déposez votre dossier ici, ou{" "}
+                      {t('pf.dropZoneText')}{" "}
                       <label htmlFor="attached-file-input" className="text-brand-blue font-extrabold hover:underline cursor-pointer">
-                        compulsez vos fichiers
+                        {t('pf.dropZoneBrowse')}
                       </label>
                     </p>
                     <p className="text-[10px] text-slate-400">
-                      Fichiers autorisés : PDF, ZIP, PNG ou JPG (Max. 10 Mo pour justificatif social)
+                      {t('pf.dropZoneHint')}
                     </p>
                   </div>
                 )}
@@ -345,7 +341,7 @@ export default function NewPrestationForm({ currentUser, onSubmitRequest, onCanc
               onClick={onCancel}
               className="px-4 py-2.5 bg-white text-slate-700 border border-slate-200 text-xs font-semibold rounded-lg hover:bg-slate-50 transition-colors cursor-pointer"
             >
-              Annuler
+              {t('pf.btnCancel')}
             </button>
             <button
               type="submit"
@@ -355,7 +351,7 @@ export default function NewPrestationForm({ currentUser, onSubmitRequest, onCanc
               }`}
             >
               <Send className="w-3.5 h-3.5" />
-              Soumettre ma demande d'aide
+              {t('pf.btnSubmit')}
             </button>
           </div>
 

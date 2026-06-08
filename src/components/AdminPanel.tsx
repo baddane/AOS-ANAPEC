@@ -142,7 +142,7 @@ export default function AdminPanel({
     .reduce((sum, r) => sum + (r.amountApproved || r.amountRequested || 0), 0);
 
   // Charts data calculation 1: distribution of Requests per Category
-  const categoryData = Object.keys(CATEGORY_LABELS).map((catKey) => {
+  const categoryData = Object.keys(CATEGORY_EMOJIS).map((catKey) => {
     const subset = requests.filter(r => r.category === catKey);
     return {
       name: catKey.replace('_', ' ').substring(0, 10),
@@ -628,7 +628,7 @@ export default function AdminPanel({
                           }`}
                         >
                           <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: item.cotisationStatus === 'active' ? '#10b981' : '#f43f5e' }} />
-                          <span>{item.cotisationStatus === 'active' ? 'Cotisant unique (Actif)' : 'Suspendu / Non-payé'}</span>
+                          <span>{item.cotisationStatus === 'active' ? t('adm.usersCotisationActive') : t('adm.usersCotisationInactive')}</span>
                         </button>
                       </td>
 
@@ -646,30 +646,30 @@ export default function AdminPanel({
       {activeTab === 'CONVENTIONS' && (
         <div className="bg-white rounded-3xl border border-slate-100 p-6 md:p-8 text-left max-w-2xl mx-auto shadow-xs">
           <div className="pb-4 border-b border-slate-100 mb-6">
-            <h4 className="font-display font-bold text-slate-900 text-base">Ajouter un nouveau contrat de Partenariat</h4>
-            <p className="text-xs text-slate-400 mt-0.5">Enregistrez un nouvel accord hôtelier, clinique ou bancaire conventionné</p>
+            <h4 className="font-display font-bold text-slate-900 text-base">{t('adm.convHeading')}</h4>
+            <p className="text-xs text-slate-400 mt-0.5">{t('adm.convSubheading')}</p>
           </div>
 
           <form onSubmit={handleCreateConvention} className="space-y-4">
             
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-1">
-                <label className="text-xs font-bold uppercase tracking-wider text-slate-500">Nom du Partenaire</label>
+                <label className="text-xs font-bold uppercase tracking-wider text-slate-500">{t('adm.convLabelPartner')}</label>
                 <input
                   type="text"
                   required
-                  placeholder="Ex: ONCF, Kenzi Hôtels..."
+                  placeholder={t('adm.convPlaceholderPartner')}
                   value={convPartner}
                   onChange={(e) => setConvPartner(e.target.value)}
                   className="block w-full px-3 py-2 border border-slate-200 rounded-lg text-sm"
                 />
               </div>
               <div className="space-y-1">
-                <label className="text-xs font-bold uppercase tracking-wider text-slate-500">Titre de la convention</label>
+                <label className="text-xs font-bold uppercase tracking-wider text-slate-500">{t('adm.convLabelTitle')}</label>
                 <input
                   type="text"
                   required
-                  placeholder="Ex: Remise d'été Al Boraq"
+                  placeholder={t('adm.convPlaceholderTitle')}
                   value={convTitle}
                   onChange={(e) => setConvTitle(e.target.value)}
                   className="block w-full px-3 py-2 border border-slate-200 rounded-lg text-sm"
@@ -679,26 +679,26 @@ export default function AdminPanel({
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-1">
-                <label className="text-xs font-bold uppercase tracking-wider text-slate-500">Catégorie</label>
+                <label className="text-xs font-bold uppercase tracking-wider text-slate-500">{t('adm.convLabelCategory')}</label>
                 <select
                   value={convCategory}
                   onChange={(e) => setConvCategory(e.target.value as any)}
                   className="block w-full px-3 py-2 border border-slate-200 rounded-lg text-sm bg-white"
                 >
-                  <option value="HEBERGEMENT">Hôtel & Centres de vacances</option>
-                  <option value="TRANSPORT">Transport & Logistique</option>
-                  <option value="SANTE">Santé & Clinique de soins</option>
-                  <option value="BANQUE_ASSUR">Banque & Crédits Immobiliers</option>
-                  <option value="EDUCATION">Enseignement & Crèches</option>
-                  <option value="SOURIRE">Loisirs, Sport & Bien-être</option>
+                  <option value="HEBERGEMENT">{t('adm.convCatHotel')}</option>
+                  <option value="TRANSPORT">{t('adm.convCatTransport')}</option>
+                  <option value="SANTE">{t('adm.convCatHealth')}</option>
+                  <option value="BANQUE_ASSUR">{t('adm.convCatBank')}</option>
+                  <option value="EDUCATION">{t('adm.convCatEducation')}</option>
+                  <option value="SOURIRE">{t('adm.convCatLeisure')}</option>
                 </select>
               </div>
               <div className="space-y-1">
-                <label className="text-xs font-bold uppercase tracking-wider text-slate-500">Avantage Accordé ( DH / % )</label>
+                <label className="text-xs font-bold uppercase tracking-wider text-slate-500">{t('adm.convLabelValue')}</label>
                 <input
                   type="text"
                   required
-                  placeholder="Ex: 35% de réduction, Taux de 3.2%"
+                  placeholder={t('adm.convPlaceholderValue')}
                   value={convValue}
                   onChange={(e) => setConvValue(e.target.value)}
                   className="block w-full px-3 py-2 border border-slate-200 rounded-lg text-sm font-bold text-brand-blue-dark"
@@ -708,20 +708,20 @@ export default function AdminPanel({
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-1">
-                <label className="text-xs font-bold uppercase tracking-wider text-slate-500">Villes d'exercice</label>
+                <label className="text-xs font-bold uppercase tracking-wider text-slate-500">{t('adm.convLabelCity')}</label>
                 <input
                   type="text"
-                  placeholder="Ex: National, Marrakech, Agadir..."
+                  placeholder={t('adm.convPlaceholderCity')}
                   value={convCity}
                   onChange={(e) => setConvCity(e.target.value)}
                   className="block w-full px-3 py-2 border border-slate-200 rounded-lg text-sm"
                 />
               </div>
               <div className="space-y-1">
-                <label className="text-xs font-bold uppercase tracking-wider text-slate-500">Téléphone de l'administration</label>
+                <label className="text-xs font-bold uppercase tracking-wider text-slate-500">{t('adm.convLabelPhone')}</label>
                 <input
                   type="text"
-                  placeholder="Ex: +212 522..."
+                  placeholder={t('adm.convPlaceholderPhone')}
                   value={convPhone}
                   onChange={(e) => setConvPhone(e.target.value)}
                   className="block w-full px-3 py-2 border border-slate-200 rounded-lg text-sm font-mono"
@@ -730,10 +730,10 @@ export default function AdminPanel({
             </div>
 
             <div className="space-y-1">
-              <label className="text-xs font-bold uppercase tracking-wider text-slate-500">Adresse Complète</label>
+              <label className="text-xs font-bold uppercase tracking-wider text-slate-500">{t('adm.convLabelAddress')}</label>
               <input
                 type="text"
-                placeholder="Ex: Avenue Mohamed V..."
+                placeholder={t('adm.convPlaceholderAddress')}
                 value={convAddress}
                 onChange={(e) => setConvAddress(e.target.value)}
                 className="block w-full px-3 py-2 border border-slate-200 rounded-lg text-sm"
@@ -741,10 +741,10 @@ export default function AdminPanel({
             </div>
 
             <div className="space-y-1">
-              <label className="text-xs font-bold uppercase tracking-wider text-slate-500">Description Contractuelle</label>
+              <label className="text-xs font-bold uppercase tracking-wider text-slate-500">{t('adm.convLabelDesc')}</label>
               <textarea
                 rows={3}
-                placeholder="Indiquez les termes de l'accord, les bénéficiaires autorisés et d'autres modalités..."
+                placeholder={t('adm.convPlaceholderDesc')}
                 value={convDesc}
                 onChange={(e) => setConvDesc(e.target.value)}
                 className="block w-full px-3 py-2 border border-slate-200 rounded-lg text-sm"
@@ -756,7 +756,7 @@ export default function AdminPanel({
                 type="submit"
                 className="px-6 py-2 bg-brand-blue hover:bg-brand-blue-dark text-white text-xs font-semibold rounded-lg transition-colors cursor-pointer"
               >
-                Publier le Contrat Partenaire
+                {t('adm.convBtnSubmit')}
               </button>
             </div>
 
@@ -768,18 +768,18 @@ export default function AdminPanel({
       {activeTab === 'NEWS' && (
         <div className="bg-white rounded-3xl border border-slate-100 p-6 md:p-8 text-left max-w-2xl mx-auto shadow-xs">
           <div className="pb-4 border-b border-slate-100 mb-6">
-            <h4 className="font-display font-bold text-slate-900 text-base">Poster un nouveau Communiqué Officiel</h4>
-            <p className="text-xs text-slate-400 mt-0.5">Communiquez de nouvelles informations sociales aux collaborateurs connectés</p>
+            <h4 className="font-display font-bold text-slate-900 text-base">{t('adm.newsHeading')}</h4>
+            <p className="text-xs text-slate-400 mt-0.5">{t('adm.newsSubheading')}</p>
           </div>
 
           <form onSubmit={handleCreateNews} className="space-y-4">
             
             <div className="space-y-1">
-              <label className="text-xs font-bold uppercase tracking-wider text-slate-500">Titre de l'Actualité</label>
+              <label className="text-xs font-bold uppercase tracking-wider text-slate-500">{t('adm.newsLabelTitle')}</label>
               <input
                 type="text"
                 required
-                placeholder="Ex: Élection du bureau exécutif, subventions d'hiver..."
+                placeholder={t('adm.newsPlaceholderTitle')}
                 value={newsTitle}
                 onChange={(e) => setNewsTitle(e.target.value)}
                 className="block w-full px-3 py-2 border border-slate-200 rounded-lg text-sm font-bold text-slate-900"
@@ -788,36 +788,36 @@ export default function AdminPanel({
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-1">
-                <label className="text-xs font-bold uppercase tracking-wider text-slate-500">Catégorie d'Information</label>
+                <label className="text-xs font-bold uppercase tracking-wider text-slate-500">{t('adm.newsLabelCategory')}</label>
                 <select
                   value={newsCategory}
                   onChange={(e) => setNewsCategory(e.target.value as any)}
                   className="block w-full px-3 py-2 border border-slate-200 rounded-lg text-sm bg-white"
                 >
-                  <option value="PRESTATION">Prestation d'aide & Subvention</option>
-                  <option value="CONVENTION">Partenariat & Convention</option>
-                  <option value="COMMUNIQUE">Note administrative ou Communiqué</option>
-                  <option value="EVENEMENT">Événement & Sports</option>
+                  <option value="PRESTATION">{t('adm.newsCatPrestation')}</option>
+                  <option value="CONVENTION">{t('adm.newsCatConvention')}</option>
+                  <option value="COMMUNIQUE">{t('adm.newsCatCommunique')}</option>
+                  <option value="EVENEMENT">{t('adm.newsCatEvent')}</option>
                 </select>
               </div>
               <div className="space-y-1">
-                <label className="text-xs font-bold uppercase tracking-wider text-slate-500">Urgence administrative</label>
+                <label className="text-xs font-bold uppercase tracking-wider text-slate-500">{t('adm.newsLabelImportance')}</label>
                 <select
                   value={newsImportance}
                   onChange={(e) => setNewsImportance(e.target.value as any)}
                   className="block w-full px-3 py-2 border border-slate-200 rounded-lg text-sm bg-white"
                 >
-                  <option value="normal">Normal</option>
-                  <option value="high">🚨 Urgent / Prioritaire</option>
+                  <option value="normal">{t('adm.newsImportanceNormal')}</option>
+                  <option value="high">{t('adm.newsImportanceHigh')}</option>
                 </select>
               </div>
             </div>
 
             <div className="space-y-1">
-              <label className="text-xs font-bold uppercase tracking-wider text-slate-500">Résumé introductif (S'affiche dans le flux d'accueil)</label>
+              <label className="text-xs font-bold uppercase tracking-wider text-slate-500">{t('adm.newsLabelSummary')}</label>
               <input
                 type="text"
-                placeholder="Quelques lignes résumant l'annonce..."
+                placeholder={t('adm.newsPlaceholderSummary')}
                 value={newsSummary}
                 onChange={(e) => setNewsSummary(e.target.value)}
                 className="block w-full px-3 py-2 border border-slate-200 rounded-lg text-sm"
@@ -825,11 +825,11 @@ export default function AdminPanel({
             </div>
 
             <div className="space-y-1">
-              <label className="text-xs font-bold uppercase tracking-wider text-slate-500">Corps détaillé du Communiqué</label>
+              <label className="text-xs font-bold uppercase tracking-wider text-slate-500">{t('adm.newsLabelContent')}</label>
               <textarea
                 rows={6}
                 required
-                placeholder="Saisissez ici le texte intégral de votre annonce..."
+                placeholder={t('adm.newsPlaceholderContent')}
                 value={newsContent}
                 onChange={(e) => setNewsContent(e.target.value)}
                 className="block w-full px-3 py-2 border border-slate-200 rounded-lg text-sm"
@@ -841,7 +841,7 @@ export default function AdminPanel({
                 type="submit"
                 className="px-6 py-2 bg-brand-blue hover:bg-brand-blue-dark text-white text-xs font-semibold rounded-lg transition-colors cursor-pointer"
               >
-                Publier l'actualité sur l'Intranet
+                {t('adm.newsBtnSubmit')}
               </button>
             </div>
 
@@ -886,7 +886,7 @@ export default function AdminPanel({
                 <div className="space-y-1">
                   <label className="text-xs font-bold uppercase tracking-wider text-slate-500">{t('admin.role')} *</label>
                   <input type="text" required value={bmRole} onChange={(e) => setBmRole(e.target.value)} maxLength={80}
-                    placeholder="Président, Trésorier..."
+                    placeholder={t('adm.rolePlaceholder')}
                     className="block w-full px-3 py-2 border border-slate-200 rounded-lg text-sm" />
                 </div>
               </div>
@@ -999,7 +999,7 @@ export default function AdminPanel({
             <div className="p-4 bg-slate-50 border-b border-slate-100 flex justify-between items-center">
               <span className="text-xs font-semibold text-slate-700 uppercase tracking-wider flex items-center gap-1.5 font-display">
                 <Settings2 className="w-4 h-4" />
-                DÉCISION COMPTABLE & SOCIALE
+                {t('adm.modalTitle')}
               </span>
               <button
                 onClick={() => setSelectedReq(null)}
@@ -1012,13 +1012,13 @@ export default function AdminPanel({
             <div className="p-6 space-y-5">
               
               <div className="space-y-1">
-                <span className="text-[10px] uppercase font-bold text-slate-400">Demandeur</span>
+                <span className="text-[10px] uppercase font-bold text-slate-400">{t('adm.modalRequester')}</span>
                 <p className="text-base font-bold text-slate-900">{selectedReq.userName}</p>
-                <p className="text-xs text-slate-500 font-mono">Matricule: {selectedReq.userMatricule} (Délégation: {selectedReq.userDelegation})</p>
+                <p className="text-xs text-slate-500 font-mono">{t('adm.modalMatricule').replace('{mat}', selectedReq.userMatricule).replace('{del}', selectedReq.userDelegation)}</p>
               </div>
 
               <div className="p-3.5 bg-slate-50 rounded-xl space-y-1.5">
-                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{CATEGORY_LABELS[selectedReq.category]}</p>
+                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{categoryLabel(selectedReq.category)}</p>
                 <p className="text-xs font-bold text-slate-800">{selectedReq.title}</p>
                 <p className="text-xs text-slate-500 leading-relaxed italic">"{selectedReq.description}"</p>
               </div>
@@ -1030,10 +1030,10 @@ export default function AdminPanel({
                     <FileText className="w-4.5 h-4.5 text-brand-blue" />
                     <div>
                       <p className="font-bold text-slate-800 truncate max-w-[180px]">{selectedReq.attachedFile.name}</p>
-                      <p className="text-[10px] text-brand-blue font-medium">Justificatif certifié de {selectedReq.attachedFile.size}</p>
+                      <p className="text-[10px] text-brand-blue font-medium">{t('adm.modalFileLabel').replace('{size}', selectedReq.attachedFile.size)}</p>
                     </div>
                   </div>
-                  <span className="bg-brand-blue-accent text-brand-blue-dark px-2 py-0.5 rounded-sm font-bold text-[9px]">CLIQUEZ POUR LIRE</span>
+                  <span className="bg-brand-blue-accent text-brand-blue-dark px-2 py-0.5 rounded-sm font-bold text-[9px]">{t('adm.modalFileClick')}</span>
                 </div>
               )}
 
@@ -1041,11 +1041,11 @@ export default function AdminPanel({
               <div className="space-y-4 pt-3 border-t border-slate-100 text-left">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="text-[10px] uppercase font-bold text-slate-400">Budget sollicité</label>
+                    <label className="text-[10px] uppercase font-bold text-slate-400">{t('adm.modalBudgetRequested')}</label>
                     <p className="text-base font-extrabold text-slate-800 mt-1">{selectedReq.amountRequested?.toLocaleString() || '--'} DH</p>
                   </div>
                   <div>
-                    <label className="text-[10px] uppercase font-bold text-slate-400">Budget accordé ajustable</label>
+                    <label className="text-[10px] uppercase font-bold text-slate-400">{t('adm.modalBudgetGranted')}</label>
                     <div className="relative rounded-lg shadow-xs mt-1">
                       <div className="absolute inset-y-0 left-0 pl-2.5 flex items-center pointer-events-none text-slate-400 font-bold text-xs">
                         DH
@@ -1062,10 +1062,10 @@ export default function AdminPanel({
 
                 {/* Response Opinion comment */}
                 <div className="space-y-1.5">
-                  <label className="text-[10px] uppercase font-bold text-slate-400">Opinion administrative & Justification de décision</label>
+                  <label className="text-[10px] uppercase font-bold text-slate-400">{t('adm.modalOpinionLabel')}</label>
                   <textarea
                     rows={3}
-                    placeholder="Saisissez vos observations. Elles s'afficheront instantanément sur l'espace utilisateur de l'adhérent."
+                    placeholder={t('adm.modalOpinionPlaceholder')}
                     value={adminOpinion}
                     onChange={(e) => setAdminOpinion(e.target.value)}
                     className="block w-full px-3 py-2 border border-slate-200 rounded-lg text-xs"
@@ -1081,19 +1081,19 @@ export default function AdminPanel({
                 onClick={() => setSelectedReq(null)}
                 className="px-4 py-2 bg-white text-slate-600 border border-slate-200 text-xs font-semibold rounded-lg hover:bg-slate-50 cursor-pointer"
               >
-                Annuler
+                {t('adm.modalBtnCancel')}
               </button>
               <button
                 onClick={handleReject}
                 className="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white text-xs font-semibold rounded-lg cursor-pointer"
               >
-                Refuser le Dossier
+                {t('adm.modalBtnReject')}
               </button>
               <button
                 onClick={handleApprove}
                 className="px-4 py-2 bg-brand-blue hover:bg-brand-blue-dark text-white text-xs font-semibold rounded-lg cursor-pointer"
               >
-                Approuver & Valider
+                {t('adm.modalBtnApprove')}
               </button>
             </div>
 

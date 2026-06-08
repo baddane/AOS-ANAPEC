@@ -530,15 +530,15 @@ export default function OfficialPublicationsKiosk({
                 {isFinancial && pub.financialDetails && (
                   <div className="p-3 bg-amber-500/5 rounded-xl border border-amber-500/10 space-y-1.5 text-[10px] text-slate-605">
                     <div className="flex justify-between font-bold">
-                      <span className="text-amber-800">Recettes :</span>
+                      <span className="text-amber-800">{t('kiosk.financial.receipts')}</span>
                       <span>{pub.financialDetails.totalReceipts.toLocaleString()} DH</span>
                     </div>
                     <div className="flex justify-between font-bold">
-                      <span className="text-red-700">Aides Versées :</span>
+                      <span className="text-red-700">{t('kiosk.financial.expenses')}</span>
                       <span>{pub.financialDetails.totalExpenses.toLocaleString()} DH</span>
                     </div>
                     <div className="flex justify-between font-extrabold border-t pt-1 border-amber-500/10 text-[11px]">
-                      <span className="text-emerald-800">Solde Net Restant :</span>
+                      <span className="text-emerald-800">{t('kiosk.financial.balance')}</span>
                       <span className="text-emerald-700">{pub.financialDetails.netBalance.toLocaleString()} DH ✓</span>
                     </div>
                   </div>
@@ -547,11 +547,11 @@ export default function OfficialPublicationsKiosk({
                 {isExcellence && pub.contestRequirements && (
                   <div className="p-3 bg-purple-500/5 rounded-xl border border-purple-500/10 space-y-1.5 text-[10px] text-slate-605">
                     <div className="flex justify-between">
-                      <span className="font-bold text-purple-900">1er Prix :</span>
+                      <span className="font-bold text-purple-900">{t('kiosk.contest.firstPrize')}</span>
                       <span className="font-sans font-bold text-slate-900">{pub.contestRequirements.prizes[0].amount.toLocaleString()} DH 🪙</span>
                     </div>
                     <div className="flex justify-between text-[9px] text-slate-500">
-                      <span>Date limite :</span>
+                      <span>{t('kiosk.contest.deadline')}</span>
                       <span className="font-mono font-bold text-purple-700">Vendredi 20 Février 2026</span>
                     </div>
                   </div>
@@ -561,10 +561,10 @@ export default function OfficialPublicationsKiosk({
                 <div className="flex items-center justify-between text-[10px] text-slate-400 border-t pt-3 border-slate-100">
                   <div className="flex items-center gap-1.5">
                     <Calendar className="w-3.5 h-3.5" />
-                    <span>Publié le {pub.publishDate}</span>
+                    <span>{t('kiosk.card.publishedOn')} {pub.publishDate}</span>
                   </div>
                   <span className="text-brand-blue font-extrabold group-hover:translate-x-1 transition-transform inline-flex items-center gap-0.5 select-none hover:underline">
-                    Détails & Consulter <ChevronRight className="w-3 h-3" />
+                    {t('kiosk.card.details')} <ChevronRight className="w-3 h-3" />
                   </span>
                 </div>
               </div>
@@ -574,8 +574,8 @@ export default function OfficialPublicationsKiosk({
 
         {filtered.length === 0 && (
           <div className="col-span-1 md:col-span-2 text-center p-12 bg-white rounded-3xl border border-slate-100 space-y-2 text-slate-500 font-sans">
-            <p className="text-base font-bold">Aucune publication trouvée</p>
-            <p className="text-xs">Modifiez la catégorie ou essayez une autre recherche.</p>
+            <p className="text-base font-bold">{t('kiosk.empty.title')}</p>
+            <p className="text-xs">{t('kiosk.empty.desc')}</p>
           </div>
         )}
       </div>
@@ -598,7 +598,7 @@ export default function OfficialPublicationsKiosk({
                   onClick={() => setActivePublication(null)}
                   className="inline-flex items-center gap-2 text-slate-300 hover:text-white text-xs font-bold font-sans cursor-pointer"
                 >
-                  <ArrowLeft className="w-4 h-4" /> Fermer le Kiosque
+                  <ArrowLeft className="w-4 h-4" /> {t('kiosk.modal.close')}
                 </button>
 
                 <div className="flex items-center gap-2">
@@ -606,7 +606,7 @@ export default function OfficialPublicationsKiosk({
                     onClick={triggerPrint}
                     className="px-4.5 py-2 bg-brand-gold hover:bg-yellow-500 text-slate-950 text-xs font-extrabold rounded-lg flex items-center gap-1.5 cursor-pointer shadow-sm transition-all"
                   >
-                    <Printer className="w-3.5 h-3.5" /> Imprimer / Exporter PDF
+                    <Printer className="w-3.5 h-3.5" /> {t('kiosk.modal.print')}
                   </button>
                   <button
                     onClick={() => setActivePublication(null)}
@@ -639,7 +639,7 @@ export default function OfficialPublicationsKiosk({
                   </div>
                   
                   <div className="text-xs uppercase tracking-wider text-slate-500 font-serif font-bold">
-                    ★ Document d'Information Sociale Officiel à l'Intention des Adhérents ★
+                    {t('kiosk.print.docHeader')}
                   </div>
                 </div>
 
@@ -674,7 +674,7 @@ export default function OfficialPublicationsKiosk({
                   {activePublication.contentAr && (
                     <div className="space-y-4 text-right md:border-l md:pl-8 md:border-slate-100 print:border-l-0 print:pl-0" dir="rtl">
                       <h4 className="font-serif font-black text-slate-900 border-b pb-1.5 border-emerald-100 tracking-wide text-sm font-sans flex justify-between select-none items-center pr-1">
-                        <span>البيان والمضمون الرسمي</span>
+                        <span>{t('kiosk.modal.sectionAr')}</span>
                         <span className="text-emerald-700">★</span>
                       </h4>
                       <p className="text-slate-700 text-xs leading-relaxed whitespace-pre-line font-sans ml-1">
@@ -687,7 +687,7 @@ export default function OfficialPublicationsKiosk({
                   {activePublication.contentFr && (
                     <div className="space-y-4 text-left">
                       <h4 className="font-serif font-extrabold text-slate-900 border-b pb-1.5 border-slate-100 tracking-wide text-xs uppercase flex justify-between items-center select-none">
-                        <span>Transcription en Français</span>
+                        <span>{t('kiosk.modal.sectionFr')}</span>
                         <span className="text-slate-405">★</span>
                       </h4>
                       <p className="text-slate-700 text-slate-650 text-xs leading-relaxed whitespace-pre-line font-serif">
@@ -704,7 +704,7 @@ export default function OfficialPublicationsKiosk({
                     <div className="p-4 bg-emerald-50 text-emerald-800 border-l-4 border-emerald-500 rounded-xl flex items-center gap-2.5 text-xs">
                       <CheckCircle className="w-5 h-5 shrink-0" />
                       <p>
-                        <strong>صندوق التضامن الاجتماعي :</strong> تم تدقيق هذه الأرقام والمصادقة عليها بالإجماع من طرف اللجنة المالية الوطنية المكلفة بتسيير ملفات الدعم المالي والاجتماعي.
+                        {t('kiosk.financial.auditNotice')}
                       </p>
                     </div>
 
@@ -712,17 +712,17 @@ export default function OfficialPublicationsKiosk({
                       {/* Recettes table (Arabic side) */}
                       <div className="space-y-3 text-right">
                         <h4 className="text-xs font-black uppercase text-slate-700 border-b border-emerald-500/10 pb-1.5 flex justify-between tracking-wide font-sans">
-                          <span>المداخيل برسم سنة {activePublication.financialDetails.year}</span>
-                          <span className="text-emerald-600 bg-emerald-500/10 p-1 px-2.5 rounded text-[9px]">Receipts</span>
+                          <span>{t('kiosk.financial.receiptsSection')} {activePublication.financialDetails.year}</span>
+                          <span className="text-emerald-600 bg-emerald-500/10 p-1 px-2.5 rounded text-[9px]">{t('kiosk.financial.receiptsTag')}</span>
                         </h4>
 
                         <div className="border border-slate-150/60 rounded-xl overflow-hidden font-sans">
                           <table className="w-full text-[11px] text-right">
                             <thead className="bg-slate-50 text-slate-500 text-[10px]/normal uppercase font-bold border-b border-slate-100">
                               <tr>
-                                <th className="p-2 border-l border-slate-100">Date التاريخ</th>
-                                <th className="p-2 border-l border-slate-100 text-right">نوعية المداخيل Type</th>
-                                <th className="p-2 text-left">المبلغ Sum (DH)</th>
+                                <th className="p-2 border-l border-slate-100">{t('kiosk.financial.thDate')}</th>
+                                <th className="p-2 border-l border-slate-100 text-right">{t('kiosk.financial.thType')}</th>
+                                <th className="p-2 text-left">{t('kiosk.financial.thAmount')}</th>
                               </tr>
                             </thead>
                             <tbody className="divide-y divide-slate-100 text-slate-600">
@@ -783,15 +783,15 @@ export default function OfficialPublicationsKiosk({
                     {/* Report Final Summary Ledger */}
                     <div className="p-6 bg-slate-900 text-white rounded-3xl grid grid-cols-1 md:grid-cols-3 gap-4 text-center border border-slate-800">
                       <div>
-                        <p className="text-[10px] text-slate-400 uppercase tracking-widest font-mono">Total Recettes المداخيل</p>
+                        <p className="text-[10px] text-slate-400 uppercase tracking-widest font-mono">{t('kiosk.financial.totalReceipts')}</p>
                         <p className="text-xl font-mono font-bold text-emerald-400 mt-1">{activePublication.financialDetails.totalReceipts.toLocaleString()} DH</p>
                       </div>
                       <div className="border-y md:border-y-0 md:border-x border-slate-800 py-3 md:py-0">
-                        <p className="text-[10px] text-slate-400 uppercase tracking-widest font-mono">Total Dépenses المصاريف</p>
+                        <p className="text-[10px] text-slate-400 uppercase tracking-widest font-mono">{t('kiosk.financial.totalExpenses')}</p>
                         <p className="text-xl font-mono font-bold text-red-400 mt-1">{activePublication.financialDetails.totalExpenses.toLocaleString()} DH</p>
                       </div>
                       <div>
-                        <p className="text-[10px] text-slate-400 uppercase tracking-widest font-mono">الرصيد الكلي الحالي Net Balance</p>
+                        <p className="text-[10px] text-slate-400 uppercase tracking-widest font-mono">{t('kiosk.financial.netBalance')}</p>
                         <p className="text-xl font-mono font-black text-brand-gold mt-1 underline decoration-double">{activePublication.financialDetails.netBalance.toLocaleString()} DH</p>
                       </div>
                     </div>
@@ -802,14 +802,14 @@ export default function OfficialPublicationsKiosk({
                 {activePublication.category === 'CONCOURS' && activePublication.contestRequirements && (
                   <div className="p-6 bg-slate-50 rounded-3xl border border-slate-150/80 space-y-6 pt-5">
                     <h4 className="text-sm font-black text-slate-900 border-b pb-1.5 border-slate-200 tracking-wide font-sans text-right" dir="rtl">
-                      📋 شروط وتفاصيل المشاركة في جائزة التميز السنوية
+                      {t('kiosk.contest.sectionTitle')}
                     </h4>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs text-slate-600 font-sans leading-relaxed">
                       
                       {/* Left: Prizes & Incentives */}
                       <div className="space-y-4">
-                        <strong className="text-slate-800 uppercase tracking-wider text-[11px] block border-l-2 border-purple-500 pl-2">DOTATIONS & PRIX DE L'EXCELLENCE :</strong>
+                        <strong className="text-slate-800 uppercase tracking-wider text-[11px] block border-l-2 border-purple-500 pl-2">{t('kiosk.contest.prizesLabel')}</strong>
                         <div className="space-y-2.5">
                           {activePublication.contestRequirements.prizes.map((prz, i) => (
                             <div key={i} className="p-3.5 bg-white border border-slate-100 rounded-xl flex justify-between items-center shadow-xs">
@@ -829,7 +829,7 @@ export default function OfficialPublicationsKiosk({
 
                       {/* Right: Conditions list */}
                       <div className="space-y-3 text-right">
-                        <strong className="text-slate-800 uppercase tracking-wider text-[11px] block pr-2 border-r-2 border-purple-500">من يشارك وكيف ؟</strong>
+                        <strong className="text-slate-800 uppercase tracking-wider text-[11px] block pr-2 border-r-2 border-purple-500">{t('kiosk.contest.conditionsLabel')}</strong>
                         <ul className="list-inside space-y-2.5">
                           {activePublication.contestRequirements.conditions.map((cond, i) => (
                             <li key={i} className="flex gap-2 justify-end text-slate-700">
@@ -840,7 +840,7 @@ export default function OfficialPublicationsKiosk({
                         </ul>
 
                         <div className="pt-4 border-t border-slate-100 text-[10px] text-slate-400">
-                          <p>Pour soumettre des candidatures ou demander des informations supplémentaires :</p>
+                          <p>{t('kiosk.contest.contactPrompt')}</p>
                           <p className="font-mono font-bold text-slate-800 mt-1">📧 {activePublication.contestRequirements.contactInfo}</p>
                         </div>
                       </div>
@@ -852,13 +852,13 @@ export default function OfficialPublicationsKiosk({
                 {/* Closing signature footer */}
                 <div className="border-t pt-8 border-slate-100 flex justify-between items-center text-xs text-slate-400 print:pt-4 print:border-t select-none">
                   <div>
-                    <p>Secrétariat Général de l'AOS</p>
+                    <p>{t('kiosk.footer.secretariat')}</p>
                     <p className="font-mono font-bold text-slate-800 text-[10px] mt-0.5">Rabat, Maroc</p>
                   </div>
                   
                   {/* Signature block of the President */}
                   <div className="text-right flex flex-col items-end">
-                    <p className="italic font-sans">Signé et Validé par :</p>
+                    <p className="italic font-sans">{t('kiosk.footer.signedBy')}</p>
                     <p className="font-bold text-slate-900 mt-1 font-sans">محمد الأخرش - رئيس الجمعية</p>
                     <p className="text-[10px]/normal text-slate-450 uppercase tracking-widest font-bold">M. Mohamed Al Akhrach</p>
                     {/* Cursive Signature Graphic decoration */}
@@ -876,7 +876,7 @@ export default function OfficialPublicationsKiosk({
                   onClick={() => setActivePublication(null)}
                   className="px-6 py-2.5 bg-slate-250 hover:bg-slate-300 text-slate-700 text-xs font-bold rounded-xl transition-all cursor-pointer"
                 >
-                  Fermer
+                  {t('kiosk.modal.closeBtn')}
                 </button>
               </div>
 

@@ -102,6 +102,21 @@ const fragment: TranslationFragment = {
 
     // Contest section heading in modal
     'kiosk.contest.sectionTitle': '📋 شروط وتفاصيل المشاركة في جائزة التميز السنوية',
+
+    // Financial table headers & footers
+    'kiosk.financial.auditNotice': 'صندوق التضامن الاجتماعي : تم تدقيق هذه الأرقام والمصادقة عليها بالإجماع من طرف اللجنة المالية الوطنية المكلفة بتسيير ملفات الدعم المالي والاجتماعي.',
+    'kiosk.financial.receiptsSection': 'المداخيل برسم سنة',
+    'kiosk.financial.receiptsTag': 'Recettes',
+    'kiosk.financial.thDate': 'Date التاريخ',
+    'kiosk.financial.thType': 'نوعية المداخيل Type',
+    'kiosk.financial.thAmount': 'المبلغ Sum (DH)',
+    'kiosk.financial.receiptsTotal': 'مجموع المداخيل Total',
+    'kiosk.financial.expensesSection': 'المنح والمساعدات المصروفة (المصاريف)',
+    'kiosk.financial.expensesTag': 'Dépenses',
+    'kiosk.financial.thExpDate': 'التاريخ',
+    'kiosk.financial.thPrestation': 'نوعية الاستفادة Prestation',
+    'kiosk.financial.thBeneficiary': 'المستفيد Sum (DH)',
+    'kiosk.financial.expensesTotal': 'مجموع المصاريف Total',
   },
   ar: {
     // Category filter labels
@@ -204,6 +219,21 @@ const fragment: TranslationFragment = {
 
     // Contest section heading in modal
     'kiosk.contest.sectionTitle': '📋 شروط وتفاصيل المشاركة في جائزة التميز السنوية',
+
+    // Financial table headers & footers
+    'kiosk.financial.auditNotice': 'صندوق التضامن الاجتماعي : تم تدقيق هذه الأرقام والمصادقة عليها بالإجماع من طرف اللجنة المالية الوطنية المكلفة بتسيير ملفات الدعم المالي والاجتماعي.',
+    'kiosk.financial.receiptsSection': 'المداخيل برسم سنة',
+    'kiosk.financial.receiptsTag': 'مداخيل',
+    'kiosk.financial.thDate': 'التاريخ',
+    'kiosk.financial.thType': 'نوع المداخيل',
+    'kiosk.financial.thAmount': 'المبلغ (درهم)',
+    'kiosk.financial.receiptsTotal': 'مجموع المداخيل',
+    'kiosk.financial.expensesSection': 'المنح والمساعدات المصروفة (المصاريف)',
+    'kiosk.financial.expensesTag': 'مصاريف',
+    'kiosk.financial.thExpDate': 'التاريخ',
+    'kiosk.financial.thPrestation': 'نوع الاستفادة',
+    'kiosk.financial.thBeneficiary': 'المبلغ (درهم)',
+    'kiosk.financial.expensesTotal': 'مجموع المصاريف',
   },
   en: {
     // Category filter labels
@@ -306,6 +336,21 @@ const fragment: TranslationFragment = {
 
     // Contest section heading in modal
     'kiosk.contest.sectionTitle': '📋 Contest Conditions & Participation Details',
+
+    // Financial table headers & footers
+    'kiosk.financial.auditNotice': 'Solidarity Fund: These figures have been audited and unanimously approved by the National Finance Committee responsible for managing financial and social support cases.',
+    'kiosk.financial.receiptsSection': 'Receipts for year',
+    'kiosk.financial.receiptsTag': 'Receipts',
+    'kiosk.financial.thDate': 'Date',
+    'kiosk.financial.thType': 'Receipt Type',
+    'kiosk.financial.thAmount': 'Amount (DH)',
+    'kiosk.financial.receiptsTotal': 'Total Receipts',
+    'kiosk.financial.expensesSection': 'Grants & Aid Disbursed (Expenses)',
+    'kiosk.financial.expensesTag': 'Expenses',
+    'kiosk.financial.thExpDate': 'Date',
+    'kiosk.financial.thPrestation': 'Benefit Type',
+    'kiosk.financial.thBeneficiary': 'Amount (DH)',
+    'kiosk.financial.expensesTotal': 'Total Expenses',
   },
 };
 

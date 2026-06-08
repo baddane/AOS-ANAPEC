@@ -141,6 +141,9 @@ const fragment: TranslationFragment = {
     'adm.defaultApproveComment': "Dossier approuvé par l'inspecteur social de l'AOS.",
     'adm.defaultRejectComment': 'Le dossier ne remplit pas les conditions administratives ou les justificatifs sont manquants.',
 
+    // Board role placeholder
+    'adm.rolePlaceholder': 'Président, Trésorier...',
+
     // Category labels (text only, emoji appended in code)
     'adm.catEidAlAdha': 'Aïd Al-Adha',
     'adm.catEstivage': 'Estivage & Vacances',
@@ -291,6 +294,9 @@ const fragment: TranslationFragment = {
     'adm.defaultApproveComment': 'تمت الموافقة على الملف من قبل المفتش الاجتماعي للجمعية.',
     'adm.defaultRejectComment': 'الملف لا يستوفي الشروط الإدارية أو الوثائق المبررة ناقصة.',
 
+    // Board role placeholder
+    'adm.rolePlaceholder': 'الرئيس، أمين الصندوق...',
+
     // Category labels
     'adm.catEidAlAdha': 'عيد الأضحى',
     'adm.catEstivage': 'الاصطياف والعطل',
@@ -440,6 +446,9 @@ const fragment: TranslationFragment = {
     'adm.modalBtnApprove': 'Approve & Validate',
     'adm.defaultApproveComment': 'File approved by the AOS social inspector.',
     'adm.defaultRejectComment': 'The file does not meet the administrative requirements or supporting documents are missing.',
+
+    // Board role placeholder
+    'adm.rolePlaceholder': 'President, Treasurer...',
 
     // Category labels
     'adm.catEidAlAdha': 'Eid Al-Adha',
