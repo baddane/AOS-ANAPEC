@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { 
-  BookOpen, Award, FileText, TrendingUp, Search, Calendar, ChevronRight, 
+import {
+  BookOpen, Award, FileText, TrendingUp, Search, Calendar, ChevronRight,
   Printer, ArrowLeft, Plus, Trash2, Heart, Award as AwardIcon, Users, CheckCircle
 } from 'lucide-react';
 import { OfficialPublication, PublicationCategory } from '../types';
+import { useLang } from '../i18n';
 
 interface OfficialPublicationsKioskProps {
   isAdmin: boolean;
@@ -13,14 +14,17 @@ interface OfficialPublicationsKioskProps {
   overridePublications?: OfficialPublication[];
 }
 
-// Visual category helpers
-const CATEGORIES: { value: PublicationCategory | 'ALL'; label: string; icon: React.ReactNode; color: string }[] = [
-  { value: 'ALL', label: 'Toutes les Publications', icon: <BookOpen className="w-4 h-4" />, color: 'bg-slate-100 text-slate-700 border-slate-200' },
-  { value: 'TEHNIA', label: 'Félicitations & Vœux (تهنئة)', icon: <Award className="w-4 h-4" />, color: 'bg-emerald-50 text-emerald-700 border-emerald-200' },
-  { value: 'SOLIDARITE_RAPPORT', label: 'Rapports Solidarité (التقرير المالي)', icon: <TrendingUp className="w-4 h-4" />, color: 'bg-amber-50 text-amber-700 border-amber-200' },
-  { value: 'CONCOURS', label: 'Prix & Concours (جوائز)', icon: <AwardIcon className="w-4 h-4" />, color: 'bg-purple-50 text-purple-700 border-purple-200' },
-  { value: 'BROCHURE', label: 'Brochures & Guides (أدلة)', icon: <FileText className="w-4 h-4" />, color: 'bg-blue-50 text-blue-700 border-blue-200' }
-];
+// Visual category helpers — generated inside component so labels go through t()
+type CategoryEntry = { value: PublicationCategory | 'ALL'; label: string; icon: React.ReactNode; color: string };
+function buildCategories(t: (k: string) => string): CategoryEntry[] {
+  return [
+    { value: 'ALL', label: t('kiosk.cat.all'), icon: <BookOpen className="w-4 h-4" />, color: 'bg-slate-100 text-slate-700 border-slate-200' },
+    { value: 'TEHNIA', label: t('kiosk.cat.tehnia'), icon: <Award className="w-4 h-4" />, color: 'bg-emerald-50 text-emerald-700 border-emerald-200' },
+    { value: 'SOLIDARITE_RAPPORT', label: t('kiosk.cat.solidarite'), icon: <TrendingUp className="w-4 h-4" />, color: 'bg-amber-50 text-amber-700 border-amber-200' },
+    { value: 'CONCOURS', label: t('kiosk.cat.concours'), icon: <AwardIcon className="w-4 h-4" />, color: 'bg-purple-50 text-purple-700 border-purple-200' },
+    { value: 'BROCHURE', label: t('kiosk.cat.brochure'), icon: <FileText className="w-4 h-4" />, color: 'bg-blue-50 text-blue-700 border-blue-200' },
+  ];
+}
 
 // Seed Publications
 export const INITIAL_PUBLICATIONS: OfficialPublication[] = [
@@ -145,12 +149,15 @@ Vous y découvrirez des sections pratiques sur la gestion de vos demandes, l'his
   }
 ];
 
-export default function OfficialPublicationsKiosk({ 
-  isAdmin, 
-  onAddPublication, 
+export default function OfficialPublicationsKiosk({
+  isAdmin,
+  onAddPublication,
   onDeletePublication,
   overridePublications
 }: OfficialPublicationsKioskProps) {
+  const { t } = useLang();
+  const CATEGORIES = buildCategories(t);
+
   const [selectedCategory, setSelectedCategory] = useState<PublicationCategory | 'ALL'>('ALL');
   const [searchQuery, setSearchQuery] = useState('');
   const [activePublication, setActivePublication] = useState<OfficialPublication | null>(null);

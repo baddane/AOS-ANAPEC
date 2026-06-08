@@ -1,14 +1,20 @@
 import React, { createContext, useContext, useEffect, useState, useCallback } from 'react';
+import { Dict, TranslationFragment } from './i18n/types';
+import adminpanel from './i18n/adminpanel';
+import conventions from './i18n/conventions';
+import prestations from './i18n/prestations';
+import profile from './i18n/profile';
+import kiosk from './i18n/kiosk';
+import governance from './i18n/governance';
 
 export type Lang = 'fr' | 'ar' | 'en';
+export type { Dict } from './i18n/types';
 
 export const LANGUAGES: { code: Lang; label: string; native: string; flag: string }[] = [
   { code: 'fr', label: 'Français', native: 'Français', flag: '🇫🇷' },
   { code: 'ar', label: 'Arabic', native: 'العربية', flag: '🇲🇦' },
   { code: 'en', label: 'English', native: 'English', flag: '🇬🇧' },
 ];
-
-type Dict = Record<string, string>;
 
 const fr: Dict = {
   // App chrome
@@ -239,7 +245,22 @@ const en: Dict = {
   'login.error': 'Login failed. Please try again or contact support.',
 };
 
-const DICTS: Record<Lang, Dict> = { fr, ar, en };
+// Merge core dictionaries with per-feature translation fragments.
+const FRAGMENTS: TranslationFragment[] = [
+  adminpanel, conventions, prestations, profile, kiosk, governance,
+];
+
+const DICTS: Record<Lang, Dict> = {
+  fr: { ...fr },
+  ar: { ...ar },
+  en: { ...en },
+};
+
+for (const frag of FRAGMENTS) {
+  Object.assign(DICTS.fr, frag.fr);
+  Object.assign(DICTS.ar, frag.ar);
+  Object.assign(DICTS.en, frag.en);
+}
 
 interface LangContextValue {
   lang: Lang;

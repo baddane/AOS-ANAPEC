@@ -32,14 +32,14 @@ interface AdminPanelProps {
 
 const COLORS = ['#4A69B1', '#DFB035', '#be123c', '#4f46e5', '#8b5cf6', '#06b6d4', '#ec4899'];
 
-const CATEGORY_LABELS: Record<PrestationCategory, string> = {
-  EID_AL_ADHA: 'Aïd Al-Adha 🐑',
-  ESTIVAGE: 'Estivage & Vacances 🏖️',
-  RENTREE_SCOLAIRE: 'Rentrée Scolaire 🎒',
-  DOSSIER_MEDICAL: 'Dossier Médical Mutuelle 🩺',
-  PRET_SOCIAL: 'Prêt Social Sans Intérêt 🏦',
-  PELLERINAGE: 'Pèlerinage Hajj 🕋',
-  SPORT_CULTURE: 'Sports & Culture 🏆'
+const CATEGORY_EMOJIS: Record<PrestationCategory, string> = {
+  EID_AL_ADHA: '🐑',
+  ESTIVAGE: '🏖️',
+  RENTREE_SCOLAIRE: '🎒',
+  DOSSIER_MEDICAL: '🩺',
+  PRET_SOCIAL: '🏦',
+  PELLERINAGE: '🕋',
+  SPORT_CULTURE: '🏆'
 };
 
 export default function AdminPanel({
@@ -57,6 +57,20 @@ export default function AdminPanel({
   onDeleteBoardMember
 }: AdminPanelProps) {
   const { t } = useLang();
+
+  const categoryLabel = (cat: PrestationCategory): string => {
+    const keyMap: Record<PrestationCategory, string> = {
+      EID_AL_ADHA: 'adm.catEidAlAdha',
+      ESTIVAGE: 'adm.catEstivage',
+      RENTREE_SCOLAIRE: 'adm.catRentreeScolaire',
+      DOSSIER_MEDICAL: 'adm.catDossierMedical',
+      PRET_SOCIAL: 'adm.catPretSocial',
+      PELLERINAGE: 'adm.catPellerinage',
+      SPORT_CULTURE: 'adm.catSportCulture',
+    };
+    return `${t(keyMap[cat])} ${CATEGORY_EMOJIS[cat]}`;
+  };
+
   const [activeTab, setActiveTab] = useState<'STATISTICS' | 'REQUESTS' | 'USERS' | 'CONVENTIONS' | 'NEWS' | 'BOARD'>('STATISTICS');
 
   // Board member form states
@@ -139,9 +153,9 @@ export default function AdminPanel({
 
   // Charts data calculation 2: Status distribution
   const statusPieData = [
-    { name: 'Approuvés', value: approvedRequests, color: '#10b981' },
-    { name: 'En attente', value: pendingRequests, color: '#f59e0b' },
-    { name: 'Rejetés', value: rejectedRequests, color: '#ef4444' }
+    { name: t('adm.chartPieApproved'), value: approvedRequests, color: '#10b981' },
+    { name: t('adm.chartPiePending'), value: pendingRequests, color: '#f59e0b' },
+    { name: t('adm.chartPieRejected'), value: rejectedRequests, color: '#ef4444' }
   ];
 
   const handleOpenReviewModal = (req: PrestationRequest) => {
@@ -152,20 +166,20 @@ export default function AdminPanel({
 
   const handleApprove = () => {
     if (!selectedReq) return;
-    onApproveRequest(selectedReq.id, customApproveAmount, adminOpinion || 'Dossier approuvé par l\'inspecteur social de l\'AOS.');
+    onApproveRequest(selectedReq.id, customApproveAmount, adminOpinion || t('adm.defaultApproveComment'));
     setSelectedReq(null);
   };
 
   const handleReject = () => {
     if (!selectedReq) return;
-    onRejectRequest(selectedReq.id, adminOpinion || 'Le dossier ne remplit pas les conditions administratives ou les justificatifs sont manquants.');
+    onRejectRequest(selectedReq.id, adminOpinion || t('adm.defaultRejectComment'));
     setSelectedReq(null);
   };
 
   const handleCreateNews = (e: React.FormEvent) => {
     e.preventDefault();
     if (!newsTitle || !newsContent) {
-      alert("Veuillez renseigner un titre et le contenu du communiqué.");
+      alert(t('adm.newsAlertRequired'));
       return;
     }
     const newlyCreated: NewsArticle = {
@@ -183,13 +197,13 @@ export default function AdminPanel({
     setNewsTitle('');
     setNewsSummary('');
     setNewsContent('');
-    alert("Le communiqué a été publié avec succès sur l'intranet.");
+    alert(t('adm.newsAlertSuccess'));
   };
 
   const handleCreateConvention = (e: React.FormEvent) => {
     e.preventDefault();
     if (!convPartner || !convTitle || !convValue) {
-      alert("Veuillez renseigner le nom du partenaire, l'intitulé et l'avantage.");
+      alert(t('adm.convAlertRequired'));
       return;
     }
     const newlyCreated: Convention = {
@@ -212,7 +226,7 @@ export default function AdminPanel({
     setConvCity('');
     setConvPhone('');
     setConvAddress('');
-    alert("Le nouveau partenaire conventionné a été enregistré avec succès.");
+    alert(t('adm.convAlertSuccess'));
   };
 
   return (
@@ -225,10 +239,10 @@ export default function AdminPanel({
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1 bg-amber-500/10 border border-amber-500/20 text-amber-400 rounded-lg text-xs font-bold mb-2">
               <Settings2 className="w-3.5 h-3.5" />
-              Panneau d'Administration AOS
+              {t('adm.headerBadge')}
             </div>
-            <h2 className="font-display text-xl font-bold tracking-tight">Secrétariat Général de l'Association</h2>
-            <p className="text-xs text-slate-400 mt-1">Gérez les demandes de prestations, approuvez les subventions ou ajoutez des actualités de l'AOS</p>
+            <h2 className="font-display text-xl font-bold tracking-tight">{t('adm.headerTitle')}</h2>
+            <p className="text-xs text-slate-400 mt-1">{t('adm.headerDesc')}</p>
           </div>
           
           {/* Tabs header selector */}
@@ -239,7 +253,7 @@ export default function AdminPanel({
                 activeTab === 'STATISTICS' ? 'bg-brand-blue text-white' : 'text-slate-300 hover:text-white'
               }`}
             >
-              Statistiques & KPIs
+              {t('adm.tabStats')}
             </button>
             <button
               onClick={() => setActiveTab('REQUESTS')}
@@ -247,7 +261,7 @@ export default function AdminPanel({
                 activeTab === 'REQUESTS' ? 'bg-brand-blue text-white' : 'text-slate-300 hover:text-white'
               }`}
             >
-              <span>Requêtes</span>
+              <span>{t('adm.tabRequests')}</span>
               {pendingRequests > 0 && (
                 <span className="absolute -top-1 -right-1 bg-amber-500 text-white text-[9px] w-4.5 h-4.5 rounded-full flex items-center justify-center font-bold font-sans animate-pulse">
                   {pendingRequests}
@@ -260,7 +274,7 @@ export default function AdminPanel({
                 activeTab === 'USERS' ? 'bg-brand-blue text-white' : 'text-slate-300 hover:text-white'
               }`}
             >
-              Membre ANAPEC
+              {t('adm.tabUsers')}
             </button>
             <button
               onClick={() => setActiveTab('CONVENTIONS')}
@@ -268,7 +282,7 @@ export default function AdminPanel({
                 activeTab === 'CONVENTIONS' ? 'bg-brand-blue text-white' : 'text-slate-300 hover:text-white'
               }`}
             >
-              + Convention
+              {t('adm.tabConventions')}
             </button>
             <button
               onClick={() => setActiveTab('NEWS')}
@@ -276,7 +290,7 @@ export default function AdminPanel({
                 activeTab === 'NEWS' ? 'bg-brand-blue text-white' : 'text-slate-300 hover:text-white'
               }`}
             >
-              + Communiqué
+              {t('adm.tabNews')}
             </button>
             <button
               onClick={() => setActiveTab('BOARD')}

@@ -7,6 +7,7 @@ import React, { useState } from 'react';
 import { UserProfile } from '../types';
 import { DELEGATIONS_LIST } from '../mockData';
 import { User, Mail, Phone, MapPin, Award, Download, Edit2, CheckCircle2, Lock, ShieldCheck } from 'lucide-react';
+import { useLang } from '../i18n';
 
 interface UserProfileCardProps {
   currentUser: UserProfile;
@@ -14,6 +15,7 @@ interface UserProfileCardProps {
 }
 
 export default function UserProfileCard({ currentUser, onUpdateProfile }: UserProfileCardProps) {
+  const { t } = useLang();
   const [isEditing, setIsEditing] = useState(false);
   const [name, setName] = useState(currentUser.name);
   const [prenom, setPrenom] = useState(currentUser.prenom);
@@ -52,7 +54,7 @@ export default function UserProfileCard({ currentUser, onUpdateProfile }: UserPr
       {success && (
         <div className="p-3 bg-brand-blue-light border border-brand-blue/20 text-brand-blue-dark text-xs font-semibold rounded-xl flex items-center gap-2">
           <CheckCircle2 className="w-4 h-4 text-brand-blue" />
-          <span>Profil mis à jour avec succès dans le système central de l'AOS.</span>
+          <span>{t('prof.profileUpdated')}</span>
         </div>
       )}
 
@@ -60,7 +62,7 @@ export default function UserProfileCard({ currentUser, onUpdateProfile }: UserPr
         
         {/* Visual membership Card Simulator (Left) */}
         <div className="md:col-span-1 space-y-4">
-          <h4 className="text-xs font-bold text-slate-400 uppercase tracking-widest text-left">CARTE D'ADHÉRENT OFFICIELLE</h4>
+          <h4 className="text-xs font-bold text-slate-400 uppercase tracking-widest text-left">{t('prof.officialCardHeading')}</h4>
           
           {/* Virtual Plastic ID Card */}
           <div className="relative aspect-[1.58/1] w-full rounded-2xl bg-gradient-to-br from-brand-blue-deep via-brand-blue to-slate-900 text-white p-5 overflow-hidden shadow-lg border border-brand-gold/30">
@@ -79,12 +81,12 @@ export default function UserProfileCard({ currentUser, onUpdateProfile }: UserPr
                 <h5 className="font-display font-extrabold text-[11px] tracking-wide uppercase text-brand-gold">
                   AOS ANAPEC
                 </h5>
-                <p className="text-[8px] text-brand-blue-light uppercase font-semibold">Œuvres Sociales de l'ANAPEC</p>
+                <p className="text-[8px] text-brand-blue-light uppercase font-semibold">{t('prof.cardOeuvresSociales')}</p>
               </div>
               <span className={`text-[8px] font-bold uppercase px-2 py-0.5 rounded-md ${
                 isProfileActive ? 'bg-brand-blue-light/20 text-white border border-brand-blue-light/30' : 'bg-rose-500/25 text-rose-300 border border-rose-500/30'
               }`}>
-                {isProfileActive ? 'Adhérent Actif' : 'Cotisation Suspendue'}
+                {isProfileActive ? t('prof.statusActive') : t('prof.statusSuspended')}
               </span>
             </div>
 
@@ -103,13 +105,13 @@ export default function UserProfileCard({ currentUser, onUpdateProfile }: UserPr
               {/* Personal labels */}
               <div className="space-y-1 text-xs">
                 <div>
-                  <p className="text-[8px] text-brand-blue-light font-bold uppercase tracking-wider">Nom & Prénom</p>
+                  <p className="text-[8px] text-brand-blue-light font-bold uppercase tracking-wider">{t('prof.cardLabelName')}</p>
                   <p className="font-bold text-white text-sm truncate max-w-[150px]">
                     {currentUser.prenom} {currentUser.name}
                   </p>
                 </div>
                 <div>
-                  <p className="text-[8px] text-brand-blue-light font-bold uppercase tracking-wider">Matricule agent</p>
+                  <p className="text-[8px] text-brand-blue-light font-bold uppercase tracking-wider">{t('prof.cardLabelMatricule')}</p>
                   <p className="font-mono font-bold text-brand-gold">{currentUser.matricule}</p>
                 </div>
               </div>
@@ -118,7 +120,7 @@ export default function UserProfileCard({ currentUser, onUpdateProfile }: UserPr
             {/* Card Footer metadata & simulated barcode */}
             <div className="absolute bottom-4 left-5 right-5 flex justify-between items-end">
               <div className="text-left">
-                <p className="text-[7px] text-brand-blue-light uppercase">Délégation régionale</p>
+                <p className="text-[7px] text-brand-blue-light uppercase">{t('prof.cardLabelDelegation')}</p>
                 <p className="font-semibold text-[9px] truncate max-w-[140px] text-teal-100">{currentUser.delegation}</p>
               </div>
 
@@ -141,7 +143,7 @@ export default function UserProfileCard({ currentUser, onUpdateProfile }: UserPr
             className="w-full inline-flex justify-center items-center gap-2 px-4 py-2.5 bg-slate-800 hover:bg-slate-900 border border-slate-700 text-white text-xs font-semibold rounded-xl transition-all cursor-pointer"
           >
             <Download className="w-4 h-4" />
-            Imprimer ma carte d'Adhérent
+            {t('prof.printCard')}
           </button>
         </div>
 
@@ -150,8 +152,8 @@ export default function UserProfileCard({ currentUser, onUpdateProfile }: UserPr
           <div className="bg-white rounded-3xl border border-slate-100 p-6 md:p-8 shadow-xs text-left">
             <div className="flex justify-between items-center pb-4 border-b border-slate-100 mb-6">
               <div>
-                <h4 className="font-display font-bold text-slate-900 text-base">Informations de l'Adhérent</h4>
-                <p className="text-xs text-slate-400 mt-0.5">Données de l'agent déclarées à l'Association des Œuvres Sociales</p>
+                <h4 className="font-display font-bold text-slate-900 text-base">{t('prof.sectionTitle')}</h4>
+                <p className="text-xs text-slate-400 mt-0.5">{t('prof.sectionDesc')}</p>
               </div>
               <button
                 type="button"
@@ -159,7 +161,7 @@ export default function UserProfileCard({ currentUser, onUpdateProfile }: UserPr
                 className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-brand-blue hover:text-brand-blue-dark bg-brand-blue-light hover:bg-brand-blue-accent/70 rounded-lg transition-colors cursor-pointer"
               >
                 <Edit2 className="w-3.5 h-3.5" />
-                <span>{isEditing ? 'Annuler l\'édition' : 'Modifier mes coordonnées'}</span>
+                <span>{isEditing ? t('prof.cancelEdit') : t('prof.editCoords')}</span>
               </button>
             </div>
 
@@ -168,7 +170,7 @@ export default function UserProfileCard({ currentUser, onUpdateProfile }: UserPr
                 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-1.5 col-span-1">
-                    <label className="text-xs font-bold uppercase tracking-wider text-slate-500">Prénom</label>
+                    <label className="text-xs font-bold uppercase tracking-wider text-slate-500">{t('prof.labelPrenom')}</label>
                     <input
                       type="text"
                       required
@@ -178,7 +180,7 @@ export default function UserProfileCard({ currentUser, onUpdateProfile }: UserPr
                     />
                   </div>
                   <div className="space-y-1.5 col-span-1">
-                    <label className="text-xs font-bold uppercase tracking-wider text-slate-500">Nom de famille</label>
+                    <label className="text-xs font-bold uppercase tracking-wider text-slate-500">{t('prof.labelNom')}</label>
                     <input
                       type="text"
                       required
@@ -191,7 +193,7 @@ export default function UserProfileCard({ currentUser, onUpdateProfile }: UserPr
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold uppercase tracking-wider text-slate-500">Numéro de Téléphone</label>
+                    <label className="text-xs font-bold uppercase tracking-wider text-slate-500">{t('prof.labelTelephone')}</label>
                     <input
                       type="text"
                       required
@@ -202,7 +204,7 @@ export default function UserProfileCard({ currentUser, onUpdateProfile }: UserPr
                     />
                   </div>
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold uppercase tracking-wider text-slate-500">Délégation ANAPEC régionale</label>
+                    <label className="text-xs font-bold uppercase tracking-wider text-slate-500">{t('prof.labelDelegation')}</label>
                     <select
                       value={delegation}
                       onChange={(e) => setDelegation(e.target.value)}
@@ -217,7 +219,7 @@ export default function UserProfileCard({ currentUser, onUpdateProfile }: UserPr
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold uppercase tracking-wider text-slate-500">Grade administratif</label>
+                    <label className="text-xs font-bold uppercase tracking-wider text-slate-500">{t('prof.labelGrade')}</label>
                     <input
                       type="text"
                       value={grade}
