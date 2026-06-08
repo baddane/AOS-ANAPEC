@@ -736,7 +736,7 @@ export default function OfficialPublicationsKiosk({
                             </tbody>
                             <tfoot className="bg-slate-50/50 border-t font-extrabold text-[12px]/normal">
                               <tr>
-                                <td colSpan={2} className="p-2 text-right border-l border-slate-100">مجموع المداخيل Total</td>
+                                <td colSpan={2} className="p-2 text-right border-l border-slate-100">{t('kiosk.financial.receiptsTotal')}</td>
                                 <td className="p-2 text-left font-mono text-emerald-800">{activePublication.financialDetails.totalReceipts.toLocaleString(undefined, {minimumFractionDigits: 2})} DH</td>
                               </tr>
                             </tfoot>
@@ -747,17 +747,17 @@ export default function OfficialPublicationsKiosk({
                       {/* Expenses Table (Expenses side) */}
                       <div className="space-y-3 text-right">
                         <h4 className="text-xs font-black uppercase text-slate-700 border-b border-rose-500/10 pb-1.5 flex justify-between tracking-wide font-sans">
-                          <span>المنح والمساعدات المصروفة (المصاريف)</span>
-                          <span className="text-rose-600 bg-rose-500/10 p-1 px-2.5 rounded text-[9px]">Expenses</span>
+                          <span>{t('kiosk.financial.expensesSection')}</span>
+                          <span className="text-rose-600 bg-rose-500/10 p-1 px-2.5 rounded text-[9px]">{t('kiosk.financial.expensesTag')}</span>
                         </h4>
 
                         <div className="border border-slate-150/60 rounded-xl overflow-hidden font-sans">
                           <table className="w-full text-[11px] text-right">
                             <thead className="bg-slate-50 text-slate-500 text-[10px]/normal uppercase font-bold border-b border-slate-100">
                               <tr>
-                                <th className="p-2 border-l border-slate-100">التاريخ</th>
-                                <th className="p-2 border-l border-slate-100 text-right">نوعية الاستفادة Prestation</th>
-                                <th className="p-2 text-left">المستفيد Sum (DH)</th>
+                                <th className="p-2 border-l border-slate-100">{t('kiosk.financial.thExpDate')}</th>
+                                <th className="p-2 border-l border-slate-100 text-right">{t('kiosk.financial.thPrestation')}</th>
+                                <th className="p-2 text-left">{t('kiosk.financial.thBeneficiary')}</th>
                               </tr>
                             </thead>
                             <tbody className="divide-y divide-slate-100 text-slate-600">
@@ -771,7 +771,7 @@ export default function OfficialPublicationsKiosk({
                             </tbody>
                             <tfoot className="bg-slate-50/50 border-t font-extrabold text-[12px]/normal">
                               <tr>
-                                <td colSpan={2} className="p-2 text-right border-l border-slate-100">مجموع المصاريف Total</td>
+                                <td colSpan={2} className="p-2 text-right border-l border-slate-100">{t('kiosk.financial.expensesTotal')}</td>
                                 <td className="p-2 text-left font-mono text-rose-800">{activePublication.financialDetails.totalExpenses.toLocaleString(undefined, {minimumFractionDigits: 2})} DH</td>
                               </tr>
                             </tfoot>

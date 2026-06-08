@@ -141,6 +141,9 @@ const fragment: TranslationFragment = {
     'adm.defaultApproveComment': "Dossier approuvé par l'inspecteur social de l'AOS.",
     'adm.defaultRejectComment': 'Le dossier ne remplit pas les conditions administratives ou les justificatifs sont manquants.',
 
+    // Misc
+    'adm.refPrefix': 'Réf',
+
     // Board role placeholder
     'adm.rolePlaceholder': 'Président, Trésorier...',
 
@@ -293,6 +296,9 @@ const fragment: TranslationFragment = {
     'adm.modalBtnApprove': 'اعتماد والتأكيد',
     'adm.defaultApproveComment': 'تمت الموافقة على الملف من قبل المفتش الاجتماعي للجمعية.',
     'adm.defaultRejectComment': 'الملف لا يستوفي الشروط الإدارية أو الوثائق المبررة ناقصة.',
+
+    // Misc
+    'adm.refPrefix': 'مرجع',
 
     // Board role placeholder
     'adm.rolePlaceholder': 'الرئيس، أمين الصندوق...',

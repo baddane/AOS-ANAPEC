@@ -477,7 +477,7 @@ export default function AdminPanel({
                       <td className="px-5 py-3.5">
                         <div>
                           <p className="font-bold text-slate-900">{req.userName}</p>
-                          <p className="text-[10px] text-slate-400 font-mono">Ref: {req.userMatricule}</p>
+                          <p className="text-[10px] text-slate-400 font-mono">{t('adm.refPrefix')}: {req.userMatricule}</p>
                         </div>
                       </td>
 
