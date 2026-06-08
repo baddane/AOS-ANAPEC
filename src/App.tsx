@@ -52,6 +52,11 @@ export default function App() {
     let isMounted = true;
     let loadingDone = false;
 
+    // Detect OAuth callback: URL contains tokens or authorization code
+    const isOAuthCallback =
+      window.location.hash.includes('access_token') ||
+      window.location.search.includes('code=');
+
     const markLoaded = () => {
       if (!loadingDone && isMounted) {
         loadingDone = true;
@@ -59,7 +64,10 @@ export default function App() {
       }
     };
 
-    const processSession = async (session: import('@supabase/supabase-js').Session | null) => {
+    const processSession = async (
+      session: import('@supabase/supabase-js').Session | null,
+      fromAuthChange = false,
+    ) => {
       if (!isMounted) return;
       if (session?.user) {
         try {
@@ -72,20 +80,24 @@ export default function App() {
           console.error('Erreur profil:', e);
           if (isMounted) { setCurrentUser(null); setIsAdminMode(false); }
         }
+        markLoaded();
       } else {
         if (isMounted) { setCurrentUser(null); setIsAdminMode(false); }
+        // During an OAuth callback, don't finalize on null — wait for onAuthStateChange
+        if (!isOAuthCallback || fromAuthChange) {
+          markLoaded();
+        }
       }
-      markLoaded();
     };
 
-    // Timeout de secours : jamais bloqué plus de 6 secondes
-    const timeout = setTimeout(markLoaded, 6000);
+    // Timeout de secours : jamais bloqué plus de 8 secondes
+    const timeout = setTimeout(markLoaded, 8000);
 
     // Chemin rapide : session existante depuis le stockage local
-    getAuthSession().then(processSession);
+    getAuthSession().then((s) => processSession(s, false));
 
     // Chemin OAuth : token dans le hash URL après redirect Microsoft
-    const unsubscribe = subscribeToAuthChanges(processSession);
+    const unsubscribe = subscribeToAuthChanges((s) => processSession(s, true));
 
     return () => {
       isMounted = false;
@@ -116,8 +128,11 @@ export default function App() {
         fetchAllConventions(),
         fetchAllNews(),
       ]);
-      setConventions(dbConventions);
-      setNews(dbNews);
+      // Merge: DB conventions + mock-only conventions (e.g. Akdital with rich data)
+      const dbIds = new Set(dbConventions.map(c => c.id));
+      const mockOnly = MOCK_CONVENTIONS.filter(c => !dbIds.has(c.id));
+      setConventions([...dbConventions, ...mockOnly]);
+      setNews(dbNews.length > 0 ? dbNews : MOCK_NEWS);
 
       if (isAdmin) {
         // L'admin a besoin de la vue globale : tous les utilisateurs + toutes les demandes

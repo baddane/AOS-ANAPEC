@@ -42,7 +42,13 @@ export function subscribeToAuthChanges(
 ): () => void {
   if (!supabase) return () => {};
   const { data: { subscription } } = supabase.auth.onAuthStateChange(
-    (_event, session) => callback(session)
+    (event, session) => {
+      // Clean auth tokens from URL after successful OAuth callback
+      if (event === 'SIGNED_IN' && (window.location.hash.includes('access_token') || window.location.search.includes('code='))) {
+        window.history.replaceState(null, '', window.location.pathname);
+      }
+      callback(session);
+    }
   );
   return () => subscription.unsubscribe();
 }
@@ -126,7 +132,18 @@ CREATE TABLE IF NOT EXISTS aos_conventions (
   "contactEmail" TEXT,
   address TEXT NOT NULL,
   city TEXT NOT NULL,
-  highlighted BOOLEAN DEFAULT FALSE
+  highlighted BOOLEAN DEFAULT FALSE,
+  "signatureDate" TEXT,
+  duration TEXT,
+  "partnerLogo" TEXT,
+  beneficiaries JSONB DEFAULT '[]',
+  establishments JSONB DEFAULT '[]',
+  articles JSONB DEFAULT '[]',
+  "coveredServices" JSONB DEFAULT '[]',
+  "requiredDocuments" JSONB DEFAULT '[]',
+  "partnerAddress" TEXT,
+  "partnerPhone" TEXT,
+  "partnerEmail" TEXT
 );
 
 CREATE TABLE IF NOT EXISTS aos_requests (
