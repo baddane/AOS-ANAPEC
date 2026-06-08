@@ -226,7 +226,7 @@ export default function OfficialPublicationsKiosk({
 
   const handleDelete = (id: string, e: React.MouseEvent) => {
     e.stopPropagation();
-    if (!window.confirm("Êtes-vous sûr de vouloir supprimer cette publication officielle ?")) return;
+    if (!window.confirm(t('kiosk.confirm.delete'))) return;
     
     if (onDeletePublication) {
       onDeletePublication(id);
@@ -264,10 +264,10 @@ export default function OfficialPublicationsKiosk({
 
   const translateCategory = (cat: PublicationCategory) => {
     switch(cat) {
-      case 'TEHNIA': return 'تهنئة ورسائل vœux';
-      case 'SOLIDARITE_RAPPORT': return 'صندوق التضامن / Rapports';
-      case 'CONCOURS': return 'مسابقات وجوائز / Concours';
-      case 'BROCHURE': return 'أدلة التوجيه / Brochures';
+      case 'TEHNIA': return t('kiosk.catLabel.tehnia');
+      case 'SOLIDARITE_RAPPORT': return t('kiosk.catLabel.solidarite');
+      case 'CONCOURS': return t('kiosk.catLabel.concours');
+      case 'BROCHURE': return t('kiosk.catLabel.brochure');
     }
   };
 
@@ -286,13 +286,13 @@ export default function OfficialPublicationsKiosk({
         <div className="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
           <div className="space-y-2 text-left">
             <div className="inline-flex items-center gap-2 bg-brand-gold/20 text-brand-gold px-3.5 py-1.5 rounded-full text-xs font-bold tracking-wide uppercase">
-              <BookOpen className="w-3.5 h-3.5" /> Espace Kiosque & Bibliothèque Officielle
+              <BookOpen className="w-3.5 h-3.5" /> {t('kiosk.banner.badge')}
             </div>
             <h2 className="text-2xl md:text-3xl font-display font-extrabold tracking-tight">
-              Publications, Rapports & Communiqués AOS
+              {t('kiosk.banner.title')}
             </h2>
             <p className="text-slate-400 text-xs sm:text-sm max-w-2xl leading-normal font-sans">
-              Consultez les bilans comptables officiels de la Caisse de Solidarité, les lettres de félicitations royales (تهنئة), les lancements de prix de l'excellence féminine et les guides d'accompagnement de l'ANAPEC.
+              {t('kiosk.banner.desc')}
             </p>
           </div>
 
@@ -301,7 +301,7 @@ export default function OfficialPublicationsKiosk({
               onClick={() => setShowAddForm(!showAddForm)}
               className="px-5 py-3 bg-brand-gold hover:bg-yellow-500 text-slate-950 text-xs font-bold rounded-xl shadow-lg shadow-brand-gold/10 transition-all flex items-center gap-2 cursor-pointer select-none"
             >
-              <Plus className="w-4 h-4" /> Publier un Document Officiel
+              <Plus className="w-4 h-4" /> {t('kiosk.admin.publishBtn')}
             </button>
           )}
         </div>
@@ -315,13 +315,13 @@ export default function OfficialPublicationsKiosk({
           className="bg-white border border-slate-200 rounded-3xl p-6 shadow-md text-left space-y-4"
         >
           <div className="flex justify-between items-center border-b pb-3 border-slate-100">
-            <h3 className="font-extrabold text-sm uppercase tracking-wider text-slate-800">✍️ Publier une nouvelle affiche officielle</h3>
-            <button onClick={() => setShowAddForm(false)} className="text-xs text-slate-400 hover:text-slate-600 font-bold">Annuler</button>
+            <h3 className="font-extrabold text-sm uppercase tracking-wider text-slate-800">{t('kiosk.form.title')}</h3>
+            <button onClick={() => setShowAddForm(false)} className="text-xs text-slate-400 hover:text-slate-600 font-bold">{t('kiosk.form.cancel')}</button>
           </div>
 
           <form onSubmit={handleAdd} className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
             <div className="space-y-2">
-              <label className="block text-slate-600 font-bold">Titre en Français *</label>
+              <label className="block text-slate-600 font-bold">{t('kiosk.form.labelTitleFr')}</label>
               <input 
                 type="text" required value={newTitle} onChange={e => setNewTitle(e.target.value)}
                 placeholder="Ex. 4ème Édition du Prix Féminin de l'AOS"
@@ -329,7 +329,7 @@ export default function OfficialPublicationsKiosk({
               />
             </div>
             <div className="space-y-2">
-              <label className="block text-slate-600 font-bold">العنوان باللغة العربية (Optionnel)</label>
+              <label className="block text-slate-600 font-bold">{t('kiosk.form.labelTitleAr')}</label>
               <input 
                 type="text" value={newTitleAr} onChange={e => setNewTitleAr(e.target.value)}
                 placeholder="مثال: تهنئة بمناسبة المسيرة الخضراء" dir="rtl"
@@ -338,33 +338,33 @@ export default function OfficialPublicationsKiosk({
             </div>
 
             <div className="space-y-2">
-              <label className="block text-slate-600 font-bold">Catégorie de Publication</label>
+              <label className="block text-slate-600 font-bold">{t('kiosk.form.labelCategory')}</label>
               <select 
                 value={newCat} onChange={e => setNewCat(e.target.value as PublicationCategory)}
                 className="w-full bg-slate-50 border border-slate-200 p-2.5 rounded-xl focus:outline-hidden focus:ring-1 focus:ring-brand-blue"
               >
-                <option value="TEHNIA">تهنئة - Félicitations & Vœux</option>
-                <option value="SOLIDARITE_RAPPORT">التقرير المالي - Bilans & Solidarité</option>
-                <option value="CONCOURS">جوائز وتفوق - Prix & Concours</option>
-                <option value="BROCHURE">أدلة ومطبوعات - Brochures & Guides</option>
+                <option value="TEHNIA">{t('kiosk.form.opt.tehnia')}</option>
+                <option value="SOLIDARITE_RAPPORT">{t('kiosk.form.opt.solidarite')}</option>
+                <option value="CONCOURS">{t('kiosk.form.opt.concours')}</option>
+                <option value="BROCHURE">{t('kiosk.form.opt.brochure')}</option>
               </select>
             </div>
 
             <div className="space-y-2">
-              <label className="block text-slate-600 font-bold">Thème de design / Couleur</label>
+              <label className="block text-slate-600 font-bold">{t('kiosk.form.labelTheme')}</label>
               <select 
                 value={newCover} onChange={e => setNewCover(e.target.value)}
                 className="w-full bg-slate-50 border border-slate-200 p-2.5 rounded-xl focus:outline-hidden focus:ring-1 focus:ring-brand-blue"
               >
-                <option value="emerald">Vert Émeraude (تهنئة / Royal)</option>
-                <option value="amber">Orange Ambre (التقرير المالي / Solidaire)</option>
-                <option value="purple">Violet Royal (المسابقات والجوائز / VIP)</option>
-                <option value="blue">Bleu National (أدلة التوجيه / Corporate)</option>
+                <option value="emerald">{t('kiosk.form.color.emerald')}</option>
+                <option value="amber">{t('kiosk.form.color.amber')}</option>
+                <option value="purple">{t('kiosk.form.color.purple')}</option>
+                <option value="blue">{t('kiosk.form.color.blue')}</option>
               </select>
             </div>
 
             <div className="space-y-2">
-              <label className="block text-slate-600 font-bold">Résumé descriptif (Français) *</label>
+              <label className="block text-slate-600 font-bold">{t('kiosk.form.labelSummaryFr')}</label>
               <textarea 
                 required value={newSummary} onChange={e => setNewSummary(e.target.value)} rows={2}
                 placeholder="Bref résumé de l'affiche..."
@@ -372,7 +372,7 @@ export default function OfficialPublicationsKiosk({
               />
             </div>
             <div className="space-y-2">
-              <label className="block text-slate-600 font-bold">الموجز والملخص بالعربية</label>
+              <label className="block text-slate-600 font-bold">{t('kiosk.form.labelSummaryAr')}</label>
               <textarea 
                 value={newSummaryAr} onChange={e => setNewSummaryAr(e.target.value)} rows={2} dir="rtl"
                 placeholder="ملخص وجيز عن هذا المنشور..."
@@ -381,7 +381,7 @@ export default function OfficialPublicationsKiosk({
             </div>
 
             <div className="space-y-2">
-              <label className="block text-slate-600 font-bold">Contenu détaillé (Français)</label>
+              <label className="block text-slate-600 font-bold">{t('kiosk.form.labelContentFr')}</label>
               <textarea 
                 value={newContentFr} onChange={e => setNewContentFr(e.target.value)} rows={4}
                 placeholder="Un grand texte d'explication détaillé..."
@@ -389,7 +389,7 @@ export default function OfficialPublicationsKiosk({
               />
             </div>
             <div className="space-y-2">
-              <label className="block text-slate-600 font-bold">النص الكامل بالتفصيل بالعربية (مستحسن للتهنيئات)</label>
+              <label className="block text-slate-600 font-bold">{t('kiosk.form.labelContentAr')}</label>
               <textarea 
                 value={newContentAr} onChange={e => setNewContentAr(e.target.value)} rows={4} dir="rtl"
                 placeholder="اكتب تهنئتك أو منشورك الرسمي هنا باللغة العربية الفصحى..."
@@ -402,13 +402,13 @@ export default function OfficialPublicationsKiosk({
                 type="button" onClick={() => setShowAddForm(false)}
                 className="px-4 py-2 border border-slate-200 rounded-xl hover:bg-slate-50"
               >
-                Annuler
+                {t('kiosk.form.cancel')}
               </button>
               <button 
                 type="submit" 
                 className="px-5 py-2 bg-brand-blue hover:bg-brand-blue-dark text-white font-bold rounded-xl"
               >
-                Enregistrer la Publication
+                {t('kiosk.form.save')}
               </button>
             </div>
           </form>
@@ -442,7 +442,7 @@ export default function OfficialPublicationsKiosk({
             type="text"
             value={searchQuery}
             onChange={e => setSearchQuery(e.target.value)}
-            placeholder="Rechercher une publication ou affiche..."
+            placeholder={t('kiosk.search.placeholder')}
             className="w-full bg-slate-50 border border-slate-200 pl-9 pr-4 py-3 text-xs rounded-xl focus:outline-hidden focus:ring-1 focus:ring-brand-blue transition-colors text-left"
           />
         </div>
@@ -476,9 +476,9 @@ export default function OfficialPublicationsKiosk({
                     <button
                       onClick={(e) => handleDelete(pub.id, e)}
                       className="p-1 px-2 rounded-lg bg-red-600/20 hover:bg-red-600 border border-white/10 transition-colors text-white text-[10px] font-bold"
-                      title="Supprimer cette publication"
+                      title={t('kiosk.card.delete')}
                     >
-                      Supprimer 🗑️
+                      {t('kiosk.card.delete')}
                     </button>
                   )}
                 </div>

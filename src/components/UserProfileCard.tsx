@@ -228,7 +228,7 @@ export default function UserProfileCard({ currentUser, onUpdateProfile }: UserPr
                     />
                   </div>
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold uppercase tracking-wider text-slate-500">URL de l'Avatar (Photo de profil)</label>
+                    <label className="text-xs font-bold uppercase tracking-wider text-slate-500">{t('prof.labelAvatar')}</label>
                     <input
                       type="url"
                       placeholder="https://..."
@@ -239,7 +239,7 @@ export default function UserProfileCard({ currentUser, onUpdateProfile }: UserPr
                       }}
                       className="block w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-mono"
                     />
-                    <p className="text-[10px] text-slate-400 mt-0.5">Seules les URLs HTTPS sont acceptées</p>
+                    <p className="text-[10px] text-slate-400 mt-0.5">{t('prof.httpsOnly')}</p>
                   </div>
                 </div>
 
@@ -249,13 +249,13 @@ export default function UserProfileCard({ currentUser, onUpdateProfile }: UserPr
                     onClick={() => setIsEditing(false)}
                     className="px-4 py-2 bg-white text-slate-700 border border-slate-200 text-xs font-semibold rounded-lg hover:bg-slate-50 transition-colors cursor-pointer"
                   >
-                    Annuler
+                    {t('prof.cancel')}
                   </button>
                   <button
                     type="submit"
                     className="px-5 py-2 bg-brand-blue text-white text-xs font-semibold rounded-lg hover:bg-brand-blue-dark transition-colors cursor-pointer"
                   >
-                    Mettre à jour mon profil
+                    {t('prof.saveProfile')}
                   </button>
                 </div>
 
@@ -267,9 +267,9 @@ export default function UserProfileCard({ currentUser, onUpdateProfile }: UserPr
                 <div className="flex gap-3 items-start">
                   <Mail className="w-5 h-5 text-slate-400 mt-0.5 shrink-0" />
                   <div>
-                    <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Adresse email professionnelle</p>
+                    <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">{t('prof.fieldEmail')}</p>
                     <p className="font-semibold text-slate-800 mt-0.5">{currentUser.email}</p>
-                    <p className="text-[10px] text-slate-400 font-italic mt-0.5">Identifiant de connexion intranet unique</p>
+                    <p className="text-[10px] text-slate-400 font-italic mt-0.5">{t('prof.emailNote')}</p>
                   </div>
                 </div>
 
@@ -277,9 +277,9 @@ export default function UserProfileCard({ currentUser, onUpdateProfile }: UserPr
                 <div className="flex gap-3 items-start">
                   <User className="w-5 h-5 text-slate-400 mt-0.5 shrink-0" />
                   <div>
-                    <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Identité complète</p>
+                    <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">{t('prof.fieldIdentity')}</p>
                     <p className="font-semibold text-slate-800 mt-0.5">{currentUser.prenom} {currentUser.name}</p>
-                    <p className="text-[10px] text-slate-400 font-mono mt-0.5">Matricule: {currentUser.matricule}</p>
+                    <p className="text-[10px] text-slate-400 font-mono mt-0.5">{t('prof.matriculePrefix')} {currentUser.matricule}</p>
                   </div>
                 </div>
 
@@ -287,8 +287,8 @@ export default function UserProfileCard({ currentUser, onUpdateProfile }: UserPr
                 <div className="flex gap-3 items-start">
                   <Phone className="w-5 h-5 text-slate-400 mt-0.5 shrink-0" />
                   <div>
-                    <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Téléphone portable</p>
-                    <p className="font-semibold text-slate-800 mt-0.5">{currentUser.telephone || 'Non renseigné'}</p>
+                    <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">{t('prof.fieldPhone')}</p>
+                    <p className="font-semibold text-slate-800 mt-0.5">{currentUser.telephone || t('prof.phoneEmpty')}</p>
                   </div>
                 </div>
 
@@ -296,7 +296,7 @@ export default function UserProfileCard({ currentUser, onUpdateProfile }: UserPr
                 <div className="flex gap-3 items-start">
                   <MapPin className="w-5 h-5 text-slate-400 mt-0.5 shrink-0" />
                   <div>
-                    <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Rattachement Régional</p>
+                    <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">{t('prof.fieldRegion')}</p>
                     <p className="font-semibold text-slate-800 mt-0.5">{currentUser.delegation}</p>
                   </div>
                 </div>
@@ -305,17 +305,17 @@ export default function UserProfileCard({ currentUser, onUpdateProfile }: UserPr
                 <div className="flex gap-3 items-start col-span-full pt-4 border-t border-slate-100">
                   <Award className="w-5 h-5 text-amber-500 mt-0.5 shrink-0" />
                   <div>
-                    <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Situation & Cotisation AOS</p>
+                    <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">{t('prof.fieldCotisation')}</p>
                     <div className="flex flex-wrap gap-4 mt-1.5 items-center">
                       <span className="text-xs font-semibold text-slate-600">
-                        Membre de l'association depuis le: <strong className="text-slate-800">{new Date(currentUser.membershipDate).toLocaleDateString('fr-FR', {year: 'numeric', month: 'long', day: 'numeric'})}</strong>
+                        {t('prof.memberSince')} <strong className="text-slate-800">{new Date(currentUser.membershipDate).toLocaleDateString('fr-FR', {year: 'numeric', month: 'long', day: 'numeric'})}</strong>
                       </span>
                       <span className={`px-2.5 py-1 rounded-full text-[11px] font-bold border ${
                         isProfileActive 
                           ? 'bg-brand-blue-light text-brand-blue-dark border-brand-blue/20' 
                           : 'bg-rose-50 text-rose-700 border-rose-200'
                       }`}>
-                        🔑 {isProfileActive ? 'Cotisation Régulière' : 'Non à jour'}
+                        🔑 {isProfileActive ? t('prof.cotisationOk') : t('prof.cotisationLate')}
                       </span>
                     </div>
                   </div>
@@ -332,19 +332,18 @@ export default function UserProfileCard({ currentUser, onUpdateProfile }: UserPr
 
             <div className="flex items-center gap-2 pb-4 border-b border-slate-100 mb-6">
               <Lock className="w-4 h-4 text-brand-blue" />
-              <h4 className="font-display font-bold text-slate-900 text-base">Sécurité & Accès Intranet</h4>
+              <h4 className="font-display font-bold text-slate-900 text-base">{t('prof.securityTitle')}</h4>
             </div>
 
             <div className="flex items-start gap-4 p-4 bg-brand-blue-light rounded-2xl border border-brand-blue/15">
               <ShieldCheck className="w-8 h-8 text-brand-blue shrink-0 mt-0.5" />
               <div className="space-y-1">
-                <p className="text-sm font-bold text-brand-blue-dark">Authentification Microsoft Azure AD</p>
+                <p className="text-sm font-bold text-brand-blue-dark">{t('prof.msAuthTitle')}</p>
                 <p className="text-xs text-slate-500 leading-relaxed">
-                  Votre accès est sécurisé via votre compte professionnel Microsoft ANAPEC (<span className="font-mono">{currentUser.email}</span>).
-                  La gestion du mot de passe s'effectue directement depuis votre portail Microsoft 365.
+                  {t('prof.msAuthDesc')} (<span className="font-mono">{currentUser.email}</span>)
                 </p>
                 <p className="text-[11px] text-slate-400 mt-1">
-                  Pour changer votre mot de passe, rendez-vous sur <span className="font-mono text-brand-blue">account.microsoft.com</span>
+                  {t('prof.msAuthLink')} <span className="font-mono text-brand-blue">account.microsoft.com</span>
                 </p>
               </div>
             </div>

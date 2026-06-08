@@ -318,9 +318,9 @@ export default function AdminPanel({
                 📥
               </div>
               <div className="space-y-0.5">
-                <p className="text-[10px] uppercase font-bold text-slate-400">Total Demandes Recues</p>
+                <p className="text-[10px] uppercase font-bold text-slate-400">{t('adm.statTotalLabel')}</p>
                 <p className="text-xl font-extrabold text-slate-900">{totalRequests}</p>
-                <p className="text-[10px] text-slate-400 font-medium">{pendingRequests} dossiers en attente</p>
+                <p className="text-[10px] text-slate-400 font-medium">{t('adm.statTotalSub').replace('{n}', String(pendingRequests))}</p>
               </div>
             </div>
 
@@ -329,9 +329,9 @@ export default function AdminPanel({
                 ⏳
               </div>
               <div className="space-y-0.5">
-                <p className="text-[10px] uppercase font-bold text-slate-400">Dossiers en attente</p>
+                <p className="text-[10px] uppercase font-bold text-slate-400">{t('adm.statPendingLabel')}</p>
                 <p className="text-xl font-extrabold text-amber-600">{pendingRequests}</p>
-                <p className="text-[10px] text-amber-500 font-medium">Requiert votre avis direct</p>
+                <p className="text-[10px] text-amber-500 font-medium">{t('adm.statPendingSub')}</p>
               </div>
             </div>
 
@@ -340,9 +340,9 @@ export default function AdminPanel({
                 💰
               </div>
               <div className="space-y-0.5">
-                <p className="text-[10px] uppercase font-bold text-slate-400">Paiements Validés (DH)</p>
+                <p className="text-[10px] uppercase font-bold text-slate-400">{t('adm.statAmountLabel')}</p>
                 <p className="text-xl font-extrabold text-emerald-700">{totalDistributedAmount.toLocaleString()} DH</p>
-                <p className="text-[10px] text-emerald-600 font-medium">Répartis sur {approvedRequests} dossiers</p>
+                <p className="text-[10px] text-emerald-600 font-medium">{t('adm.statAmountSub').replace('{n}', String(approvedRequests))}</p>
               </div>
             </div>
 
@@ -351,9 +351,9 @@ export default function AdminPanel({
                 👥
               </div>
               <div className="space-y-0.5">
-                <p className="text-[10px] uppercase font-bold text-slate-400">Donateurs Adhérents</p>
-                <p className="text-xl font-extrabold text-slate-900">{users.length} agents</p>
-                <p className="text-[10px] text-emerald-600 font-medium">{users.filter(u => u.cotisationStatus === 'active').length} cotisants actifs</p>
+                <p className="text-[10px] uppercase font-bold text-slate-400">{t('adm.statUsersLabel')}</p>
+                <p className="text-xl font-extrabold text-slate-900">{t('adm.statUsersCount').replace('{n}', String(users.length))}</p>
+                <p className="text-[10px] text-emerald-600 font-medium">{t('adm.statUsersSub').replace('{n}', String(users.filter(u => u.cotisationStatus === 'active').length))}</p>
               </div>
             </div>
 
@@ -364,7 +364,7 @@ export default function AdminPanel({
             
             {/* Chart 1: Volume of demands per category */}
             <div className="bg-white p-5 rounded-3xl border border-slate-100 lg:col-span-2 text-left">
-              <h4 className="font-display font-bold text-slate-900 text-sm mb-4">Volume des Demandes par Prestation Sociale</h4>
+              <h4 className="font-display font-bold text-slate-900 text-sm mb-4">{t('adm.chartBarTitle')}</h4>
               <div className="h-64">
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={categoryData} margin={{ top: 10, right: 10, left: -20, bottom: 5 }}>
@@ -372,7 +372,7 @@ export default function AdminPanel({
                     <XAxis dataKey="name" fontSize={10} tickLine={false} axisLine={false} />
                     <YAxis fontSize={10} tickLine={false} axisLine={false} />
                     <Tooltip cursor={{ fill: '#f8fafc' }} />
-                    <Bar dataKey="count" fill="#4A69B1" radius={[4, 4, 0, 0]} name="Nombre d'adhérents" />
+                    <Bar dataKey="count" fill="#4A69B1" radius={[4, 4, 0, 0]} name={t('adm.chartBarBarName')} />
                   </BarChart>
                 </ResponsiveContainer>
               </div>
@@ -380,7 +380,7 @@ export default function AdminPanel({
 
             {/* Chart 2: Status distribution pie chart */}
             <div className="bg-white p-5 rounded-3xl border border-slate-100 text-left">
-              <h4 className="font-display font-bold text-slate-900 text-sm mb-4">Répartition des Décisions Sociales</h4>
+              <h4 className="font-display font-bold text-slate-900 text-sm mb-4">{t('adm.chartPieTitle')}</h4>
               <div className="h-48 relative flex items-center justify-center">
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
@@ -410,7 +410,7 @@ export default function AdminPanel({
                       <span className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: item.color }} />
                       <span className="font-semibold text-slate-600">{item.name}</span>
                     </div>
-                    <span className="font-bold text-slate-800">{item.value} dossiers</span>
+                    <span className="font-bold text-slate-800">{item.value} {t('adm.chartPieDossiers')}</span>
                   </div>
                 ))}
               </div>
@@ -420,19 +420,19 @@ export default function AdminPanel({
 
           {/* Quick reminders list */}
           <div className="bg-white rounded-3xl border border-slate-100 p-6 text-left">
-            <h4 className="font-display font-bold text-slate-900 text-sm mb-3">Tâches de Gestion Recommandées</h4>
+            <h4 className="font-display font-bold text-slate-900 text-sm mb-3">{t('adm.reminderTitle')}</h4>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs font-medium text-slate-600">
               <div className="p-3 bg-slate-50 rounded-xl space-y-1">
-                <p className="font-bold text-slate-850">📁 Examiner les dossiers ({pendingRequests})</p>
-                <p className="text-[11px] text-slate-400">Vérifier la conformité des documents d'estivage ou de Naissance.</p>
+                <p className="font-bold text-slate-850">{t('adm.reminder1Title').replace('{n}', String(pendingRequests))}</p>
+                <p className="text-[11px] text-slate-400">{t('adm.reminder1Desc')}</p>
               </div>
               <div className="p-3 bg-slate-50 rounded-xl space-y-1">
-                <p className="font-bold text-slate-850">📞 Contacter les non-cotisants</p>
-                <p className="text-[11px] text-slate-400">{users.filter(u=>u.cotisationStatus==='inactive').length} membres ont des cotisations suspendues et bloquées.</p>
+                <p className="font-bold text-slate-850">{t('adm.reminder2Title')}</p>
+                <p className="text-[11px] text-slate-400">{t('adm.reminder2Desc').replace('{n}', String(users.filter(u=>u.cotisationStatus==='inactive').length))}</p>
               </div>
               <div className="p-3 bg-slate-50 rounded-xl space-y-1">
-                <p className="font-bold text-slate-850">🎯 Ajouter des conventions d'été</p>
-                <p className="text-[11px] text-slate-400">Compléter le catalogue avec les résidences d'été partenaires avant juin.</p>
+                <p className="font-bold text-slate-850">{t('adm.reminder3Title')}</p>
+                <p className="text-[11px] text-slate-400">{t('adm.reminder3Desc')}</p>
               </div>
             </div>
           </div>
@@ -446,11 +446,11 @@ export default function AdminPanel({
           
           <div className="flex justify-between items-center text-left">
             <div>
-              <h4 className="font-display font-bold text-slate-900 text-base">Traitement Officiel des Prestations</h4>
-              <p className="text-xs text-slate-400">Inspectez les dossiers de remboursement et arbitrez les subventions de l'ANAPEC</p>
+              <h4 className="font-display font-bold text-slate-900 text-base">{t('adm.reqHeading')}</h4>
+              <p className="text-xs text-slate-400">{t('adm.reqSubheading')}</p>
             </div>
             <span className="bg-slate-100 text-slate-800 text-xs font-mono font-bold px-2.5 py-1 rounded-lg">
-              {requests.length} requêtes totales
+              {requests.length} {t('adm.reqCounterSuffix')}
             </span>
           </div>
 
@@ -460,13 +460,13 @@ export default function AdminPanel({
               <table className="min-w-full divide-y divide-slate-100 text-sm">
                 <thead className="bg-slate-50/70">
                   <tr className="text-slate-500 font-bold text-[11px] uppercase tracking-wider">
-                    <th className="px-5 py-3.5">Adhérent & Matricule</th>
-                    <th className="px-5 py-3.5">Délégation</th>
-                    <th className="px-5 py-3.5">Catégorie</th>
-                    <th className="px-5 py-3.5">Montant demandé</th>
-                    <th className="px-5 py-3.5">Dépôt</th>
-                    <th className="px-5 py-3.5 text-center">Statut</th>
-                    <th className="px-5 py-3.5 text-right">Actions</th>
+                    <th className="px-5 py-3.5">{t('adm.reqColMember')}</th>
+                    <th className="px-5 py-3.5">{t('adm.reqColDelegation')}</th>
+                    <th className="px-5 py-3.5">{t('adm.reqColCategory')}</th>
+                    <th className="px-5 py-3.5">{t('adm.reqColAmount')}</th>
+                    <th className="px-5 py-3.5">{t('adm.reqColDate')}</th>
+                    <th className="px-5 py-3.5 text-center">{t('adm.reqColStatus')}</th>
+                    <th className="px-5 py-3.5 text-right">{t('adm.reqColActions')}</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100 text-slate-700 font-medium">
@@ -489,7 +489,7 @@ export default function AdminPanel({
                       {/* Benefit Type */}
                       <td className="px-5 py-3.5 text-xs">
                         <span className="bg-slate-100 text-slate-700 px-2 py-0.5 rounded-md text-[10px] font-bold">
-                          {CATEGORY_LABELS[req.category]}
+                          {categoryLabel(req.category)}
                         </span>
                       </td>
 
@@ -512,7 +512,7 @@ export default function AdminPanel({
                             ? 'bg-rose-50 text-rose-700 border border-rose-200/50'
                             : 'bg-amber-50 text-amber-700 border border-amber-200/50 animate-pulse'
                         }`}>
-                          {req.status === 'approved' ? 'Approuvé' : req.status === 'rejected' ? 'Rejeté' : 'À l\'examen'}
+                          {req.status === 'approved' ? t('adm.reqStatusApproved') : req.status === 'rejected' ? t('adm.reqStatusRejected') : t('adm.reqStatusPending')}
                         </span>
                       </td>
 
@@ -526,7 +526,7 @@ export default function AdminPanel({
                               : 'bg-slate-100 hover:bg-slate-200 text-slate-700'
                           }`}
                         >
-                          {req.status === 'pending' ? 'Arbiter le dossier 📑' : 'Ré-examiner'}
+                          {req.status === 'pending' ? t('adm.reqBtnReview') : t('adm.reqBtnReReview')}
                         </button>
                       </td>
 
@@ -546,11 +546,11 @@ export default function AdminPanel({
           
           <div className="flex justify-between items-center text-left">
             <div>
-              <h4 className="font-display font-bold text-slate-900 text-base">Base de Données des Adhérents</h4>
-              <p className="text-xs text-slate-400">Gérez le statut des cotisations, changez les rôles ou désactivez des profils</p>
+              <h4 className="font-display font-bold text-slate-900 text-base">{t('adm.usersHeading')}</h4>
+              <p className="text-xs text-slate-400">{t('adm.usersSubheading')}</p>
             </div>
             <span className="bg-slate-100 text-slate-800 text-xs font-mono font-bold px-2.5 py-1 rounded-lg">
-              {users.length} collaborateurs ANAPEC
+              {users.length} {t('adm.usersCounterSuffix')}
             </span>
           </div>
 
@@ -559,12 +559,12 @@ export default function AdminPanel({
               <table className="min-w-full divide-y divide-slate-100 text-sm">
                 <thead className="bg-slate-50/70">
                   <tr className="text-slate-500 font-bold text-[11px] uppercase tracking-wider">
-                    <th className="px-5 py-3.5">Collaborateur</th>
-                    <th className="px-5 py-3.5">Matricule & Grade</th>
-                    <th className="px-5 py-3.5">Délégation</th>
-                    <th className="px-5 py-3.5">Téléphone</th>
-                    <th className="px-5 py-3.5">Rôle</th>
-                    <th className="px-5 py-3.5 text-center">Régularisation Cotisation</th>
+                    <th className="px-5 py-3.5">{t('adm.usersColMember')}</th>
+                    <th className="px-5 py-3.5">{t('adm.usersColMatricule')}</th>
+                    <th className="px-5 py-3.5">{t('adm.usersColDelegation')}</th>
+                    <th className="px-5 py-3.5">{t('adm.usersColPhone')}</th>
+                    <th className="px-5 py-3.5">{t('adm.usersColRole')}</th>
+                    <th className="px-5 py-3.5 text-center">{t('adm.usersColCotisation')}</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100 text-slate-700 font-medium">
@@ -591,7 +591,7 @@ export default function AdminPanel({
                       <td className="px-5 py-3.5">
                         <div>
                           <p className="font-mono text-xs font-bold text-slate-800">{item.matricule}</p>
-                          <p className="text-[10px] text-slate-400">{item.grade || 'Collaborateur'}</p>
+                          <p className="text-[10px] text-slate-400">{item.grade || t('adm.usersGradeDefault')}</p>
                         </div>
                       </td>
 
@@ -612,7 +612,7 @@ export default function AdminPanel({
                             ? 'bg-amber-50 text-amber-700 border-amber-200/50' 
                             : 'bg-indigo-50 text-indigo-700 border-indigo-200/50'
                         }`}>
-                          {item.role === 'admin' ? 'Administrateur' : 'Adhérent standard'}
+                          {item.role === 'admin' ? t('adm.usersRoleAdmin') : t('adm.usersRoleMember')}
                         </span>
                       </td>
 

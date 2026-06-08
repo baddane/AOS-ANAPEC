@@ -19,6 +19,9 @@ const fragment: TranslationFragment = {
     'conv.cat.EDUCATION': 'Éducation & Crèches',
     'conv.cat.SOURIRE': 'Loisirs & Bien-être',
 
+    // Recommended badge
+    'conv.recommended': 'Recommandé',
+
     // Partner count
     'conv.partnersFound_plural': 'partenaires trouvés',
     'conv.partnersFound_singular': 'partenaire trouvé',
@@ -120,8 +123,11 @@ const fragment: TranslationFragment = {
     'conv.cat.EDUCATION': 'التعليم ودور الحضانة',
     'conv.cat.SOURIRE': 'الترفيه والعافية',
 
+    // Recommended badge
+    'conv.recommended': 'موصى به',
+
     // Partner count
-    'conv.partnersFound_plural': 'شريك موجود',
+    'conv.partnersFound_plural': 'شركاء موجودون',
     'conv.partnersFound_singular': 'شريك موجود',
 
     // Card labels
@@ -220,6 +226,9 @@ const fragment: TranslationFragment = {
     'conv.cat.BANQUE_ASSUR': 'Banking & Insurance',
     'conv.cat.EDUCATION': 'Education & Nurseries',
     'conv.cat.SOURIRE': 'Leisure & Wellness',
+
+    // Recommended badge
+    'conv.recommended': 'Recommended',
 
     // Partner count
     'conv.partnersFound_plural': 'partners found',
