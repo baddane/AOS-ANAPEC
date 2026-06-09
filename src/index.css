@@ -17,6 +17,11 @@
   --color-brand-gold-accent: #FEF3D6;
 }
 
+html, body {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
 body {
   font-family: var(--font-sans);
   background-color: #f8fafc;

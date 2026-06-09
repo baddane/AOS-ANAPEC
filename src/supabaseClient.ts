@@ -57,7 +57,7 @@ export async function fetchUserByEmail(email: string): Promise<UserProfile | nul
   const { data } = await supabase
     .from('aos_users')
     .select(USER_SAFE_COLUMNS)
-    .eq('email', email.toLowerCase())
+    .ilike('email', email)
     .maybeSingle();
   return (data as UserProfile) || null;
 }

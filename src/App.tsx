@@ -306,11 +306,11 @@ export default function App() {
   const userSpecificRequests = requests.filter(r => r.userId === currentUser.id);
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col text-slate-800" dir={dir} id="aos-portal-app">
+    <div className="min-h-screen bg-slate-50 flex flex-col text-slate-800 overflow-x-hidden" dir={dir} id="aos-portal-app">
 
       {/* HEADER */}
-      <header className="bg-brand-blue border-b border-brand-blue-deep text-white sticky top-0 z-40 shadow-md">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <header className="bg-brand-blue border-b border-brand-blue-deep text-white sticky top-0 z-40 shadow-md w-full">
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
 
             <div className="flex items-center gap-3">
@@ -381,58 +381,58 @@ export default function App() {
 
       {/* MOBILE SLIDE-DOWN MENU */}
       {mobileMenuOpen && (
-        <div className="md:hidden fixed inset-x-0 top-16 bottom-0 z-50 bg-slate-900/50 backdrop-blur-sm" onClick={() => setMobileMenuOpen(false)}>
-          <div className="bg-white border-b border-slate-200 shadow-xl max-h-[80vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
+        <div className="md:hidden fixed inset-0 top-16 z-50 bg-slate-900/50 backdrop-blur-sm" onClick={() => setMobileMenuOpen(false)}>
+          <div className="bg-white border-b border-slate-200 shadow-xl max-h-[75vh] overflow-y-auto mx-0" onClick={e => e.stopPropagation()}>
 
             {/* User info */}
-            <div className="px-4 py-3 bg-slate-50 border-b border-slate-100 flex items-center gap-3">
+            <div className="px-3 py-2.5 bg-slate-50 border-b border-slate-100 flex items-center gap-2.5">
               {currentUser.avatarUrl ? (
-                <img src={currentUser.avatarUrl} alt="Avatar" referrerPolicy="no-referrer" className="w-10 h-10 rounded-xl object-cover border border-slate-200 shrink-0" />
+                <img src={currentUser.avatarUrl} alt="Avatar" referrerPolicy="no-referrer" className="w-8 h-8 rounded-lg object-cover border border-slate-200 shrink-0" />
               ) : (
-                <div className="w-10 h-10 rounded-xl bg-brand-blue flex items-center justify-center shrink-0">
-                  <span className="text-sm font-bold text-white">{currentUser.prenom?.charAt(0)}{currentUser.name?.charAt(0)}</span>
+                <div className="w-8 h-8 rounded-lg bg-brand-blue flex items-center justify-center shrink-0">
+                  <span className="text-xs font-bold text-white">{currentUser.prenom?.charAt(0)}{currentUser.name?.charAt(0)}</span>
                 </div>
               )}
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-bold text-slate-900 truncate">{currentUser.prenom} {currentUser.name}</p>
-                <p className="text-[10px] text-slate-500 font-mono">{currentUser.matricule} • {currentUser.delegation}</p>
+                <p className="text-xs font-bold text-slate-900 truncate">{currentUser.prenom} {currentUser.name}</p>
+                <p className="text-[9px] text-slate-500 font-mono truncate">{currentUser.matricule} • {currentUser.delegation}</p>
               </div>
             </div>
 
             {/* Admin/Member toggle */}
             {currentUser.role === 'admin' && (
-              <div className="px-4 py-3 border-b border-slate-100 flex gap-2">
+              <div className="px-3 py-2 border-b border-slate-100 flex gap-1.5">
                 <button
                   onClick={() => { setIsAdminMode(true); setMobileMenuOpen(false); }}
-                  className={`flex-1 py-2.5 text-xs font-bold rounded-xl transition-all cursor-pointer ${isAdminMode ? 'bg-brand-blue text-white shadow-sm' : 'bg-slate-100 text-slate-600'}`}
+                  className={`flex-1 py-2 text-[11px] font-bold rounded-lg transition-all cursor-pointer ${isAdminMode ? 'bg-brand-blue text-white shadow-sm' : 'bg-slate-100 text-slate-600'}`}
                 >
-                  💼 {t('header.adminBackoffice')}
+                  {t('header.adminBackoffice')}
                 </button>
                 <button
                   onClick={() => { setIsAdminMode(false); setUserTab('NEWS'); setMobileMenuOpen(false); }}
-                  className={`flex-1 py-2.5 text-xs font-bold rounded-xl transition-all cursor-pointer ${!isAdminMode ? 'bg-brand-blue text-white shadow-sm' : 'bg-slate-100 text-slate-600'}`}
+                  className={`flex-1 py-2 text-[11px] font-bold rounded-lg transition-all cursor-pointer ${!isAdminMode ? 'bg-brand-blue text-white shadow-sm' : 'bg-slate-100 text-slate-600'}`}
                 >
-                  👤 {t('header.memberMode')}
+                  {t('header.memberMode')}
                 </button>
               </div>
             )}
 
             {/* Navigation tabs (vertical) */}
             {!isAdminMode && (
-              <div className="py-2">
+              <div className="py-1">
                 {[
-                  { id: 'NEWS', icon: <Newspaper className="w-4 h-4" />, label: t('nav.news') },
-                  { id: 'KIOSK', icon: <BookOpen className="w-4 h-4" />, label: t('nav.kiosk') },
-                  { id: 'GOVERNANCE', icon: <ShieldCheck className="w-4 h-4" />, label: t('nav.governance') },
-                  { id: 'CONVENTIONS', icon: <Handshake className="w-4 h-4" />, label: t('nav.conventions') },
-                  { id: 'BOARD', icon: <Users className="w-4 h-4" />, label: t('nav.board') },
-                  { id: 'MY_PRESTATIONS', icon: <FileText className="w-4 h-4" />, label: `${t('nav.myRequests')} (${userSpecificRequests.length})` },
-                  { id: 'PROFILE', icon: <User className="w-4 h-4" />, label: t('nav.profile') },
+                  { id: 'NEWS', icon: <Newspaper className="w-3.5 h-3.5" />, label: t('nav.news') },
+                  { id: 'KIOSK', icon: <BookOpen className="w-3.5 h-3.5" />, label: t('nav.kiosk') },
+                  { id: 'GOVERNANCE', icon: <ShieldCheck className="w-3.5 h-3.5" />, label: t('nav.governance') },
+                  { id: 'CONVENTIONS', icon: <Handshake className="w-3.5 h-3.5" />, label: t('nav.conventions') },
+                  { id: 'BOARD', icon: <Users className="w-3.5 h-3.5" />, label: t('nav.board') },
+                  { id: 'MY_PRESTATIONS', icon: <FileText className="w-3.5 h-3.5" />, label: `${t('nav.myRequests')} (${userSpecificRequests.length})` },
+                  { id: 'PROFILE', icon: <User className="w-3.5 h-3.5" />, label: t('nav.profile') },
                 ].map(tab => (
                   <button
                     key={tab.id}
                     onClick={() => { setUserTab(tab.id as any); setMobileMenuOpen(false); }}
-                    className={`w-full flex items-center gap-3 px-5 py-3 text-sm font-semibold transition-all cursor-pointer ${
+                    className={`w-full flex items-center gap-2.5 px-3 py-2 text-xs font-semibold transition-all cursor-pointer ${
                       userTab === tab.id ? 'bg-brand-blue-light text-brand-blue-dark' : 'text-slate-600 hover:bg-slate-50'
                     }`}
                   >
@@ -444,12 +444,12 @@ export default function App() {
             )}
 
             {/* Logout */}
-            <div className="px-4 py-3 border-t border-slate-100">
+            <div className="px-3 py-2 border-t border-slate-100">
               <button
                 onClick={() => { handleLogout(); setMobileMenuOpen(false); }}
-                className="w-full flex items-center justify-center gap-2 py-2.5 bg-rose-50 text-rose-700 text-xs font-bold rounded-xl hover:bg-rose-100 cursor-pointer"
+                className="w-full flex items-center justify-center gap-2 py-2 bg-rose-50 text-rose-700 text-[11px] font-bold rounded-lg hover:bg-rose-100 cursor-pointer"
               >
-                <LogOut className="w-4 h-4" />
+                <LogOut className="w-3.5 h-3.5" />
                 {t('header.logout')}
               </button>
             </div>
@@ -489,7 +489,7 @@ export default function App() {
       )}
 
       {/* CONTENU PRINCIPAL */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 py-6 sm:py-8">
 
         {isAdminMode ? (
           <div className="space-y-6">
