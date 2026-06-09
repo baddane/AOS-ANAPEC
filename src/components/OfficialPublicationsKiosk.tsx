@@ -284,7 +284,7 @@ export default function OfficialPublicationsKiosk({
         <div className="absolute bottom-0 left-0 w-60 h-60 bg-brand-blue/10 rounded-full blur-3xl -ml-20 -mb-20 pointer-events-none"></div>
         
         <div className="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-          <div className="space-y-2 text-left">
+          <div className="space-y-2 text-start">
             <div className="inline-flex items-center gap-2 bg-brand-gold/20 text-brand-gold px-3.5 py-1.5 rounded-full text-xs font-bold tracking-wide uppercase">
               <BookOpen className="w-3.5 h-3.5" /> {t('kiosk.banner.badge')}
             </div>
@@ -312,7 +312,7 @@ export default function OfficialPublicationsKiosk({
         <motion.div 
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-white border border-slate-200 rounded-3xl p-6 shadow-md text-left space-y-4"
+          className="bg-white border border-slate-200 rounded-3xl p-6 shadow-md text-start space-y-4"
         >
           <div className="flex justify-between items-center border-b pb-3 border-slate-100">
             <h3 className="font-extrabold text-sm uppercase tracking-wider text-slate-800">{t('kiosk.form.title')}</h3>
@@ -437,13 +437,13 @@ export default function OfficialPublicationsKiosk({
 
         {/* Search input field */}
         <div className="relative w-full lg:w-72">
-          <Search className="w-4 h-4 text-slate-400 absolute left-3 top-3.5" />
+          <Search className="w-4 h-4 text-slate-400 absolute start-3 top-3.5" />
           <input
             type="text"
             value={searchQuery}
             onChange={e => setSearchQuery(e.target.value)}
             placeholder={t('kiosk.search.placeholder')}
-            className="w-full bg-slate-50 border border-slate-200 pl-9 pr-4 py-3 text-xs rounded-xl focus:outline-hidden focus:ring-1 focus:ring-brand-blue transition-colors text-left"
+            className="w-full bg-slate-50 border border-slate-200 ps-9 pe-4 py-3 text-xs rounded-xl focus:outline-hidden focus:ring-1 focus:ring-brand-blue transition-colors text-start"
           />
         </div>
       </div>
@@ -460,7 +460,7 @@ export default function OfficialPublicationsKiosk({
             <div
               key={pub.id}
               onClick={() => setActivePublication(pub)}
-              className="bg-white rounded-3xl border border-slate-150 shadow-xs hover:shadow-lg transition-all flex flex-col justify-between overflow-hidden cursor-pointer group text-left relative"
+              className="bg-white rounded-3xl border border-slate-150 shadow-xs hover:shadow-lg transition-all flex flex-col justify-between overflow-hidden cursor-pointer group text-start relative"
             >
               {/* Header colored banner representation representing the leaflet style */}
               <div className={`p-5 bg-gradient-to-r ${getCoverGradientClass(pub.coverImage)} relative shrink-0`}>
@@ -589,7 +589,7 @@ export default function OfficialPublicationsKiosk({
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="bg-white w-full sm:max-w-4xl h-full sm:h-auto sm:max-h-[92vh] sm:rounded-3xl shadow-2xl overflow-hidden flex flex-col justify-between text-left"
+              className="bg-white w-full sm:max-w-4xl h-full sm:h-auto sm:max-h-[92vh] sm:rounded-3xl shadow-2xl overflow-hidden flex flex-col justify-between text-start"
             >
               
               {/* Header Controls area */}
@@ -632,7 +632,7 @@ export default function OfficialPublicationsKiosk({
                     <div className="h-16 w-16 bg-slate-100 rounded-full border border-slate-200 flex items-center justify-center text-xl font-bold">
                       🇲🇦
                     </div>
-                    <div className="text-left font-sans text-[11px] leading-relaxed">
+                    <div className="text-start font-sans text-[11px] leading-relaxed">
                       <p className="font-extrabold">Association des Œuvres Sociales</p>
                       <p>AOS ANAPEC National</p>
                     </div>
@@ -685,7 +685,7 @@ export default function OfficialPublicationsKiosk({
 
                   {/* Language Col 2 : French translation (Left-to-aligned) */}
                   {activePublication.contentFr && (
-                    <div className="space-y-4 text-left">
+                    <div className="space-y-4 text-start">
                       <h4 className="font-serif font-extrabold text-slate-900 border-b pb-1.5 border-slate-100 tracking-wide text-xs uppercase flex justify-between items-center select-none">
                         <span>{t('kiosk.modal.sectionFr')}</span>
                         <span className="text-slate-405">★</span>
@@ -716,13 +716,13 @@ export default function OfficialPublicationsKiosk({
                           <span className="text-emerald-600 bg-emerald-500/10 p-1 px-2.5 rounded text-[9px]">{t('kiosk.financial.receiptsTag')}</span>
                         </h4>
 
-                        <div className="border border-slate-150/60 rounded-xl overflow-hidden font-sans">
+                        <div className="border border-slate-150/60 rounded-xl overflow-hidden overflow-x-auto font-sans">
                           <table className="w-full text-[11px] text-right">
                             <thead className="bg-slate-50 text-slate-500 text-[10px]/normal uppercase font-bold border-b border-slate-100">
                               <tr>
                                 <th className="p-2 border-l border-slate-100">{t('kiosk.financial.thDate')}</th>
                                 <th className="p-2 border-l border-slate-100 text-right">{t('kiosk.financial.thType')}</th>
-                                <th className="p-2 text-left">{t('kiosk.financial.thAmount')}</th>
+                                <th className="p-2 text-start">{t('kiosk.financial.thAmount')}</th>
                               </tr>
                             </thead>
                             <tbody className="divide-y divide-slate-100 text-slate-600">
@@ -730,14 +730,14 @@ export default function OfficialPublicationsKiosk({
                                 <tr key={i} className="hover:bg-slate-50">
                                   <td className="p-2 border-l border-slate-100 font-mono text-[10px] text-slate-400">{rec.date || '-'}</td>
                                   <td className="p-2 border-l border-slate-100 font-bold">{rec.labelAr}</td>
-                                  <td className="p-2 font-mono text-left font-bold text-slate-905">{rec.amount.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
+                                  <td className="p-2 font-mono text-start font-bold text-slate-905">{rec.amount.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
                                 </tr>
                               ))}
                             </tbody>
                             <tfoot className="bg-slate-50/50 border-t font-extrabold text-[12px]/normal">
                               <tr>
                                 <td colSpan={2} className="p-2 text-right border-l border-slate-100">{t('kiosk.financial.receiptsTotal')}</td>
-                                <td className="p-2 text-left font-mono text-emerald-800">{activePublication.financialDetails.totalReceipts.toLocaleString(undefined, {minimumFractionDigits: 2})} DH</td>
+                                <td className="p-2 text-start font-mono text-emerald-800">{activePublication.financialDetails.totalReceipts.toLocaleString(undefined, {minimumFractionDigits: 2})} DH</td>
                               </tr>
                             </tfoot>
                           </table>
@@ -751,13 +751,13 @@ export default function OfficialPublicationsKiosk({
                           <span className="text-rose-600 bg-rose-500/10 p-1 px-2.5 rounded text-[9px]">{t('kiosk.financial.expensesTag')}</span>
                         </h4>
 
-                        <div className="border border-slate-150/60 rounded-xl overflow-hidden font-sans">
+                        <div className="border border-slate-150/60 rounded-xl overflow-hidden overflow-x-auto font-sans">
                           <table className="w-full text-[11px] text-right">
                             <thead className="bg-slate-50 text-slate-500 text-[10px]/normal uppercase font-bold border-b border-slate-100">
                               <tr>
                                 <th className="p-2 border-l border-slate-100">{t('kiosk.financial.thExpDate')}</th>
                                 <th className="p-2 border-l border-slate-100 text-right">{t('kiosk.financial.thPrestation')}</th>
-                                <th className="p-2 text-left">{t('kiosk.financial.thBeneficiary')}</th>
+                                <th className="p-2 text-start">{t('kiosk.financial.thBeneficiary')}</th>
                               </tr>
                             </thead>
                             <tbody className="divide-y divide-slate-100 text-slate-600">
@@ -765,14 +765,14 @@ export default function OfficialPublicationsKiosk({
                                 <tr key={i} className="hover:bg-slate-50">
                                   <td className="p-2 border-l border-slate-100 font-mono text-[10px] text-slate-400">{exp.date || '-'}</td>
                                   <td className="p-2 border-l border-slate-100">{exp.labelAr}</td>
-                                  <td className="p-2 font-mono text-left font-bold text-slate-905">{exp.amount.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
+                                  <td className="p-2 font-mono text-start font-bold text-slate-905">{exp.amount.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
                                 </tr>
                               ))}
                             </tbody>
                             <tfoot className="bg-slate-50/50 border-t font-extrabold text-[12px]/normal">
                               <tr>
                                 <td colSpan={2} className="p-2 text-right border-l border-slate-100">{t('kiosk.financial.expensesTotal')}</td>
-                                <td className="p-2 text-left font-mono text-rose-800">{activePublication.financialDetails.totalExpenses.toLocaleString(undefined, {minimumFractionDigits: 2})} DH</td>
+                                <td className="p-2 text-start font-mono text-rose-800">{activePublication.financialDetails.totalExpenses.toLocaleString(undefined, {minimumFractionDigits: 2})} DH</td>
                               </tr>
                             </tfoot>
                           </table>

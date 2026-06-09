@@ -62,7 +62,7 @@ export default function UserProfileCard({ currentUser, onUpdateProfile }: UserPr
         
         {/* Visual membership Card Simulator (Left) */}
         <div className="md:col-span-1 space-y-4">
-          <h4 className="text-xs font-bold text-slate-400 uppercase tracking-widest text-left">{t('prof.officialCardHeading')}</h4>
+          <h4 className="text-xs font-bold text-slate-400 uppercase tracking-widest text-start">{t('prof.officialCardHeading')}</h4>
           
           {/* Virtual Plastic ID Card */}
           <div className="relative aspect-[1.58/1] w-full rounded-2xl bg-gradient-to-br from-brand-blue-deep via-brand-blue to-slate-900 text-white p-5 overflow-hidden shadow-lg border border-brand-gold/30">
@@ -77,7 +77,7 @@ export default function UserProfileCard({ currentUser, onUpdateProfile }: UserPr
 
             {/* Header info */}
             <div className="flex justify-between items-start border-b border-brand-blue-light/20 pb-2.5">
-              <div className="text-left">
+              <div className="text-start">
                 <h5 className="font-display font-extrabold text-[11px] tracking-wide uppercase text-brand-gold">
                   AOS ANAPEC
                 </h5>
@@ -91,7 +91,7 @@ export default function UserProfileCard({ currentUser, onUpdateProfile }: UserPr
             </div>
 
             {/* Card Body - Avatar + Details */}
-            <div className="flex gap-4 mt-4 text-left">
+            <div className="flex gap-4 mt-4 text-start">
               {/* Profile image placeholder */}
               <div className="w-16 h-16 rounded-xl border-2 border-brand-gold/50 overflow-hidden bg-slate-800 shrink-0">
                 <img
@@ -119,7 +119,7 @@ export default function UserProfileCard({ currentUser, onUpdateProfile }: UserPr
 
             {/* Card Footer metadata & simulated barcode */}
             <div className="absolute bottom-4 left-5 right-5 flex justify-between items-end">
-              <div className="text-left">
+              <div className="text-start">
                 <p className="text-[7px] text-brand-blue-light uppercase">{t('prof.cardLabelDelegation')}</p>
                 <p className="font-semibold text-[9px] truncate max-w-[140px] text-teal-100">{currentUser.delegation}</p>
               </div>
@@ -149,7 +149,7 @@ export default function UserProfileCard({ currentUser, onUpdateProfile }: UserPr
 
         {/* Detailed profile configuration (Right) */}
         <div className="md:col-span-2 space-y-6">
-          <div className="bg-white rounded-3xl border border-slate-100 p-6 md:p-8 shadow-xs text-left">
+          <div className="bg-white rounded-3xl border border-slate-100 p-6 md:p-8 shadow-xs text-start">
             <div className="flex justify-between items-center pb-4 border-b border-slate-100 mb-6">
               <div>
                 <h4 className="font-display font-bold text-slate-900 text-base">{t('prof.sectionTitle')}</h4>
@@ -327,7 +327,7 @@ export default function UserProfileCard({ currentUser, onUpdateProfile }: UserPr
           </div>
 
           {/* Section : Sécurité — Microsoft SSO */}
-          <div className="bg-white rounded-3xl border border-slate-100 p-6 md:p-8 shadow-sm text-left relative overflow-hidden">
+          <div className="bg-white rounded-3xl border border-slate-100 p-6 md:p-8 shadow-sm text-start relative overflow-hidden">
             <div className="absolute top-0 right-0 w-24 h-24 bg-[radial-gradient(#e2e8f0_1px,transparent_1px)] [background-size:12px_12px] opacity-30 pointer-events-none" />
 
             <div className="flex items-center gap-2 pb-4 border-b border-slate-100 mb-6">

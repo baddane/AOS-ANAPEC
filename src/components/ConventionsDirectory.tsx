@@ -189,7 +189,7 @@ export default function ConventionsDirectory({ currentUser, conventions }: Conve
                   </div>
                 </div>
                 <div className="bg-slate-50 p-3 rounded-xl border border-slate-100 flex items-center justify-between">
-                  <div className="text-left">
+                  <div className="text-start">
                     <p className="text-[10px] text-slate-400 font-semibold uppercase tracking-wider">{t('conv.memberBenefit')}</p>
                     <p className="text-sm font-black text-brand-blue-dark">{conv.discountValue}</p>
                   </div>
@@ -343,7 +343,7 @@ export default function ConventionsDirectory({ currentUser, conventions }: Conve
                       const isOpen = expandedArticles.has(article.number);
                       return (
                         <div key={article.number} className={`border rounded-xl overflow-hidden transition-all ${isOpen ? 'border-brand-blue/30 shadow-sm' : 'border-slate-100'}`}>
-                          <button onClick={() => toggleArticle(article.number)} className="w-full flex items-center gap-3 p-4 text-left hover:bg-slate-50 transition-colors cursor-pointer">
+                          <button onClick={() => toggleArticle(article.number)} className="w-full flex items-center gap-3 p-4 text-start hover:bg-slate-50 transition-colors cursor-pointer">
                             <div className={`w-9 h-9 rounded-xl flex items-center justify-center text-lg shrink-0 transition-colors ${isOpen ? 'bg-brand-blue text-white' : 'bg-slate-100'}`}>{article.icon || '📄'}</div>
                             <div className="flex-1 min-w-0">
                               <div className="flex items-center gap-2">
@@ -441,7 +441,7 @@ export default function ConventionsDirectory({ currentUser, conventions }: Conve
             </div>
             <div className="p-6 space-y-6" id="printable-voucher-document">
               <div className="flex justify-between items-start border-b-2 border-slate-100 pb-4">
-                <div className="text-left"><h4 className="font-display font-extrabold text-sm text-slate-900 tracking-wide uppercase">AOS ANAPEC</h4><p className="text-[9px] text-slate-400 uppercase font-semibold">Œuvres Sociales de l'ANAPEC</p></div>
+                <div className="text-start"><h4 className="font-display font-extrabold text-sm text-slate-900 tracking-wide uppercase">AOS ANAPEC</h4><p className="text-[9px] text-slate-400 uppercase font-semibold">Œuvres Sociales de l'ANAPEC</p></div>
                 <div className="text-right"><span className="text-[10px] font-mono font-bold bg-slate-100 text-slate-800 px-2 py-1 rounded-md">{voucherCode}</span><p className="text-[9px] text-slate-400 mt-1">{t('conv.voucherGenerated')} {new Date().toLocaleDateString('fr-FR')}</p></div>
               </div>
               <div className="space-y-2 text-center py-2 bg-brand-gold-light rounded-xl border border-brand-gold-accent">
@@ -477,7 +477,7 @@ export default function ConventionsDirectory({ currentUser, conventions }: Conve
                     <div className="absolute top-1 right-1 w-4.5 h-4.5 bg-slate-900 rounded-xs border-2 border-white" />
                     <div className="absolute bottom-1 left-1 w-4.5 h-4.5 bg-slate-900 rounded-xs border-2 border-white" />
                   </div>
-                  <div className="text-left font-mono"><p className="text-[9px] text-slate-400 uppercase font-semibold">{t('conv.voucherInstantValidation')}</p><p className="text-[10px] font-bold text-brand-blue-deep">{t('conv.voucherCertified')}</p></div>
+                  <div className="text-start font-mono"><p className="text-[9px] text-slate-400 uppercase font-semibold">{t('conv.voucherInstantValidation')}</p><p className="text-[10px] font-bold text-brand-blue-deep">{t('conv.voucherCertified')}</p></div>
                 </div>
                 <div className="text-right text-[10px] text-slate-400">
                   <p className="font-semibold text-brand-blue">{t('conv.voucherStamp')}</p>

@@ -57,7 +57,7 @@ export default function PrestationRequestList({ requests }: PrestationRequestLis
         </div>
 
         {/* Status Quick filter */}
-        <div className="flex gap-1 bg-slate-100 p-1 rounded-xl">
+        <div className="flex flex-wrap gap-1 bg-slate-100 p-1 rounded-xl">
           <button
             onClick={() => setStatusFilter('ALL')}
             className={`px-3 py-1.5 text-[11px] font-bold rounded-lg transition-colors cursor-pointer ${
@@ -108,7 +108,7 @@ export default function PrestationRequestList({ requests }: PrestationRequestLis
                   isSelected ? 'ring-2 ring-brand-blue/20 border-brand-blue bg-linear-to-r from-brand-blue-light/20 to-transparent' : 'border-slate-100'
                 }`}
               >
-                <div className="space-y-2 max-w-[70%] text-left">
+                <div className="space-y-2 max-w-[70%] text-start">
                   {/* Category and Ref */}
                   <div className="flex items-center gap-2">
                     <span className="text-[10px] bg-slate-100 text-slate-700 font-bold px-2 py-0.5 rounded-md">
@@ -165,7 +165,7 @@ export default function PrestationRequestList({ requests }: PrestationRequestLis
         {/* Sidebar details box for selected element */}
         <div className="bg-white rounded-3xl border border-slate-100 p-5 shadow-xs h-fit space-y-5">
           {selectedRequest ? (
-            <div className="space-y-5 text-left">
+            <div className="space-y-5 text-start">
 
               {/* Box Title */}
               <div className="pb-3 border-b border-slate-100 flex justify-between items-center">
@@ -196,7 +196,7 @@ export default function PrestationRequestList({ requests }: PrestationRequestLis
               </div>
 
               {/* Amount comparisons */}
-              <div className="grid grid-cols-2 gap-3.5 pt-3 border-t border-slate-100 text-xs text-left">
+              <div className="grid grid-cols-2 gap-3.5 pt-3 border-t border-slate-100 text-xs text-start">
                 <div className="bg-slate-50 p-2.5 rounded-xl">
                   <p className="text-[10px] text-slate-400 font-bold uppercase">{t('prl.amountRequested')}</p>
                   <p className="font-extrabold text-slate-800 text-sm mt-0.5">{selectedRequest.amountRequested?.toLocaleString() || '--'} DH</p>
@@ -214,7 +214,7 @@ export default function PrestationRequestList({ requests }: PrestationRequestLis
 
               {/* Attached file */}
               {selectedRequest.attachedFile && (
-                <div className="p-3 bg-slate-50 rounded-xl border border-slate-100 flex items-center justify-between text-left">
+                <div className="p-3 bg-slate-50 rounded-xl border border-slate-100 flex items-center justify-between text-start">
                   <div className="flex items-center gap-2.5 text-xs truncate">
                     <FileText className="w-5 h-5 text-brand-blue shrink-0" />
                     <div className="truncate">
@@ -234,7 +234,7 @@ export default function PrestationRequestList({ requests }: PrestationRequestLis
 
               {/* Admin Note if exists */}
               {selectedRequest.adminComment && (
-                <div className="p-3.5 bg-slate-50 rounded-xl border-l-4 border-slate-300 text-left">
+                <div className="p-3.5 bg-slate-50 rounded-xl border-l-4 border-slate-300 text-start">
                   <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">{t('prl.adminComment')}</p>
                   <p className="text-xs text-slate-600 italic">
                     "{selectedRequest.adminComment}"

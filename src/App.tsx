@@ -301,7 +301,7 @@ export default function App() {
   const userSpecificRequests = requests.filter(r => r.userId === currentUser.id);
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col text-slate-800" id="aos-portal-app">
+    <div className="min-h-screen bg-slate-50 flex flex-col text-slate-800" dir={dir} id="aos-portal-app">
 
       {/* HEADER */}
       <header className="bg-brand-blue border-b border-brand-blue-deep text-white sticky top-0 z-40 shadow-md">
@@ -312,7 +312,7 @@ export default function App() {
               <div className="shrink-0 hover:scale-105 transition-transform duration-200">
                 <AnapecLogo className="w-12 h-12 bg-white rounded-full p-0.5 shadow-xs" />
               </div>
-              <div className="text-left">
+              <div className="text-start">
                 <h1 className="font-display font-extrabold tracking-wide text-sm sm:text-base leading-none text-white flex items-center gap-1.5">
                   AOS ANAPEC
                   <span className="text-[10px] uppercase font-bold text-brand-gold font-mono tracking-wider border border-brand-gold/30 px-1.5 py-0.5 rounded-sm bg-brand-gold/10">
@@ -325,7 +325,7 @@ export default function App() {
 
             <div className="flex items-center gap-3">
               {currentUser.role === 'admin' && (
-                <div className="hidden md:flex bg-brand-blue-deep/80 p-0.5 rounded-xl border border-brand-blue-dark">
+                <div className="hidden sm:flex bg-brand-blue-deep/80 p-0.5 rounded-xl border border-brand-blue-dark">
                   <button
                     onClick={() => setIsAdminMode(true)}
                     className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer ${isAdminMode ? 'bg-brand-blue text-white shadow-xs' : 'text-slate-300 hover:text-white'}`}
@@ -358,7 +358,7 @@ export default function App() {
                     </span>
                   </div>
                 )}
-                <div className="text-left hidden sm:block">
+                <div className="text-start hidden sm:block">
                   <p className="text-xs font-bold font-sans text-white truncate max-w-[120px]">
                     {currentUser.prenom} {currentUser.name}
                   </p>
@@ -407,6 +407,17 @@ export default function App() {
               ))}
 
             </div>
+            {currentUser.role === 'admin' && (
+              <div className="sm:hidden flex justify-center py-2 border-t border-slate-100">
+                <button
+                  onClick={() => setIsAdminMode(true)}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-amber-500/15 border border-amber-500/20 text-amber-800 text-[10px] font-bold rounded-lg cursor-pointer"
+                >
+                  <ShieldCheck className="w-3.5 h-3.5" />
+                  {t('header.adminBackoffice')}
+                </button>
+              </div>
+            )}
           </div>
         </nav>
       )}
@@ -416,7 +427,7 @@ export default function App() {
 
         {isAdminMode ? (
           <div className="space-y-6">
-            <div className="md:hidden p-3 bg-amber-500/15 border border-amber-500/20 text-amber-800 text-xs rounded-xl flex justify-between items-center text-left">
+            <div className="md:hidden p-3 bg-amber-500/15 border border-amber-500/20 text-amber-800 text-xs rounded-xl flex justify-between items-center text-start">
               <span>{t('header.onAdminPanel')}</span>
               <button
                 onClick={() => { setIsAdminMode(false); setUserTab('NEWS'); }}
@@ -445,7 +456,7 @@ export default function App() {
 
             {userTab === 'NEWS' && (
               <div className="space-y-6">
-                <div className="p-5 bg-blue-50/70 rounded-3xl border border-blue-100 text-left flex flex-col md:flex-row justify-between items-start md:items-center gap-4 shadow-xs">
+                <div className="p-5 bg-blue-50/70 rounded-3xl border border-blue-100 text-start flex flex-col md:flex-row justify-between items-start md:items-center gap-4 shadow-xs">
                   <div className="space-y-1">
                     <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-lg text-[10px] font-bold bg-blue-100 text-blue-700">
                       <Facebook className="w-3 h-3" />
@@ -469,7 +480,7 @@ export default function App() {
                   </a>
                 </div>
 
-                <div className="text-left">
+                <div className="text-start">
                   <h3 className="font-display font-bold text-slate-900 text-base mb-4">
                     {t('news.adminNotes')}
                   </h3>
@@ -510,7 +521,7 @@ export default function App() {
 
             {userTab === 'MY_PRESTATIONS' && (
               <div className="space-y-6">
-                <div className="flex justify-between items-center text-left">
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 text-start">
                   <div>
                     <h3 className="font-display font-bold text-slate-950 text-base">{t('prest.title')}</h3>
                     <p className="text-xs text-slate-400">{t('prest.desc')}</p>
@@ -544,7 +555,7 @@ export default function App() {
       {/* MODAL DETAIL ACTUALITÉ */}
       {selectedNews && (
         <div className="fixed inset-0 z-50 overflow-y-auto flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
-          <div className="bg-white rounded-3xl max-w-lg w-full overflow-hidden shadow-2xl border border-slate-100 flex flex-col text-left">
+          <div className="bg-white rounded-3xl max-w-lg w-full overflow-hidden shadow-2xl border border-slate-100 flex flex-col text-start">
             <div className="p-4 bg-slate-50 border-b border-slate-100 flex justify-between items-center">
               <span className="text-xs font-extrabold text-brand-blue-dark uppercase tracking-widest">{t('news.communique')}</span>
               <button onClick={() => setSelectedNews(null)} className="p-1 rounded-lg hover:bg-slate-200 text-slate-400 font-extrabold cursor-pointer">✕</button>

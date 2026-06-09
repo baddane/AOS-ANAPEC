@@ -128,7 +128,7 @@ export default function SocialGovernanceDashboard({ currentUser }: SocialGoverna
   ];
 
   return (
-    <div className="space-y-8 text-left animate-fade-in" id="social-governance-dashboard-wrapper">
+    <div className="space-y-8 text-start animate-fade-in" id="social-governance-dashboard-wrapper">
 
       {/* Upper informational banner */}
       <div className="bg-slate-900 text-white rounded-3xl p-6 md:p-8 relative overflow-hidden shadow-xl border border-slate-800">
@@ -152,7 +152,7 @@ export default function SocialGovernanceDashboard({ currentUser }: SocialGoverna
         <div className="lg:col-span-2 space-y-8">
 
           {/* Practice 1 : Point Scoring / Barème d'Aide Simulator */}
-          <div className="bg-white rounded-3xl border border-slate-100 p-6 md:p-8 shadow-xs text-left relative overflow-hidden">
+          <div className="bg-white rounded-3xl border border-slate-100 p-6 md:p-8 shadow-xs text-start relative overflow-hidden">
             <div className="absolute top-0 right-0 w-20 h-20 bg-[radial-gradient(#e2e8f0_1.2px,transparent_1.2px)] [background-size:10px_10px] opacity-25 pointer-events-none" />
 
             <div className="flex items-center gap-3 pb-4 border-b border-slate-100 mb-6 col-span-1">
@@ -282,7 +282,7 @@ export default function SocialGovernanceDashboard({ currentUser }: SocialGoverna
 
             {/* Results Output Block */}
             <div className={`p-5 rounded-2xl border-2 border-dashed ${priorityMeta.color} grid grid-cols-1 md:grid-cols-3 gap-5 items-center`}>
-              <div className="md:col-span-2 space-y-2 text-left">
+              <div className="md:col-span-2 space-y-2 text-start">
                 <p className="text-[11px] font-bold uppercase tracking-widest text-slate-400 font-mono">{t('gov.scoreLabel')}</p>
                 <div className="flex items-baseline gap-2">
                   <span className="text-4xl font-extrabold font-mono tracking-tight text-slate-900">{totalScore}</span>
@@ -338,7 +338,7 @@ export default function SocialGovernanceDashboard({ currentUser }: SocialGoverna
           </div>
 
           {/* Practice 2 : Transparent Budget Allocation - Live chart analysis */}
-          <div className="bg-white rounded-3xl border border-slate-100 p-6 md:p-8 shadow-xs text-left">
+          <div className="bg-white rounded-3xl border border-slate-100 p-6 md:p-8 shadow-xs text-start">
             <div className="flex items-center gap-3 pb-4 border-b border-slate-100 mb-6 col-span-1">
               <div className="w-10 h-10 rounded-xl bg-slate-900 text-white flex items-center justify-center shrink-0">
                 <TrendingUp className="w-5 h-5 text-brand-gold" />
@@ -381,7 +381,7 @@ export default function SocialGovernanceDashboard({ currentUser }: SocialGoverna
               ))}
             </div>
 
-            <div className="mt-5 p-4 rounded-xl bg-slate-900 border border-slate-800 text-white flex flex-col sm:flex-row justify-between items-center gap-3 text-left">
+            <div className="mt-5 p-4 rounded-xl bg-slate-900 border border-slate-800 text-white flex flex-col sm:flex-row justify-between items-center gap-3 text-start">
               <div className="space-y-0.5">
                 <p className="text-xs font-bold text-brand-gold flex items-center gap-1">
                   <span>{t('gov.budRedistLabel')}</span>
@@ -405,7 +405,7 @@ export default function SocialGovernanceDashboard({ currentUser }: SocialGoverna
         <div className="space-y-8">
 
           {/* Practice 3 : Digital Ethics & Governance Code Sign-off */}
-          <div className="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm text-left relative overflow-hidden flex flex-col justify-between">
+          <div className="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm text-start relative overflow-hidden flex flex-col justify-between">
             <div className="absolute top-0 right-0 w-24 h-24 bg-[radial-gradient(#e2e8f0_1px,transparent_1px)] [background-size:12px_12px] opacity-25 pointer-events-none" />
 
             <div className="space-y-4">
@@ -422,7 +422,7 @@ export default function SocialGovernanceDashboard({ currentUser }: SocialGoverna
 
                 <div className="flex gap-2 text-slate-700">
                   <div className="text-emerald-600 font-bold">1.</div>
-                  <div className="space-y-0.5 text-left">
+                  <div className="space-y-0.5 text-start">
                     <p className="font-bold text-slate-900">{t('gov.charter1Title')}</p>
                     <p className="text-slate-500">{t('gov.charter1Desc')}</p>
                   </div>
@@ -430,7 +430,7 @@ export default function SocialGovernanceDashboard({ currentUser }: SocialGoverna
 
                 <div className="flex gap-2 text-slate-700">
                   <div className="text-emerald-600 font-bold">2.</div>
-                  <div className="space-y-0.5 text-left">
+                  <div className="space-y-0.5 text-start">
                     <p className="font-bold text-slate-900">{t('gov.charter2Title')}</p>
                     <p className="text-slate-500">{t('gov.charter2Desc')}</p>
                   </div>
@@ -438,7 +438,7 @@ export default function SocialGovernanceDashboard({ currentUser }: SocialGoverna
 
                 <div className="flex gap-2 text-slate-700">
                   <div className="text-emerald-600 font-bold">3.</div>
-                  <div className="space-y-0.5 text-left">
+                  <div className="space-y-0.5 text-start">
                     <p className="font-bold text-slate-900">{t('gov.charter3Title')}</p>
                     <p className="text-slate-500">{t('gov.charter3Desc')}</p>
                   </div>
@@ -446,7 +446,7 @@ export default function SocialGovernanceDashboard({ currentUser }: SocialGoverna
 
                 <div className="flex gap-2 text-slate-700">
                   <div className="text-emerald-600 font-bold">4.</div>
-                  <div className="space-y-0.5 text-left">
+                  <div className="space-y-0.5 text-start">
                     <p className="font-bold text-slate-900">{t('gov.charter4Title')}</p>
                     <p className="text-slate-500">{t('gov.charter4Desc')}</p>
                   </div>
@@ -466,7 +466,7 @@ export default function SocialGovernanceDashboard({ currentUser }: SocialGoverna
                   </div>
                 </div>
               ) : (
-                <div className="space-y-2 text-center sm:text-left">
+                <div className="space-y-2 text-center sm:text-start">
                   <p className="text-[10px] text-slate-400">{t('gov.charterSignPrompt')}</p>
                   <button
                     onClick={handleSignCharter}
@@ -481,13 +481,13 @@ export default function SocialGovernanceDashboard({ currentUser }: SocialGoverna
           </div>
 
           {/* Practice 4 : Guichet Relais Social - Ombudsman Ticket Recourse desk */}
-          <div className="bg-white rounded-3xl border border-slate-100 p-6 shadow-xs text-left">
+          <div className="bg-white rounded-3xl border border-slate-100 p-6 shadow-xs text-start">
             <div className="pb-3 border-b border-slate-100 flex items-center gap-2 mb-4">
               <Scale className="w-4.5 h-4.5 text-brand-gold shrink-0 mb-0.5" />
               <span className="text-xs font-extrabold text-slate-850 uppercase tracking-widest">{t('gov.recourseTitle')}</span>
             </div>
 
-            <p className="text-xs text-slate-400 leading-normal mb-4 font-sans text-left">
+            <p className="text-xs text-slate-400 leading-normal mb-4 font-sans text-start">
               {t('gov.recourseDesc')} <strong>{t('gov.recourseMediateur')}</strong>{t('gov.recourseDescEnd')}
             </p>
 

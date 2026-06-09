@@ -233,7 +233,7 @@ export default function AdminPanel({
     <div className="space-y-6" id="backoffice-admin-panel">
       
       {/* Visual Admin Intro Header */}
-      <div className="bg-slate-900 rounded-3xl p-6 text-white text-left relative overflow-hidden border border-slate-800">
+      <div className="bg-slate-900 rounded-3xl p-6 text-white text-start relative overflow-hidden border border-slate-800">
         <div className="absolute top-0 right-0 w-32 h-32 bg-[radial-gradient(rgba(255,255,255,0.08)_1px,transparent_1px)] [background-size:16px_16px] pointer-events-none" />
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div>
@@ -313,7 +313,7 @@ export default function AdminPanel({
           {/* Metrics Widget Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             
-            <div className="bg-white border border-slate-100 p-5 rounded-3xl text-left shadow-xs flex items-center gap-4">
+            <div className="bg-white border border-slate-100 p-5 rounded-3xl text-start shadow-xs flex items-center gap-4">
               <div className="p-3.5 bg-slate-100 text-slate-800 rounded-2xl text-xl">
                 📥
               </div>
@@ -324,7 +324,7 @@ export default function AdminPanel({
               </div>
             </div>
 
-            <div className="bg-white border border-slate-100 p-5 rounded-3xl text-left shadow-xs flex items-center gap-4">
+            <div className="bg-white border border-slate-100 p-5 rounded-3xl text-start shadow-xs flex items-center gap-4">
               <div className="p-3.5 bg-amber-50 text-amber-600 border border-amber-100 rounded-2xl text-xl">
                 ⏳
               </div>
@@ -335,7 +335,7 @@ export default function AdminPanel({
               </div>
             </div>
 
-            <div className="bg-white border border-slate-100 p-5 rounded-3xl text-left shadow-xs flex items-center gap-4">
+            <div className="bg-white border border-slate-100 p-5 rounded-3xl text-start shadow-xs flex items-center gap-4">
               <div className="p-3.5 bg-emerald-50 text-emerald-600 border border-emerald-100 rounded-2xl text-xl">
                 💰
               </div>
@@ -346,7 +346,7 @@ export default function AdminPanel({
               </div>
             </div>
 
-            <div className="bg-white border border-slate-100 p-5 rounded-3xl text-left shadow-xs flex items-center gap-4">
+            <div className="bg-white border border-slate-100 p-5 rounded-3xl text-start shadow-xs flex items-center gap-4">
               <div className="p-3.5 bg-brand-blue-light text-brand-blue border border-brand-blue/20 rounded-2xl text-xl">
                 👥
               </div>
@@ -363,7 +363,7 @@ export default function AdminPanel({
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             
             {/* Chart 1: Volume of demands per category */}
-            <div className="bg-white p-5 rounded-3xl border border-slate-100 lg:col-span-2 text-left">
+            <div className="bg-white p-5 rounded-3xl border border-slate-100 lg:col-span-2 text-start">
               <h4 className="font-display font-bold text-slate-900 text-sm mb-4">{t('adm.chartBarTitle')}</h4>
               <div className="h-64">
                 <ResponsiveContainer width="100%" height="100%">
@@ -379,7 +379,7 @@ export default function AdminPanel({
             </div>
 
             {/* Chart 2: Status distribution pie chart */}
-            <div className="bg-white p-5 rounded-3xl border border-slate-100 text-left">
+            <div className="bg-white p-5 rounded-3xl border border-slate-100 text-start">
               <h4 className="font-display font-bold text-slate-900 text-sm mb-4">{t('adm.chartPieTitle')}</h4>
               <div className="h-48 relative flex items-center justify-center">
                 <ResponsiveContainer width="100%" height="100%">
@@ -403,7 +403,7 @@ export default function AdminPanel({
               </div>
               
               {/* Pie Legends */}
-              <div className="space-y-1.5 pt-3 border-t border-slate-100 text-xs text-left">
+              <div className="space-y-1.5 pt-3 border-t border-slate-100 text-xs text-start">
                 {statusPieData.map((item, idx) => (
                   <div key={idx} className="flex justify-between items-center">
                     <div className="flex items-center gap-2">
@@ -419,7 +419,7 @@ export default function AdminPanel({
           </div>
 
           {/* Quick reminders list */}
-          <div className="bg-white rounded-3xl border border-slate-100 p-6 text-left">
+          <div className="bg-white rounded-3xl border border-slate-100 p-6 text-start">
             <h4 className="font-display font-bold text-slate-900 text-sm mb-3">{t('adm.reminderTitle')}</h4>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs font-medium text-slate-600">
               <div className="p-3 bg-slate-50 rounded-xl space-y-1">
@@ -444,7 +444,7 @@ export default function AdminPanel({
       {activeTab === 'REQUESTS' && (
         <div className="space-y-6">
           
-          <div className="flex justify-between items-center text-left">
+          <div className="flex justify-between items-center text-start">
             <div>
               <h4 className="font-display font-bold text-slate-900 text-base">{t('adm.reqHeading')}</h4>
               <p className="text-xs text-slate-400">{t('adm.reqSubheading')}</p>
@@ -456,7 +456,7 @@ export default function AdminPanel({
 
           {/* Requests table */}
           <div className="bg-white rounded-3xl border border-slate-100 overflow-hidden shadow-xs">
-            <div className="overflow-x-auto text-left">
+            <div className="overflow-x-auto text-start">
               <table className="min-w-full divide-y divide-slate-100 text-sm">
                 <thead className="bg-slate-50/70">
                   <tr className="text-slate-500 font-bold text-[11px] uppercase tracking-wider">
@@ -544,7 +544,7 @@ export default function AdminPanel({
       {activeTab === 'USERS' && (
         <div className="space-y-6">
           
-          <div className="flex justify-between items-center text-left">
+          <div className="flex justify-between items-center text-start">
             <div>
               <h4 className="font-display font-bold text-slate-900 text-base">{t('adm.usersHeading')}</h4>
               <p className="text-xs text-slate-400">{t('adm.usersSubheading')}</p>
@@ -555,7 +555,7 @@ export default function AdminPanel({
           </div>
 
           <div className="bg-white rounded-3xl border border-slate-100 overflow-hidden shadow-xs">
-            <div className="overflow-x-auto text-left">
+            <div className="overflow-x-auto text-start">
               <table className="min-w-full divide-y divide-slate-100 text-sm">
                 <thead className="bg-slate-50/70">
                   <tr className="text-slate-500 font-bold text-[11px] uppercase tracking-wider">
@@ -644,7 +644,7 @@ export default function AdminPanel({
 
       {/* 4. POST NEW CONVENTIONS FORM */}
       {activeTab === 'CONVENTIONS' && (
-        <div className="bg-white rounded-3xl border border-slate-100 p-6 md:p-8 text-left max-w-2xl mx-auto shadow-xs">
+        <div className="bg-white rounded-3xl border border-slate-100 p-6 md:p-8 text-start max-w-2xl mx-auto shadow-xs">
           <div className="pb-4 border-b border-slate-100 mb-6">
             <h4 className="font-display font-bold text-slate-900 text-base">{t('adm.convHeading')}</h4>
             <p className="text-xs text-slate-400 mt-0.5">{t('adm.convSubheading')}</p>
@@ -766,7 +766,7 @@ export default function AdminPanel({
 
       {/* 5. POST NEW ANNOUNCEMENT FORM */}
       {activeTab === 'NEWS' && (
-        <div className="bg-white rounded-3xl border border-slate-100 p-6 md:p-8 text-left max-w-2xl mx-auto shadow-xs">
+        <div className="bg-white rounded-3xl border border-slate-100 p-6 md:p-8 text-start max-w-2xl mx-auto shadow-xs">
           <div className="pb-4 border-b border-slate-100 mb-6">
             <h4 className="font-display font-bold text-slate-900 text-base">{t('adm.newsHeading')}</h4>
             <p className="text-xs text-slate-400 mt-0.5">{t('adm.newsSubheading')}</p>
@@ -855,7 +855,7 @@ export default function AdminPanel({
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
 
           {/* Add member form */}
-          <div className="lg:col-span-2 bg-white rounded-3xl border border-slate-100 p-6 text-left shadow-xs h-fit">
+          <div className="lg:col-span-2 bg-white rounded-3xl border border-slate-100 p-6 text-start shadow-xs h-fit">
             <div className="pb-4 border-b border-slate-100 mb-5">
               <h4 className="font-display font-bold text-slate-900 text-base flex items-center gap-2">
                 <Users className="w-4 h-4 text-brand-blue" />
@@ -946,7 +946,7 @@ export default function AdminPanel({
                 .filter(m => m.category === cat)
                 .sort((a, b) => (a.orderIndex ?? 0) - (b.orderIndex ?? 0));
               return (
-                <div key={cat} className="bg-white rounded-3xl border border-slate-100 p-5 text-left shadow-xs">
+                <div key={cat} className="bg-white rounded-3xl border border-slate-100 p-5 text-start shadow-xs">
                   <h5 className="font-display font-bold text-slate-900 text-sm mb-3 flex items-center gap-2">
                     {cat === 'BUREAU_EXECUTIF' ? <Building className="w-4 h-4 text-brand-blue" /> : <Landmark className="w-4 h-4 text-brand-blue" />}
                     {cat === 'BUREAU_EXECUTIF' ? t('board.bureau') : t('board.council')}
@@ -993,7 +993,7 @@ export default function AdminPanel({
       {/* Arbitrage Modal detailing request evaluation */}
       {selectedReq && (
         <div className="fixed inset-0 z-50 overflow-y-auto flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
-          <div className="bg-white rounded-2xl max-w-lg w-full overflow-hidden shadow-2xl border border-slate-100 flex flex-col justify-between text-left">
+          <div className="bg-white rounded-2xl max-w-lg w-full overflow-hidden shadow-2xl border border-slate-100 flex flex-col justify-between text-start">
             
             {/* Modal Header */}
             <div className="p-4 bg-slate-50 border-b border-slate-100 flex justify-between items-center">
@@ -1038,7 +1038,7 @@ export default function AdminPanel({
               )}
 
               {/* Budget valuation */}
-              <div className="space-y-4 pt-3 border-t border-slate-100 text-left">
+              <div className="space-y-4 pt-3 border-t border-slate-100 text-start">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label className="text-[10px] uppercase font-bold text-slate-400">{t('adm.modalBudgetRequested')}</label>
@@ -1076,7 +1076,7 @@ export default function AdminPanel({
             </div>
 
             {/* Modal actions footer */}
-            <div className="p-4 bg-slate-50 border-t border-slate-100 flex gap-2 justify-end">
+            <div className="p-4 bg-slate-50 border-t border-slate-100 flex flex-wrap gap-2 justify-end">
               <button
                 onClick={() => setSelectedReq(null)}
                 className="px-4 py-2 bg-white text-slate-600 border border-slate-200 text-xs font-semibold rounded-lg hover:bg-slate-50 cursor-pointer"
