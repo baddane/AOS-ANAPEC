@@ -298,8 +298,8 @@ export default function App() {
   }
 
   const userSpecificRequests = React.useMemo(
-    () => requests.filter(r => r.userId === currentUser.id),
-    [requests, currentUser.id]
+    () => currentUser ? requests.filter(r => r.userId === currentUser.id) : [],
+    [requests, currentUser?.id]
   );
 
   return (
