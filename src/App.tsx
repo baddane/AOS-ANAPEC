@@ -6,7 +6,7 @@ import ConventionsDirectory from './components/ConventionsDirectory';
 import NewPrestationForm from './components/NewPrestationForm';
 import PrestationRequestList from './components/PrestationRequestList';
 import UserProfileCard from './components/UserProfileCard';
-const AdminPanel = React.lazy(() => import('./components/AdminPanel'));
+import AdminPanel from './components/AdminPanel';
 import AnapecLogo from './components/AnapecLogo';
 import BoardDirectory from './components/BoardDirectory';
 import OfficialPublicationsKiosk from './components/OfficialPublicationsKiosk';
@@ -60,8 +60,6 @@ export default function App() {
   useEffect(() => {
     let isMounted = true;
     let loadingDone = false;
-    let sessionHandled = false;
-
     // Detect OAuth callback: URL contains tokens or authorization code
     const isOAuthCallback =
       window.location.hash.includes('access_token') ||
@@ -79,9 +77,7 @@ export default function App() {
       fromAuthChange = false,
     ) => {
       if (!isMounted) return;
-      if (session?.user && sessionHandled) return;
       if (session?.user) {
-        sessionHandled = true;
         try {
           const profile = await upsertUserFromMicrosoftAuth(session.user);
           if (isMounted) {
@@ -442,8 +438,7 @@ export default function App() {
                 {t('header.userView')}
               </button>
             </div>
-            <React.Suspense fallback={<div className="flex justify-center py-12"><Loader2 className="w-6 h-6 animate-spin text-brand-blue" /></div>}>
-              <AdminPanel
+            <AdminPanel
                 requests={requests}
                 users={users}
                 conventions={conventions}
@@ -457,7 +452,6 @@ export default function App() {
                 onAddBoardMember={handleAddBoardMember}
                 onDeleteBoardMember={handleDeleteBoardMember}
               />
-            </React.Suspense>
           </div>
         ) : (
           <div className="space-y-6">
