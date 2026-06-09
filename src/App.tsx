@@ -15,7 +15,8 @@ import LanguageSwitcher from './components/LanguageSwitcher';
 import { useLang } from './i18n';
 import {
   Newspaper, Handshake, User, ShieldCheck, LogOut,
-  PlusCircle, Facebook, FileText, ChevronRight, BookOpen, Loader2, Users
+  PlusCircle, Facebook, FileText, ChevronRight, BookOpen, Loader2, Users,
+  Menu, X
 } from 'lucide-react';
 import {
   isSupabaseConfigured,
@@ -55,6 +56,7 @@ export default function App() {
   const [userTab, setUserTab] = useState<'NEWS' | 'CONVENTIONS' | 'MY_PRESTATIONS' | 'PROFILE' | 'KIOSK' | 'GOVERNANCE' | 'BOARD'>('NEWS');
   const [isAdminMode, setIsAdminMode] = useState(false);
   const [selectedNews, setSelectedNews] = useState<NewsArticle | null>(null);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // ─── Auth state listener ────────────────────────────────────────────────
   useEffect(() => {
@@ -322,9 +324,10 @@ export default function App() {
               </div>
             </div>
 
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 sm:gap-3">
+              {/* Desktop admin toggle */}
               {currentUser.role === 'admin' && (
-                <div className="hidden sm:flex bg-brand-blue-deep/80 p-0.5 rounded-xl border border-brand-blue-dark">
+                <div className="hidden md:flex bg-brand-blue-deep/80 p-0.5 rounded-xl border border-brand-blue-dark">
                   <button
                     onClick={() => setIsAdminMode(true)}
                     className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer ${isAdminMode ? 'bg-brand-blue text-white shadow-xs' : 'text-slate-300 hover:text-white'}`}
@@ -342,48 +345,120 @@ export default function App() {
 
               <LanguageSwitcher />
 
-              <div className="flex items-center gap-2.5 px-3 py-1.5 bg-brand-blue-deep/40 border border-brand-blue-dark/50 rounded-xl">
+              <div className="hidden sm:flex items-center gap-2.5 px-3 py-1.5 bg-brand-blue-deep/40 border border-brand-blue-dark/50 rounded-xl">
                 {currentUser.avatarUrl ? (
-                  <img
-                    src={currentUser.avatarUrl}
-                    alt="Avatar"
-                    referrerPolicy="no-referrer"
-                    className="w-7 h-7 rounded-lg object-cover border border-brand-blue-dark shrink-0"
-                  />
+                  <img src={currentUser.avatarUrl} alt="Avatar" referrerPolicy="no-referrer" className="w-7 h-7 rounded-lg object-cover border border-brand-blue-dark shrink-0" />
                 ) : (
                   <div className="w-7 h-7 rounded-lg bg-brand-blue-deep flex items-center justify-center shrink-0 border border-brand-blue-dark">
-                    <span className="text-xs font-bold text-white">
-                      {currentUser.prenom?.charAt(0)}{currentUser.name?.charAt(0)}
-                    </span>
+                    <span className="text-xs font-bold text-white">{currentUser.prenom?.charAt(0)}{currentUser.name?.charAt(0)}</span>
                   </div>
                 )}
-                <div className="text-start hidden sm:block">
-                  <p className="text-xs font-bold font-sans text-white truncate max-w-[120px]">
-                    {currentUser.prenom} {currentUser.name}
-                  </p>
+                <div className="text-start">
+                  <p className="text-xs font-bold font-sans text-white truncate max-w-[120px]">{currentUser.prenom} {currentUser.name}</p>
                   <p className="text-[9px] text-brand-gold font-mono truncate">{currentUser.matricule}</p>
                 </div>
-                <button
-                  onClick={handleLogout}
-                  title={t('header.logout')}
-                  className="ms-1 p-1 hover:text-brand-gold transition-colors cursor-pointer"
-                  id="navbar-logout-btn"
-                >
+                <button onClick={handleLogout} title={t('header.logout')} className="ms-1 p-1 hover:text-brand-gold transition-colors cursor-pointer" id="navbar-logout-btn">
                   <LogOut className="w-4 h-4" />
                 </button>
               </div>
+
+              {/* Mobile hamburger */}
+              <button
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className="md:hidden p-2 hover:bg-brand-blue-deep/50 rounded-lg transition-colors cursor-pointer"
+              >
+                {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              </button>
             </div>
 
           </div>
         </div>
       </header>
 
-      {/* ONGLETS NAVIGATION (mode adhérent) */}
-      {!isAdminMode && (
-        <nav className="bg-white border-b border-slate-100 shadow-sm sticky top-16 z-30">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex gap-4 sm:gap-6 overflow-x-auto py-3 scrollbar-none justify-start md:justify-center">
+      {/* MOBILE SLIDE-DOWN MENU */}
+      {mobileMenuOpen && (
+        <div className="md:hidden fixed inset-x-0 top-16 bottom-0 z-50 bg-slate-900/50 backdrop-blur-sm" onClick={() => setMobileMenuOpen(false)}>
+          <div className="bg-white border-b border-slate-200 shadow-xl max-h-[80vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
 
+            {/* User info */}
+            <div className="px-4 py-3 bg-slate-50 border-b border-slate-100 flex items-center gap-3">
+              {currentUser.avatarUrl ? (
+                <img src={currentUser.avatarUrl} alt="Avatar" referrerPolicy="no-referrer" className="w-10 h-10 rounded-xl object-cover border border-slate-200 shrink-0" />
+              ) : (
+                <div className="w-10 h-10 rounded-xl bg-brand-blue flex items-center justify-center shrink-0">
+                  <span className="text-sm font-bold text-white">{currentUser.prenom?.charAt(0)}{currentUser.name?.charAt(0)}</span>
+                </div>
+              )}
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-bold text-slate-900 truncate">{currentUser.prenom} {currentUser.name}</p>
+                <p className="text-[10px] text-slate-500 font-mono">{currentUser.matricule} • {currentUser.delegation}</p>
+              </div>
+            </div>
+
+            {/* Admin/Member toggle */}
+            {currentUser.role === 'admin' && (
+              <div className="px-4 py-3 border-b border-slate-100 flex gap-2">
+                <button
+                  onClick={() => { setIsAdminMode(true); setMobileMenuOpen(false); }}
+                  className={`flex-1 py-2.5 text-xs font-bold rounded-xl transition-all cursor-pointer ${isAdminMode ? 'bg-brand-blue text-white shadow-sm' : 'bg-slate-100 text-slate-600'}`}
+                >
+                  💼 {t('header.adminBackoffice')}
+                </button>
+                <button
+                  onClick={() => { setIsAdminMode(false); setUserTab('NEWS'); setMobileMenuOpen(false); }}
+                  className={`flex-1 py-2.5 text-xs font-bold rounded-xl transition-all cursor-pointer ${!isAdminMode ? 'bg-brand-blue text-white shadow-sm' : 'bg-slate-100 text-slate-600'}`}
+                >
+                  👤 {t('header.memberMode')}
+                </button>
+              </div>
+            )}
+
+            {/* Navigation tabs (vertical) */}
+            {!isAdminMode && (
+              <div className="py-2">
+                {[
+                  { id: 'NEWS', icon: <Newspaper className="w-4 h-4" />, label: t('nav.news') },
+                  { id: 'KIOSK', icon: <BookOpen className="w-4 h-4" />, label: t('nav.kiosk') },
+                  { id: 'GOVERNANCE', icon: <ShieldCheck className="w-4 h-4" />, label: t('nav.governance') },
+                  { id: 'CONVENTIONS', icon: <Handshake className="w-4 h-4" />, label: t('nav.conventions') },
+                  { id: 'BOARD', icon: <Users className="w-4 h-4" />, label: t('nav.board') },
+                  { id: 'MY_PRESTATIONS', icon: <FileText className="w-4 h-4" />, label: `${t('nav.myRequests')} (${userSpecificRequests.length})` },
+                  { id: 'PROFILE', icon: <User className="w-4 h-4" />, label: t('nav.profile') },
+                ].map(tab => (
+                  <button
+                    key={tab.id}
+                    onClick={() => { setUserTab(tab.id as any); setMobileMenuOpen(false); }}
+                    className={`w-full flex items-center gap-3 px-5 py-3 text-sm font-semibold transition-all cursor-pointer ${
+                      userTab === tab.id ? 'bg-brand-blue-light text-brand-blue-dark' : 'text-slate-600 hover:bg-slate-50'
+                    }`}
+                  >
+                    {tab.icon}
+                    {tab.label}
+                  </button>
+                ))}
+              </div>
+            )}
+
+            {/* Logout */}
+            <div className="px-4 py-3 border-t border-slate-100">
+              <button
+                onClick={() => { handleLogout(); setMobileMenuOpen(false); }}
+                className="w-full flex items-center justify-center gap-2 py-2.5 bg-rose-50 text-rose-700 text-xs font-bold rounded-xl hover:bg-rose-100 cursor-pointer"
+              >
+                <LogOut className="w-4 h-4" />
+                {t('header.logout')}
+              </button>
+            </div>
+
+          </div>
+        </div>
+      )}
+
+      {/* DESKTOP NAVIGATION TABS (mode adhérent) */}
+      {!isAdminMode && (
+        <nav className="hidden md:block bg-white border-b border-slate-100 shadow-sm sticky top-16 z-30">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex gap-6 overflow-x-auto py-3 scrollbar-none justify-center">
               {[
                 { id: 'NEWS', icon: <Newspaper className="w-4 h-4" />, label: t('nav.news') },
                 { id: 'KIOSK', icon: <BookOpen className="w-4 h-4" />, label: t('nav.kiosk') },
@@ -404,19 +479,7 @@ export default function App() {
                   {tab.label}
                 </button>
               ))}
-
             </div>
-            {currentUser.role === 'admin' && (
-              <div className="sm:hidden flex justify-center py-2 border-t border-slate-100">
-                <button
-                  onClick={() => setIsAdminMode(true)}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-amber-500/15 border border-amber-500/20 text-amber-800 text-[10px] font-bold rounded-lg cursor-pointer"
-                >
-                  <ShieldCheck className="w-3.5 h-3.5" />
-                  {t('header.adminBackoffice')}
-                </button>
-              </div>
-            )}
           </div>
         </nav>
       )}
@@ -426,15 +489,6 @@ export default function App() {
 
         {isAdminMode ? (
           <div className="space-y-6">
-            <div className="md:hidden p-3 bg-amber-500/15 border border-amber-500/20 text-amber-800 text-xs rounded-xl flex justify-between items-center text-start">
-              <span>{t('header.onAdminPanel')}</span>
-              <button
-                onClick={() => { setIsAdminMode(false); setUserTab('NEWS'); }}
-                className="px-2.5 py-1 bg-amber-600 hover:bg-amber-700 text-white rounded-lg text-[10px] font-bold cursor-pointer"
-              >
-                {t('header.userView')}
-              </button>
-            </div>
             <AdminPanel
                 requests={requests}
                 users={users}
