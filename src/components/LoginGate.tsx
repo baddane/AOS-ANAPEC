@@ -104,8 +104,8 @@ export default function LoginGate() {
       </div>
 
       <footer className="py-5 border-t border-slate-100 text-center text-xs text-slate-400 px-4">
-        <p>© {new Date().getFullYear()} Association des Œuvres Sociales de l'ANAPEC (AOS ANAPEC)</p>
-        <p className="mt-0.5 text-[11px]">Portail officiel d'accompagnement social, d'estivage et de mutuelle.</p>
+        <p>© {new Date().getFullYear()} {t('login.copyright')}</p>
+        <p className="mt-0.5 text-[11px]">{t('login.tagline')}</p>
       </footer>
     </div>
   );

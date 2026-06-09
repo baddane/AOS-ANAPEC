@@ -307,7 +307,7 @@ export default function ConventionsDirectory({ currentUser, conventions }: Conve
                   )}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="bg-white border border-slate-100 rounded-xl p-4 space-y-2">
-                      <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">AOS-ANAPEC</p>
+                      <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">{t('conv.aosLabel')}</p>
                       <div className="space-y-1.5 text-xs text-slate-600">
                         <div className="flex items-center gap-2"><MapPin className="w-3.5 h-3.5 text-slate-400" /> 4, Lotissement La Colline Entrée B Sidi Maarouf 20100</div>
                         <div className="flex items-center gap-2"><Phone className="w-3.5 h-3.5 text-slate-400" /> 0661045542</div>
@@ -441,7 +441,7 @@ export default function ConventionsDirectory({ currentUser, conventions }: Conve
             </div>
             <div className="p-6 space-y-6" id="printable-voucher-document">
               <div className="flex justify-between items-start border-b-2 border-slate-100 pb-4">
-                <div className="text-start"><h4 className="font-display font-extrabold text-sm text-slate-900 tracking-wide uppercase">AOS ANAPEC</h4><p className="text-[9px] text-slate-400 uppercase font-semibold">Œuvres Sociales de l'ANAPEC</p></div>
+                <div className="text-start"><h4 className="font-display font-extrabold text-sm text-slate-900 tracking-wide uppercase">AOS ANAPEC</h4><p className="text-[9px] text-slate-400 uppercase font-semibold">{t('conv.socialWorks')}</p></div>
                 <div className="text-right"><span className="text-[10px] font-mono font-bold bg-slate-100 text-slate-800 px-2 py-1 rounded-md">{voucherCode}</span><p className="text-[9px] text-slate-400 mt-1">{t('conv.voucherGenerated')} {new Date().toLocaleDateString('fr-FR')}</p></div>
               </div>
               <div className="space-y-2 text-center py-2 bg-brand-gold-light rounded-xl border border-brand-gold-accent">

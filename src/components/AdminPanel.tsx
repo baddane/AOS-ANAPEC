@@ -190,7 +190,7 @@ export default function AdminPanel({
       publishDate: new Date().toISOString().substring(0, 10),
       category: newsCategory,
       importance: newsImportance,
-      author: 'Commission de Communication AOS',
+      author: t('adm.newsAuthor'),
       readCount: 0
     };
     onPostNews(newlyCreated);

@@ -6,7 +6,7 @@ import ConventionsDirectory from './components/ConventionsDirectory';
 import NewPrestationForm from './components/NewPrestationForm';
 import PrestationRequestList from './components/PrestationRequestList';
 import UserProfileCard from './components/UserProfileCard';
-import AdminPanel from './components/AdminPanel';
+const AdminPanel = React.lazy(() => import('./components/AdminPanel'));
 import AnapecLogo from './components/AnapecLogo';
 import BoardDirectory from './components/BoardDirectory';
 import OfficialPublicationsKiosk from './components/OfficialPublicationsKiosk';
@@ -60,6 +60,7 @@ export default function App() {
   useEffect(() => {
     let isMounted = true;
     let loadingDone = false;
+    let sessionHandled = false;
 
     // Detect OAuth callback: URL contains tokens or authorization code
     const isOAuthCallback =
@@ -78,7 +79,9 @@ export default function App() {
       fromAuthChange = false,
     ) => {
       if (!isMounted) return;
+      if (session?.user && sessionHandled) return;
       if (session?.user) {
+        sessionHandled = true;
         try {
           const profile = await upsertUserFromMicrosoftAuth(session.user);
           if (isMounted) {
@@ -298,7 +301,10 @@ export default function App() {
     return <LoginGate />;
   }
 
-  const userSpecificRequests = requests.filter(r => r.userId === currentUser.id);
+  const userSpecificRequests = React.useMemo(
+    () => requests.filter(r => r.userId === currentUser.id),
+    [requests, currentUser.id]
+  );
 
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col text-slate-800" dir={dir} id="aos-portal-app">
@@ -436,20 +442,22 @@ export default function App() {
                 {t('header.userView')}
               </button>
             </div>
-            <AdminPanel
-              requests={requests}
-              users={users}
-              conventions={conventions}
-              news={news}
-              boardMembers={boardMembers}
-              onApproveRequest={handleApproveRequest}
-              onRejectRequest={handleRejectRequest}
-              onToggleUserStatus={handleToggleUserStatus}
-              onPostConvention={handlePostConvention}
-              onPostNews={handlePostNews}
-              onAddBoardMember={handleAddBoardMember}
-              onDeleteBoardMember={handleDeleteBoardMember}
-            />
+            <React.Suspense fallback={<div className="flex justify-center py-12"><Loader2 className="w-6 h-6 animate-spin text-brand-blue" /></div>}>
+              <AdminPanel
+                requests={requests}
+                users={users}
+                conventions={conventions}
+                news={news}
+                boardMembers={boardMembers}
+                onApproveRequest={handleApproveRequest}
+                onRejectRequest={handleRejectRequest}
+                onToggleUserStatus={handleToggleUserStatus}
+                onPostConvention={handlePostConvention}
+                onPostNews={handlePostNews}
+                onAddBoardMember={handleAddBoardMember}
+                onDeleteBoardMember={handleDeleteBoardMember}
+              />
+            </React.Suspense>
           </div>
         ) : (
           <div className="space-y-6">
@@ -502,7 +510,7 @@ export default function App() {
                           <p className="text-xs text-slate-500 line-clamp-3 leading-relaxed">{item.summary}</p>
                         </div>
                         <div className="pt-3 border-t border-slate-100 flex justify-between items-center">
-                          <span className="text-[10px] text-slate-400 font-semibold">{item.readCount} {t('news.views')} • AOS Staff</span>
+                          <span className="text-[10px] text-slate-400 font-semibold">{item.readCount} {t('news.views')} • {t('news.staff')}</span>
                           <button onClick={() => setSelectedNews(item)} className="text-xs font-bold text-brand-blue hover:underline cursor-pointer">
                             {t('news.read')}
                           </button>
@@ -574,8 +582,8 @@ export default function App() {
               <p className="text-xs font-bold text-slate-700">{selectedNews.summary}</p>
               <p className="text-xs text-slate-500 whitespace-pre-wrap leading-relaxed">{selectedNews.content}</p>
               <div className="p-4 bg-slate-50 rounded-xl border border-slate-100 text-xs">
-                <p className="font-bold text-slate-800">Note du Secrétaire Général :</p>
-                <p className="text-slate-500 mt-1">Cette décision a été validée par la Commission Sociale de l'ANAPEC. Pour tout complément, écrivez à <span className="font-mono text-brand-blue underline">aos@anapec.org.ma</span>.</p>
+                <p className="font-bold text-slate-800">{t('news.sgNote')}</p>
+                <p className="text-slate-500 mt-1">{t('news.sgBody')} <span className="font-mono text-brand-blue underline">aos@anapec.org.ma</span>.</p>
               </div>
             </div>
             <div className="p-4 bg-slate-50 border-t border-slate-100 flex justify-end">

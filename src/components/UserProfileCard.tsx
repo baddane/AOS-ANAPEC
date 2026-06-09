@@ -72,7 +72,7 @@ export default function UserProfileCard({ currentUser, onUpdateProfile }: UserPr
             
             {/* Hologram or seal */}
             <div className="absolute top-12 right-6 w-12 h-12 bg-brand-gold/10 rounded-full border border-brand-gold/20 flex items-center justify-center font-display text-[8px] font-bold text-brand-gold tracking-wider uppercase select-none pointer-events-none transform rotate-12">
-              ★ AOS CERTIFIED
+              {t('prof.certified')}
             </div>
 
             {/* Header info */}

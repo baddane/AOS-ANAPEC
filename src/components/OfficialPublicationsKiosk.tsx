@@ -647,7 +647,7 @@ export default function OfficialPublicationsKiosk({
                 <div className={`p-6 md:p-10 rounded-3xl bg-gradient-to-r ${getCoverGradientClass(activePublication.coverImage)} relative text-white border-2 border-slate-50 shadow-md flex flex-col justify-between min-h-[160px] print:rounded-none print:border-none print:text-black print:bg-none print:from-white print:to-white`}>
                   <div className="space-y-4">
                     <span className="px-3 py-1 bg-white/10 text-[9px] font-bold border border-white/10 rounded-full uppercase tracking-widest text-white print:hidden">
-                      AOS Publication Officielle {activePublication.publishDate}
+                      {t('kiosk.officialPub')} {activePublication.publishDate}
                     </span>
                     
                     <div className="space-y-3">

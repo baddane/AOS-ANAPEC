@@ -95,6 +95,16 @@ const fr: Dict = {
   'login.instruction': 'Connectez-vous avec votre compte professionnel ANAPEC',
   'login.secure': 'Authentification sécurisée via Microsoft Azure AD',
   'login.error': 'Échec de la connexion. Veuillez réessayer ou contacter le support.',
+  'news.sgNote': 'Note du Secrétaire Général :',
+  'news.sgBody': "Cette décision a été validée par la Commission Sociale de l'ANAPEC. Pour tout complément, écrivez à",
+  'news.staff': 'AOS Staff',
+  'login.copyright': "Association des Œuvres Sociales de l'ANAPEC (AOS ANAPEC)",
+  'login.tagline': "Portail officiel d'accompagnement social, d'estivage et de mutuelle.",
+  'prof.certified': '★ AOS CERTIFIED',
+  'conv.aosLabel': 'AOS-ANAPEC',
+  'conv.socialWorks': "Œuvres Sociales de l'ANAPEC",
+  'kiosk.officialPub': 'AOS Publication Officielle',
+  'adm.newsAuthor': 'Commission de Communication AOS',
 };
 
 const ar: Dict = {
@@ -169,6 +179,16 @@ const ar: Dict = {
   'login.instruction': 'سجّل الدخول بحسابك المهني بالوكالة',
   'login.secure': 'مصادقة آمنة عبر Microsoft Azure AD',
   'login.error': 'فشل تسجيل الدخول. يرجى المحاولة مرة أخرى أو الاتصال بالدعم.',
+  'news.sgNote': 'ملاحظة الأمين العام:',
+  'news.sgBody': 'تمت المصادقة على هذا القرار من طرف اللجنة الاجتماعية للوكالة. لأي استفسار، راسلونا على',
+  'news.staff': 'طاقم AOS',
+  'login.copyright': 'جمعية الأعمال الاجتماعية للوكالة الوطنية لإنعاش التشغيل والكفاءات (AOS ANAPEC)',
+  'login.tagline': 'البوابة الرسمية للمصاحبة الاجتماعية والاصطياف والتعاضدية.',
+  'prof.certified': '★ AOS معتمد',
+  'conv.aosLabel': 'AOS-ANAPEC',
+  'conv.socialWorks': 'الأعمال الاجتماعية للوكالة',
+  'kiosk.officialPub': 'منشور رسمي AOS',
+  'adm.newsAuthor': 'لجنة التواصل AOS',
 };
 
 const en: Dict = {
@@ -243,6 +263,16 @@ const en: Dict = {
   'login.instruction': 'Sign in with your ANAPEC professional account',
   'login.secure': 'Secure authentication via Microsoft Azure AD',
   'login.error': 'Login failed. Please try again or contact support.',
+  'news.sgNote': 'Secretary General Note:',
+  'news.sgBody': "This decision was approved by the ANAPEC Social Commission. For any additional information, write to",
+  'news.staff': 'AOS Staff',
+  'login.copyright': 'ANAPEC Social Works Association (AOS ANAPEC)',
+  'login.tagline': 'Official social support, summer programs and mutual aid portal.',
+  'prof.certified': '★ AOS CERTIFIED',
+  'conv.aosLabel': 'AOS-ANAPEC',
+  'conv.socialWorks': 'ANAPEC Social Works',
+  'kiosk.officialPub': 'AOS Official Publication',
+  'adm.newsAuthor': 'AOS Communication Commission',
 };
 
 // Merge core dictionaries with per-feature translation fragments.
