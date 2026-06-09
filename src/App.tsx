@@ -297,10 +297,7 @@ export default function App() {
     return <LoginGate />;
   }
 
-  const userSpecificRequests = React.useMemo(
-    () => currentUser ? requests.filter(r => r.userId === currentUser.id) : [],
-    [requests, currentUser?.id]
-  );
+  const userSpecificRequests = requests.filter(r => r.userId === currentUser.id);
 
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col text-slate-800" dir={dir} id="aos-portal-app">
